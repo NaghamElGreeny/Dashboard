@@ -124,7 +124,7 @@ export default function Sections() {
                         >
                             {hasPermission('update-Sections') && (
                                 <Link
-                                    to={`/Sections/edit/${row.original?.id}`}
+                                    to={`/sections/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
@@ -232,7 +232,7 @@ export default function Sections() {
                     <>
                         {hasPermission('store-Sections') && (
                             <Link
-                                to="/Sections/add"
+                                to="/sections/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">
