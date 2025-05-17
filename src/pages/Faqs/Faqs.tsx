@@ -93,7 +93,7 @@ export default function Faqs() {
                         >
                             {hasPermission('faq.update') && (
                                 <Link
-                                    to={`/faqs/edit/${row.original?.id}`}
+                                    to={`/faq/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
@@ -150,8 +150,8 @@ export default function Faqs() {
     };
 
     const searchParams = new URLSearchParams(queryParams as any);
-    // const endpoint = `faq?${searchParams.toString()}`;
-    const endpoint = `faq`;
+    const endpoint = `faq?${searchParams.toString()}`;
+    // const endpoint = `faq`;
 
     const {
         data: faqs,
@@ -179,7 +179,7 @@ export default function Faqs() {
                     <>
                         {hasPermission('faq.store') && (
                             <Link
-                                to="/faqs/add"
+                                to="/faq/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">

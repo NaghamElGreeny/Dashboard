@@ -19,7 +19,7 @@ export default function UpdateFaq() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.faqs.title'), to: '/faqs/index' },
+        { label: t('breadcrumb.faqs.title'), to: '/faq/index' },
         { label: t('breadcrumb.faqs.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
@@ -31,10 +31,11 @@ export default function UpdateFaq() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `faq/`,
-        queryKey: [`faq-list`],
+        endpoint: `faq/${id}`,
+        queryKey: [`faq/${id}`],
     });
-    console.log(showData?.data)
+    console.log(showData)
+    console.log(id)
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
@@ -94,29 +95,31 @@ export default function UpdateFaq() {
         },
 
         formData: true,
+        // method: 'post',
     });
 
     const handleSubmit = (values: any) => {
         const finalOut = {
             ar: {
-                title: values?.ar_question,
-                desc: values?.ar_answer,
+                question: values?.ar_question,
+                answer: values?.ar_answer,
             },
             en: {
-                title: values?.en_question,
-                desc: values?.en_answer,
+                question: values?.en_question,
+                answer: values?.en_answer,
             },
         };
 
         update({
             ...finalOut,
-            //  _method: 'put'
+            // _method: 'put'
+            _method: 'post'
         });
     };
 
     return (
         <div>
-            {/* <Breadcrumb items={breadcrumbItems} />
+            <Breadcrumb items={breadcrumbItems} />
 
             <Formik
                 validationSchema={faqSchema()}
@@ -147,7 +150,7 @@ export default function UpdateFaq() {
                         </Form>
                     );
                 }}
-            </Formik> */}
+            </Formik>
         </div>
     );
 }

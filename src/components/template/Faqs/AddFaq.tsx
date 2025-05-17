@@ -14,7 +14,7 @@ export default function AddFaq() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.faqs.title'), to: '/faqs/index' },
+        { label: t('breadcrumb.faqs.title'), to: '/faq/index' },
         { label: t('breadcrumb.faqs.add') },
     ];
     const [formKey, setFormKey] = useState(0);
@@ -24,6 +24,7 @@ export default function AddFaq() {
 
         en_question: '',
         en_answer: '',
+
     };
 
     const faqSchema = () =>
@@ -73,13 +74,16 @@ export default function AddFaq() {
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
             ar: {
-                title: values?.ar_question,
-                desc: values?.ar_answer,
+                question: values?.ar_question,
+                answer: values?.ar_answer,
             },
             en: {
-                title: values?.en_question,
-                desc: values?.en_answer,
+                question: values?.en_question,
+                answer: values?.en_answer,
             },
+
+
+            is_active: 1
         };
 
         mutate(finalOut, {
