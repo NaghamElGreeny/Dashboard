@@ -16,7 +16,7 @@
         "public_pages": "Public Pages",
         "privacy_policy": "Privacy Policy",
         "terms": "Terms and Conditions",
-        "about": "About Us",
+        "about": "ًWhy Us",
         "sections": "Sections",
         "wallet": "Wallet",
         "clients": "Clients",
@@ -318,7 +318,7 @@
             "show": "Show Term"
         },
         "about": {
-            "title": "About Us",
+            "title": "Why Us",
             "all": "All",
             "add": "Add",
             "edit": "Edit",

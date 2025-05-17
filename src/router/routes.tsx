@@ -14,6 +14,8 @@ import AddFaq from '../components/template/Faqs/AddFaq';
 import UpdateFaq from '../components/template/Faqs/UpdateFaq';
 import FaqsPage from '../pages/Faqs/Faqs';
 
+import WhyUsPage from '../pages/Whyus/Whyus';
+import UpdateWhyus from '../components/template/WhyUs/UpdateWhyUs';
 
 
 import ReportsPage from '../pages/Reports/Reports';
@@ -23,7 +25,6 @@ import ShowBooking from '../components/template/Bookings/ShowBooking';
 import RescheduledBookingsPage from '../pages/RescheduledBookings/RescheduledBookings';
 
 import ServicesPage from '../components/template/Services/UpdateService';
-import AboutUsPage from '../components/template/About/UpdateAbout';
 import SectionsPage from '../components/template/Sections/UpdateSections';
 
 import PolicyPage from '../components/template/PrivacyPolicy/UpdatePrivacyPolicy';
@@ -121,15 +122,21 @@ const routes = [
             <Navigate to="/permission-required" />
         ),
     },
+    {
+        path: '/why-us/index',
+        element: hasPermission('why-us.index') ? <WhyUsPage /> : <Navigate to="/permission-required" />,
+    },
 
     {
-        path: '/why-us',
-        element: hasPermission('about.index') ? (
-            <AboutUsPage />
+        path: '/why-us/edit/:id',
+        element: hasPermission('whyus.update') ? (
+            <UpdateWhyus />
         ) : (
             <Navigate to="/permission-required" />
         ),
     },
+
+
     {
         path: '/sections',
         element: hasPermission('about.index') ? (

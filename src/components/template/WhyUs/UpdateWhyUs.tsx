@@ -10,13 +10,15 @@ import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
 import AboutMainData from './MainData';
 import { hasPermission } from '../../../helper/permissionHelpers';
+import { useNavigate } from 'react-router-dom';
 
-export default function UpdateAbout() {
+export default function UpdateWhyus() {
     const { t, i18n } = useTranslation();
-
+    const navigate = useNavigate();
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.about.title') },
+        { label: t('breadcrumb.about.title'), to: '/why-us/index' },
+        { label: t('breadcrumb.about.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -27,16 +29,16 @@ export default function UpdateAbout() {
         isSuccess: showDataSuccess,
         refetch,
     } = useFetch<any>({
-        endpoint: `about`,
+        endpoint: `why-us`,
         // @ts-ignore
-        queryKey: [`about`, hasPermission('about.index')],
-        enabled: !!hasPermission('about.index'),
+        queryKey: [`why-us`, hasPermission('whyus.index')],
+        enabled: !!hasPermission('whyus.index'),
     });
 
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
-
+    console.log(showData?.data);
     const initialValues = {
         ar_title: showData?.data?.ar?.title || '',
         ar_description: showData?.data?.ar?.desc || '',

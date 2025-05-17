@@ -48,7 +48,7 @@ export const SideBarItemsFn = () => {
         },
 
         // public_pages
-        ...(hasPermission('about.index') ||
+        ...(hasPermission('whyus.index') ||
             hasPermission('faq.index') ||
             hasPermission('policy.index') ||
             hasPermission('term.index') ||
@@ -59,13 +59,13 @@ export const SideBarItemsFn = () => {
                     heading: t('sidebar.public_pages'),
                 },
 
-                ...(hasPermission('about.index')
+                ...(hasPermission('why-us.index')
                     ? [
                         {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.about'),
-                            link: '/why-us',
+                            link: '/why-us/index',
                         },
                     ]
                     : []),

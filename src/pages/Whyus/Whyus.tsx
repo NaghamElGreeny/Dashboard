@@ -11,15 +11,16 @@ import ModalCustom from '../../components/template/modal/ModalCustom';
 import TableCompCustom from '../../components/template/tantable/TableCutsom';
 import useFetch from '../../hooks/UseFetch';
 import { useMutate } from '../../hooks/UseMutate';
-import type { FetchAboutData, About } from './types';
+import type { FetchWhyUsData, WhyUs } from './types';
 import { hasPermission } from '../../helper/permissionHelpers';
 import LightBox from '../../components/molecules/LightBox/LightBox';
 import imageError from '/assets/images/logo.png';
 import FilterSection from '../../components/atoms/filters/Filters';
+import Lightbox from 'react-18-image-lightbox';
 
-export default function About() {
+export default function WhyUs() {
     const { t, i18n } = useTranslation();
-
+    const locale = localStorage.getItem('i18nextLng');
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.about.title') },
@@ -32,7 +33,7 @@ export default function About() {
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedDescription, setSelectedDescription] = useState<string>('');
 
-    const columns: MRT_ColumnDef<About>[] = [
+    const columns: MRT_ColumnDef<WhyUs>[] = [
         {
             header: '#',
             Cell: ({ row }: any) => row.index + 1,
@@ -41,77 +42,118 @@ export default function About() {
 
         {
             header: t('labels.image'),
-            Cell: ({ row }: { row: { original: About } }) => (
-                <div className="flex gap-5">
-                    {row.original?.images && row.original?.images.length > 0 ? (
-                        //@ts-ignore
-                        <LightBox
-                            // isProduct
-                            getItems={row.original?.images?.map((image: any) => ({
-                                src: image.media || imageError,
-                            }))}
-                        >
-                            <img
-                                src={row.original?.images[0].media || imageError}
-                                alt={row.original?.title || 'Image'}
-                                className="rounded-full w-20 h-20 object-cover cursor-pointer"
-                            />
-                        </LightBox>
-                    ) : (
-                        <span>{t('not_found')}</span>
-                    )}
-                </div>
-            ),
-            accessorKey: 'images',
-        },
+            Cell: ({ row }: { row: { original: WhyUs } }) => {
+                const icon = row.original.icon; // object فيه { url: string }
+                const [isOpen, setIsOpen] = useState(false);
 
-        {
-            header: t('labels.title'),
-            Cell: ({ row }: { row: { original: About } }) => {
-                const title = row.original?.title || t('not_found');
-                return <span>{title}</span>;
-            },
-            accessorKey: 'title',
-        },
-
-        {
-            header: t('labels.description'),
-            Cell: ({ row }: { row: { original: About } }) => {
-                const description = row.original?.desc || t('not_found');
                 return (
-                    <>
-                        <FaEye
-                            className="text-[19px] text-black ms-10 cursor-pointer"
-                            onClick={() => {
-                                setSelectedDescription(description ?? '');
-                                // setSelectedDescription(description as string);
-                                setOpen(true);
-                            }}
-                        />
-                    </>
-                );
-            },
+                    <div className="flex gap-5">
+                        {icon?.url ? (
+                            <>
+                                <img
+                                    src={icon.url}
+                                    alt="image"
+                                    // onClick={() => setIsOpen(true)}
+                                    className="rounded-full w-20 h-20 object-cover cursor-pointer"
+                                />
 
+                                {isOpen && (
+                                    <Lightbox
+                                        mainSrc={icon.url}
+                                        onCloseRequest={() => setIsOpen(false)}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <span>{t('not_found')}</span>
+                        )}
+                    </div>
+                );
+            }
+            // accessorKey: 'images',
+        }
+
+        // {
+        //     header: t('labels.image'),
+        //     Cell: ({ row }: { row: { original: WhyUs } }) => (
+        //         <div className="flex gap-5">
+        //             {row.original?.icon && row.original?.icon.length > 0 ? (
+        //                 //@ts-ignore
+        //                 <LightBox
+        //                     // isProduct
+        //                     getItems={row.original?.icon?.map((image: any) => ({
+        //                         src: image.url || imageError,
+        //                     }))}
+        //                 >
+        //                     <img
+        //                         src={row.original?.icon[0].url || imageError}
+        //                         alt={row.original?.icon?.url || 'Image'}
+        //                         className="rounded-full w-20 h-20 object-cover cursor-pointer"
+        //                     />
+        //                 </LightBox>
+        //             ) : (
+        //                 <span>{t('not_found')}</span>
+        //             )}
+        //         </div>
+        //     ),
+        //     accessorKey: 'images',
+        // },
+
+        , {
+            header: t('labels.title'),
+            Cell: ({ row }: { row: { original: WhyUs } }) => {
+                const value = row.original?.value || t('not_found');
+                return <span>{value}</span>;
+            },
+            accessorKey: 'value',
+        }
+        , {
+            header: t('labels.description'),
+            Cell: ({ row }: { row: { original: WhyUs } }) => {
+                const description = locale === 'ar' ? row.original?.ar?.key : row.original?.en?.key || t('not_found');
+                return <span>{description}</span>;
+            },
             accessorKey: 'description',
         },
 
-        {
-            accessorKey: 'status',
-            header: t('labels.status'),
-            Cell: ({ row }: { row: { original: About } }) => {
-                const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
-                return (
-                    <>
-                        <span
-                            className={`${row.original?.is_active ? 'active' : 'inactive'
-                                } statuses `}
-                        >
-                            {status}
-                        </span>
-                    </>
-                );
-            },
-        },
+        // {
+        //     header: t('labels.description'),
+        //     Cell: ({ row }: { row: { original: WhyUs } }) => {
+        //         const description = row.original?.desc || t('not_found');
+        //         return (
+        //             <>
+        //                 <FaEye
+        //                     className="text-[19px] text-black ms-10 cursor-pointer"
+        //                     onClick={() => {
+        //                         setSelectedDescription(description ?? '');
+        //                         // setSelectedDescription(description as string);
+        //                         setOpen(true);
+        //                     }}
+        //                 />
+        //             </>
+        //         );
+        //     },
+
+        //     accessorKey: 'description',
+        // },
+
+        // {
+        //     accessorKey: 'status',
+        //     header: t('labels.status'),
+        //     Cell: ({ row }: { row: { original: About } }) => {
+        //         const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
+        //         return (
+        //             <>
+        //                 <span
+        //                     className={`${row.original?.is_active ? 'active' : 'inactive'
+        //                         } statuses `}
+        //                 >
+        //                     {status}
+        //                 </span>
+        //             </>
+        //         );
+        //     },
+        // },
 
         ...(hasPermission('update-About') || hasPermission('destroy-About')
             ? [
@@ -124,7 +166,7 @@ export default function About() {
                         >
                             {hasPermission('update-About') && (
                                 <Link
-                                    to={`/about/edit/${row.original?.id}`}
+                                    to={`/why-us/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
@@ -148,8 +190,8 @@ export default function About() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`abouts/${aboutId}`],
-        endpoint: `abouts/${aboutId}`,
+        mutationKey: [`why-us/${aboutId}`],
+        endpoint: `why-us/${aboutId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({
@@ -184,14 +226,14 @@ export default function About() {
     const buildEndpoint = (params: { keyword: string }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `abouts?${queryParams.toString()}`;
+        return `why-us?${queryParams.toString()}`;
     };
 
     const {
         data: terms,
         refetch,
         isLoading,
-    } = useFetch<FetchAboutData>({
+    } = useFetch<FetchWhyUsData>({
         endpoint: buildEndpoint(initialValues),
         queryKey: [buildEndpoint(initialValues)],
     });
@@ -200,7 +242,7 @@ export default function About() {
         setSearchParams({});
         resetForm();
     };
-
+    console.log('data', terms?.data);
     return (
         <>
             <Breadcrumb items={breadcrumbItems} />
@@ -232,7 +274,7 @@ export default function About() {
                     <>
                         {hasPermission('store-About') && (
                             <Link
-                                to="/about/add"
+                                to="/why-us/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">
