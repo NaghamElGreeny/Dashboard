@@ -31,20 +31,20 @@ export default function UpdateFaq() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `faq/${id}`,
-        queryKey: [`faq/${id}`],
+        endpoint: `faq/`,
+        queryKey: [`faq-list`],
     });
-
+    console.log(showData?.data)
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
 
     const initialValues = {
-        ar_question: showData?.data?.ar?.title || '',
-        ar_answer: showData?.data?.ar?.desc || '',
+        ar_question: showData?.data?.ar?.question || '',
+        ar_answer: showData?.data?.ar?.answer || '',
 
-        en_question: showData?.data?.en?.title || '',
-        en_answer: showData?.data?.en?.desc || '',
+        en_question: showData?.data?.en?.question || '',
+        en_answer: showData?.data?.en?.answer || '',
     };
 
     const faqSchema = () =>
@@ -83,7 +83,7 @@ export default function UpdateFaq() {
 
             // notify('success');
             refetch();
-            navigate('/faqs/index');
+            navigate('/faq/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -116,7 +116,7 @@ export default function UpdateFaq() {
 
     return (
         <div>
-            <Breadcrumb items={breadcrumbItems} />
+            {/* <Breadcrumb items={breadcrumbItems} />
 
             <Formik
                 validationSchema={faqSchema()}
@@ -147,7 +147,7 @@ export default function UpdateFaq() {
                         </Form>
                     );
                 }}
-            </Formik>
+            </Formik> */}
         </div>
     );
 }

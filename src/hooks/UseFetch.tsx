@@ -34,7 +34,7 @@ function useFetch<T>({
 }: useFetchPops_TP) {
     const { t } = useTranslation();
     const { logout } = useContext(AuthContext);
-    const user_token = Cookies.get('token');
+    const user_token = Cookies.get('token') || localStorage.getItem('token');;
     const token = user_token;
     const authorizationHeader = `Bearer ${token}`;
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -65,7 +65,7 @@ function useFetch<T>({
             });
 
             //@ts-ignore
-            if (err.response?.status === 401) {
+            /* if (err.response?.status === 401) {
                 // showAlert(t('session_expired'), '', false, t('ok'), true, 'success');
                 ShowAlertMixin({
                     type: 15,
@@ -74,7 +74,7 @@ function useFetch<T>({
                 });
                 logout();
                 window.location.replace('/login');
-            }
+            } */
             if (originalOnError) originalOnError(err);
         },
         onSuccess,

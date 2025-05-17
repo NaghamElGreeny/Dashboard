@@ -1,7 +1,13 @@
 export interface Faq {
     id: string;
-    title?: string;
-    desc?: string;
+    ar: {
+        question?: string;
+        answer?: string;
+    };
+    en: {
+        question?: string;
+        answer?: string;
+    };
 }
 
 export interface FetchFaqData {

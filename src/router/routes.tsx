@@ -28,10 +28,6 @@ import SectionsPage from '../components/template/Sections/UpdateSections';
 
 import PolicyPage from '../components/template/PrivacyPolicy/UpdatePrivacyPolicy';
 import TermsPage from '../components/template/Terms/UpdateTerm';
-import CancellationPolicyPage from '../components/template/CancellationPolicy/UpdateCancellationPolicy';
-
-// import AddNotification from '../components/template/Notifications/AddNotification';
-// import NotificationsPage from '../pages/Notifications/Notifications';
 
 import AddAdmin from '../components/template/Admins/AddAdmin';
 import UpdateAdmin from '../components/template/Admins/UpdateAdmin';
@@ -198,19 +194,6 @@ const routes = [
         ),
     },
 
-    {
-        path: '/cancellation-policy',
-        element: hasPermission('cancellation-policy.index') ? (
-            <CancellationPolicyPage />
-        ) : (
-            <Navigate to="/permission-required" />
-        ),
-    },
-
-    // {
-    //     path: '/notifications/add',
-    //     element: <AddNotification />,
-    // },
 
     {
         path: '/admins/index',

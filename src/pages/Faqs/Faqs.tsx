@@ -13,10 +13,10 @@ import useFetch from '../../hooks/UseFetch';
 import { useMutate } from '../../hooks/UseMutate';
 import type { Faq, FetchFaqData } from './types';
 import { hasPermission } from '../../helper/permissionHelpers';
+import themeConfig from '../../theme.config';
 
 export default function Faqs() {
     const { t, i18n } = useTranslation();
-
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.faqs.title') },
@@ -26,7 +26,7 @@ export default function Faqs() {
     const [page, setPage] = useState(1);
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedAnswer, setSelectedAnswer] = useState<string>('');
-
+    const locale = localStorage.getItem('i18nextLng');
     const columns: MRT_ColumnDef<Faq>[] = [
         {
             header: '#',
@@ -37,9 +37,7 @@ export default function Faqs() {
         {
             header: t('labels.question'),
             Cell: ({ row }: { row: { original: Faq } }) => {
-                const question = row.original?.title || t('not_found');
-
-                // Ensure question is a string before checking length
+                const question = locale === 'ar' ? row.original?.ar?.question : row.original?.en?.question || 'question not found';
                 const truncatedQuestion =
                     typeof question === 'string' && question.length > 20
                         ? question.substring(0, 20) + ' '
@@ -68,11 +66,11 @@ export default function Faqs() {
         {
             header: t('labels.answer'),
             Cell: ({ row }: { row: { original: Faq } }) => {
-                const answer = row.original?.desc || t('not_found');
+                const answer = locale === 'ar' ? row.original?.ar.answer : row.original?.en.answer || t('not_found');
                 return (
                     <>
                         <FaEye
-                            className="text-[19px] text-black ms-10 cursor-pointer"
+                            className="text-[19px] text-primary ms-10 cursor-pointer"
                             onClick={() => {
                                 setSelectedAnswer(answer ?? '');
                                 setOpen(true);
@@ -86,34 +84,34 @@ export default function Faqs() {
 
         ...(hasPermission('faq.update') || hasPermission('faq.destroy')
             ? [
-                  {
-                      header: t('labels.actions'),
-                      Cell: ({ renderedCellValue, row }: any) => (
-                          <div
-                              className="flex gap-2 items-center"
-                              style={{ marginInlineStart: '1rem' }}
-                          >
-                              {hasPermission('faq.update') && (
-                                  <Link
-                                      to={`/faqs/edit/${row.original?.id}`}
-                                      className="flex gap-5"
-                                  >
-                                      <FaRegEdit className="text-[19px] text-warning ms-8" />
-                                  </Link>
-                              )}
-                              {hasPermission('faq.destroy') && (
-                                  <CrudIconDelete
-                                      deleteAction={() => {
-                                          setFaqId(row.original?.id);
-                                          deleteItem();
-                                      }}
-                                  />
-                              )}
-                          </div>
-                      ),
-                      accessorKey: 'x',
-                  },
-              ]
+                {
+                    header: t('labels.actions'),
+                    Cell: ({ renderedCellValue, row }: any) => (
+                        <div
+                            className="flex gap-2 items-center"
+                            style={{ marginInlineStart: '1rem' }}
+                        >
+                            {hasPermission('faq.update') && (
+                                <Link
+                                    to={`/faqs/edit/${row.original?.id}`}
+                                    className="flex gap-5"
+                                >
+                                    <FaRegEdit className="text-[19px] text-warning ms-8" />
+                                </Link>
+                            )}
+                            {hasPermission('faq.destroy') && (
+                                <CrudIconDelete
+                                    deleteAction={() => {
+                                        setFaqId(row.original?.id);
+                                        deleteItem();
+                                    }}
+                                />
+                            )}
+                        </div>
+                    ),
+                    accessorKey: 'x',
+                },
+            ]
             : []),
     ];
 
@@ -152,16 +150,18 @@ export default function Faqs() {
     };
 
     const searchParams = new URLSearchParams(queryParams as any);
-    const endpoint = `faq?${searchParams.toString()}`;
+    // const endpoint = `faq?${searchParams.toString()}`;
+    const endpoint = `faq`;
 
     const {
-        data: terms,
+        data: faqs,
         refetch,
         isLoading,
     } = useFetch<FetchFaqData>({
         endpoint: endpoint,
         queryKey: [endpoint],
     });
+    // console.log(faqs?.data);
 
     return (
         <>
@@ -169,8 +169,8 @@ export default function Faqs() {
             <TableCompCustom
                 showOnly={true}
                 columns={columns}
-                data={terms?.data || []}
-                paginationData={terms?.meta || []}
+                data={faqs?.data || []}
+                paginationData={faqs?.meta || []}
                 title={t('breadcrumb.faqs.add')}
                 page={page}
                 setPage={setPage}
@@ -197,7 +197,9 @@ export default function Faqs() {
                     dangerouslySetInnerHTML={{
                         __html: selectedAnswer || t('not_found'),
                     }}
-                ></div>
+                >
+
+                </div>
             </ModalCustom>
         </>
     );

@@ -33,14 +33,14 @@ export function useMutate<response_T>({
     const { logout } = useContext(AuthContext);
     const { t } = useTranslation();
 
-    const user_token = Cookies.get('token');
+    const user_token = Cookies.get('token') || localStorage.getItem('token');
     const token = user_token;
     const authorizationHeader = `Bearer ${token}`;
     const baseURL = import.meta.env.VITE_BASE_URL;
     const baseURLGeneral = import.meta.env.VITE_BASE_GENERAL_URL;
 
     const enhancedOnError = (err: any) => {
-        if (err.response?.status === 401) {
+        /* if (err.response?.status === 401) {
             ShowAlertMixin({
                 type: 15,
                 icon: 'error',
@@ -48,7 +48,7 @@ export function useMutate<response_T>({
             });
             logout();
             window.location.replace('/login');
-        }
+        } */
         if (originalOnError) originalOnError(err);
     };
     const isRTL = useIsRTL();
@@ -62,18 +62,18 @@ export function useMutate<response_T>({
                 data: values,
                 headers: formData
                     ? {
-                          ...headers, // Include additional headers
-                          'Content-Type': 'multipart/form-data',
-                          Accept: 'application/json',
-                          Authorization: authorizationHeader,
-                          'Accept-Language': isRTL ? 'ar' : 'en',
-                      }
+                        ...headers, // Include additional headers
+                        'Content-Type': 'multipart/form-data',
+                        Accept: 'application/json',
+                        Authorization: authorizationHeader,
+                        'Accept-Language': isRTL ? 'ar' : 'en',
+                    }
                     : {
-                          'Content-Type': 'application/json; charset=utf-8',
-                          Accept: 'application/json',
-                          Authorization: authorizationHeader,
-                          'Accept-Language': isRTL ? 'ar' : 'en',
-                      },
+                        'Content-Type': 'application/json; charset=utf-8',
+                        Accept: 'application/json',
+                        Authorization: authorizationHeader,
+                        'Accept-Language': isRTL ? 'ar' : 'en',
+                    },
             };
 
             return axios(requestConfig);

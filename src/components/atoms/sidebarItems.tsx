@@ -47,42 +47,6 @@ export const SideBarItemsFn = () => {
             link: '/',
         },
 
-
-
-
-
-        // bookings
-        ...(hasPermission('booking.index') || hasPermission('rescheduled-booking.index')
-            ? [
-                {
-                    heading: t('sidebar.bookings'),
-                },
-
-                ...(hasPermission('booking.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <BiSolidReport />,
-                            label: t('sidebar.bookings'),
-                            link: '/bookings/index',
-                        },
-                    ]
-                    : []),
-
-                ...(hasPermission('rescheduled-booking.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <BiSolidReport />,
-                            label: t('sidebar.rescheduled_bookings'),
-                            link: '/rescheduled-bookings/index',
-                        },
-                    ]
-                    : []),
-            ]
-            : []),
-
-
         // public_pages
         ...(hasPermission('about.index') ||
             hasPermission('faq.index') ||
@@ -125,6 +89,16 @@ export const SideBarItemsFn = () => {
                         },
                     ]
                     : []),
+                ...(hasPermission('social.index')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('sidebar.socials'),
+                            link: '/socials',
+                        },
+                    ]
+                    : []),
 
                 ...(hasPermission('faq.index')
                     ? [
@@ -159,16 +133,7 @@ export const SideBarItemsFn = () => {
                     ]
                     : []),
 
-                ...(hasPermission('cancellation-policy.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.cancellation_policy'),
-                            link: '/cancellation-policy',
-                        },
-                    ]
-                    : []),
+
             ]
             : []),
 
