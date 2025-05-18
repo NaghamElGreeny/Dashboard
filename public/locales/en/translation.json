@@ -156,7 +156,7 @@
             "edit": "Edit",
             "show": "Show"
         },
-        "fearures": {
+        "features": {
             "title": "Features",
             "all": "Show All",
             "add": "Add ",
@@ -635,6 +635,7 @@
         "expiry_date": "Expire Date",
         "fixed": "Fixed Amount",
         "icon": "Icon",
+        "background": "Background",
         "question": "Question",
         "answer": "Answer",
         "colors_and_quantity": "Color and Available Quantity",

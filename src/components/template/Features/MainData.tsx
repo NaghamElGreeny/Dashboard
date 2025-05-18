@@ -3,7 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
 
-export default function FeaturesMainData({ isLoading }: { isLoading?: boolean }) {
+export default function FeaturesMainData({
+    isLoading,
+    formik,
+    data,
+}: {
+    isLoading?: boolean;
+    formik?: any;
+    data?: any;
+}) {
     const { t } = useTranslation();
 
     return (
@@ -14,12 +22,12 @@ export default function FeaturesMainData({ isLoading }: { isLoading?: boolean })
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <BaseInputField
-                            label={t('labels.question') + t('inArabic')}
-                            name="ar_question"
-                            id="ar_question"
+                            label={t('labels.title') + t('inArabic')}
+                            name="ar_title"
+                            id="ar_title"
                             type="text"
                             className="border"
-                            placeholder={t('enter') + ' ' + t('labels.question')}
+                            placeholder={t('enter') + ' ' + t('labels.title')}
                         />
                     )}
                 </div>
@@ -29,12 +37,12 @@ export default function FeaturesMainData({ isLoading }: { isLoading?: boolean })
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <BaseInputField
-                            label={t('labels.question') + t('inEnglish')}
-                            name="en_question"
-                            id="en_question"
+                            label={t('labels.title') + t('inEnglish')}
+                            name="en_title"
+                            id="en_title"
                             type="text"
                             className="border"
-                            placeholder={t('enter') + ' ' + t('labels.question')}
+                            placeholder={t('enter') + ' ' + t('labels.title')}
                         />
                     )}
                 </div>
@@ -43,11 +51,13 @@ export default function FeaturesMainData({ isLoading }: { isLoading?: boolean })
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
-                            id="ar_answer"
-                            name="ar_answer"
-                            label={t('labels.answer') + t('inArabic')}
-                        // placeholder={t('enter') + ' ' + t('labels.answer')}
+                        <BaseInputField
+                            id="ar_description"
+                            name="ar_description"
+                            type="text"
+                            className="border"
+                            label={t('labels.description') + t('inArabic')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
                 </div>
@@ -56,13 +66,79 @@ export default function FeaturesMainData({ isLoading }: { isLoading?: boolean })
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
-                            id="en_answer"
-                            name="en_answer"
-                            label={t('labels.answer') + t('inEnglish')}
-                        // placeholder={t('enter') + ' ' + t('labels.answer')}
+                        <BaseInputField
+                            id=" en_description"
+                            name="en_description"
+                            type="text"
+                            className="border"
+                            label={t('labels.description') + t('inEnglish')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    <label className="block mb-1">{t('labels.image')}</label>
+
+                    <div className="mt-2">
+                        {isLoading ? (
+                            <Skeleton height={96} width={96} className="rounded-full" />
+                        ) : data?.data?.icon?.url ? (
+                            <img
+                                src={data.data.icon.url}
+                                alt="Current icon"
+                                className="w-24 h-24 object-cover rounded-full border"
+                            />
+                        ) : (
+                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
+                        )}
+                    </div>
+
+                    <input
+                        id="icon"
+                        type="file"
+                        name="icon"
+                        accept="image/*"
+                        className="mt-2"
+                    // onChange={(event) => {
+                    //     formik.setFieldValue('icon', event.currentTarget.files?.[0] || null);
+                    // }}
+                    />
+                    {/* {formik.errors.icon && (
+                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
+                    )} */}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    <label className="block mb-1">{t('labels.background')}</label>
+
+                    <div className="mt-2">
+                        {isLoading ? (
+                            <Skeleton height={96} width={96} className="rounded-full" />
+                        ) : data?.data?.background?.url ? (
+                            <img
+                                src={data.data.background?.url}
+                                alt="Current icon"
+                                className="w-24 h-24 object-cover rounded-full border"
+                            />
+                        ) : (
+                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
+                        )}
+                    </div>
+
+                    <input
+                        id="background"
+                        type="file"
+                        name="background"
+                        accept="image/*"
+                        className="mt-2"
+                    // onChange={(event) => {
+                    //     formik.setFieldValue('background', event.currentTarget.files?.[0] || null);
+                    // }}
+                    />
+                    {/* {formik.errors.icon && (
+                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
+                    )} */}
                 </div>
 
             </div>

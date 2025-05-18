@@ -5,58 +5,71 @@ import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
-import FaqMainData from './MainData';
+import featuresMainData from './MainData';
 import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
+import FeaturesMainData from './MainData';
 
-export default function AddFaq() {
+export default function Addfeature() {
     const { t, i18n } = useTranslation();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.faqs.title'), to: '/faq/index' },
-        { label: t('breadcrumb.faqs.add') },
+        { label: t('breadcrumb.features.title'), to: '/our-features/index' },
+        { label: t('breadcrumb.features.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
-        ar_question: '',
-        ar_answer: '',
+        ar_title: '',
+        ar_description: '',
 
-        en_question: '',
-        en_answer: '',
+        en_title: '',
+        en_description: '',
 
     };
 
-    const faqSchema = () =>
+    const featuresSchema = () =>
         Yup.object().shape({
-            ar_question: Yup.string()
+            icon: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
+            ar_title: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.question') + t('inArabic') }))
+                .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
                 .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
 
-            en_question: Yup.string()
+            en_title: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.question') + t('inEnglish') }))
+                .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
                 .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
 
-            en_answer: Yup.string()
+            en_description: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.answer') + t('inEnglish') })),
-            ar_answer: Yup.string()
+                .required(t('requiredField', { field: t('labels.description') + t('inEnglish') })),
+            ar_description: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.answer') + t('inArabic') })),
+                .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            background: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
         });
 
     const { mutate, isLoading } = useMutate({
-        mutationKey: ['faq'],
-        endpoint: `faq`,
+        mutationKey: ['our-features'],
+        endpoint: `our-features`,
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,
                 icon: 'success',
                 title:
                     data?.data?.message ||
-                    t('isCreatedSuccessfully', { name: t('breadcrumb.faqs.title') }),
+                    t('isCreatedSuccessfully', { name: t('breadcrumb.features.title') }),
             });
 
             setFormKey(formKey + 1);
@@ -74,16 +87,15 @@ export default function AddFaq() {
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
             ar: {
-                question: values?.ar_question,
-                answer: values?.ar_answer,
+                title: values?.ar_title,
+                description: values?.ar_decription,
             },
             en: {
-                question: values?.en_question,
-                answer: values?.en_answer,
+                title: values?.en_title,
+                description: values?.en_description,
             },
-
-
-            is_active: 1
+            icon: { path: values?.icon?.path, url: values?.icon?.url },
+            background: { path: values?.background?.path, url: values?.background?.url }
         };
 
         mutate(finalOut, {
@@ -99,7 +111,7 @@ export default function AddFaq() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={faqSchema()}
+                validationSchema={featuresSchema()}
                 key={formKey}
                 initialValues={initialValues}
                 onSubmit={(values, actions) => {
@@ -114,7 +126,7 @@ export default function AddFaq() {
 
                     return (
                         <Form>
-                            <FaqMainData />
+                            <FeaturesMainData />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
                                 <Button
                                     type="submit"

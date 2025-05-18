@@ -41,31 +41,43 @@ export default function UpdateFeature() {
     }, [showDataSuccess]);
 
     const initialValues = {
-        ar_question: showData?.data?.ar?.question || '',
-        ar_answer: showData?.data?.ar?.answer || '',
+        ar_title: showData?.data?.ar?.title || '',
+        ar_description: showData?.data?.ar?.description || '',
 
-        en_question: showData?.data?.en?.question || '',
-        en_answer: showData?.data?.en?.answer || '',
+        en_title: showData?.data?.en?.title || '',
+        en_description: showData?.data?.en?.description || '',
     };
 
     const featuresSchema = () =>
         Yup.object().shape({
-            ar_question: Yup.string()
+            icon: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
+            ar_title: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.question') + t('inArabic') }))
+                .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
                 .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
 
-            en_question: Yup.string()
+            en_title: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.question') + t('inEnglish') }))
+                .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
                 .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
 
-            en_answer: Yup.string()
+            en_description: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.answer') + t('inEnglish') })),
-            ar_answer: Yup.string()
+                .required(t('requiredField', { field: t('labels.description') + t('inEnglish') })),
+            ar_description: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.answer') + t('inArabic') })),
+                .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            background: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
         });
 
     // update data
@@ -101,13 +113,16 @@ export default function UpdateFeature() {
     const handleSubmit = (values: any) => {
         const finalOut = {
             ar: {
-                question: values?.ar_question,
-                answer: values?.ar_answer,
+                title: values?.ar_title,
+                description: values?.ar_decription,
             },
             en: {
-                question: values?.en_question,
-                answer: values?.en_answer,
+                title: values?.en_title,
+                description: values?.en_description,
             },
+            icon: { path: values?.icon?.path, url: values?.icon?.url },
+            background: { path: values?.background?.path, url: values?.background?.url }
+
         };
 
         update({
@@ -137,7 +152,7 @@ export default function UpdateFeature() {
 
                     return (
                         <Form>
-                            <FeaturesMainData isLoading={showDataLoading} />
+                            <FeaturesMainData isLoading={showDataLoading} data={showData} />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
                                 <Button
                                     type="submit"

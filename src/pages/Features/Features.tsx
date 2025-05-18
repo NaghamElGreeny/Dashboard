@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'mantine-react-table';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaEye, FaPlus, FaRegEdit } from 'react-icons/fa';
+import { FaEye, FaIcons, FaPlus, FaRegEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import showAlert from '../../components/atoms/ShowAlert';
 import ShowAlertMixin from '../../components/atoms/ShowAlertMixin';
@@ -19,10 +19,10 @@ export default function Features() {
     const { t, i18n } = useTranslation();
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.faqs.title') },
+        { label: t('breadcrumb.features.title') },
     ];
 
-    const [faqId, setFaqId] = useState<Object>('');
+    const [featureId, setFeatureId] = useState<Object>('');
     const [page, setPage] = useState(1);
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedAnswer, setSelectedAnswer] = useState<string>('');
@@ -34,6 +34,15 @@ export default function Features() {
             size: 40,
         },
 
+        {
+            header: t('labels.icon'),
+            Cell: ({ row }: { row: { original: Feature } }) => {
+                const IconComponent = row.original?.icon?.url || null;
+
+                return IconComponent ? <img src={IconComponent} /> : t('not_found');
+            },
+            accessorKey: 'icon',
+        },
         {
             header: t('labels.title'),
             Cell: ({ row }: { row: { original: Feature } }) => {
@@ -62,7 +71,6 @@ export default function Features() {
             },
             accessorKey: 'title',
         },
-
         {
             header: t('labels.description'),
             Cell: ({ row }: { row: { original: Feature } }) => {
@@ -81,6 +89,15 @@ export default function Features() {
             },
             accessorKey: 'description',
         },
+        {
+            header: t('labels.background'),
+            Cell: ({ row }: { row: { original: Feature } }) => {
+                const IconComponent = row.original?.background?.url || null;
+
+                return IconComponent ? <img src={IconComponent} /> : t('not_found');
+            },
+            accessorKey: 'background',
+        },
 
         ...(hasPermission('feature.update') || hasPermission('feature.destroy')
             ? [
@@ -91,18 +108,18 @@ export default function Features() {
                             className="flex gap-2 items-center"
                             style={{ marginInlineStart: '1rem' }}
                         >
-                            {hasPermission('faq.update') && (
+                            {hasPermission('feature.update') && (
                                 <Link
-                                    to={`/faq/edit/${row.original?.id}`}
+                                    to={`/our-features/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
                                 </Link>
                             )}
-                            {hasPermission('faq.destroy') && (
+                            {hasPermission('feature.destroy') && (
                                 <CrudIconDelete
                                     deleteAction={() => {
-                                        setFaqId(row.original?.id);
+                                        setFeatureId(row.original?.id);
                                         deleteItem();
                                     }}
                                 />
@@ -116,8 +133,8 @@ export default function Features() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`our-features/${faqId}`],
-        endpoint: `our-features/${faqId}`,
+        mutationKey: [`our-features/${featureId}`],
+        endpoint: `our-features/${featureId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({
@@ -151,7 +168,6 @@ export default function Features() {
 
     const searchParams = new URLSearchParams(queryParams as any);
     const endpoint = `our-features?${searchParams.toString()}`;
-    // const endpoint = `faq`;
 
     const {
         data: features,
@@ -179,7 +195,7 @@ export default function Features() {
                     <>
                         {hasPermission('features.store') && (
                             <Link
-                                to="/features/add"
+                                to="/our-features/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">

@@ -169,7 +169,7 @@
             "edit": "تعديل",
             "show": "عرض"
         },
-        "fearures": {
+        "features": {
             "title": "مميزاتنا",
             "all": "عرض الكل",
             "add": "إضافة",
@@ -719,6 +719,7 @@
         "expiry_date": "تاريخ الإنتهاء",
         "fixed": "قيمة محددة",
         "icon": "الأيقون",
+        "background": "الخلفية",
         "question": "السؤال",
         "answer": "الإجابة",
         "colors_and_quantity": "الألوان والكمية المتاحة",

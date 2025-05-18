@@ -32,6 +32,10 @@ import { Navigate } from 'react-router-dom';
 import WhyUsEdit from '../components/template/WhyUs/WhyUsEdit';
 import AddWhyus from '../components/template/WhyUs/AddWhyus';
 
+import FeaturesPage from '../pages/Features/Features'
+import UpdateFeature from '../components/template/Features/UpdateFeature';
+import AddFeature from '../components/template/Features/AddFeature';
+
 const Index = lazy(() => import('../pages/Index'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
 const PermissionRequired = lazy(() => import('../pages/PermissionRequired/PermissionRequired'));
@@ -99,6 +103,20 @@ const routes = [
         ) : (
             <Navigate to="/permission-required" />
         ),
+    },
+    {
+        path: '/our-features/index',
+        element: hasPermission('features.index') ? <FeaturesPage /> : <Navigate to="/permission-required" />,
+    },
+
+    {
+        path: '/our-features/add',
+        element: hasPermission('features.store') ? <AddFeature /> : <Navigate to="/permission-required" />,
+    },
+
+    {
+        path: '/our-features/edit/:id',
+        element: hasPermission('features.update') ? <UpdateFeature /> : <Navigate to="/permission-required" />,
     },
     {
         path: '/why-us/add',
