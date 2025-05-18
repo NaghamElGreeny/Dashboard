@@ -8,13 +8,15 @@ import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
-import AboutMainData from './MainData';
+import WhyUsMainData from './MainData';
 import { hasPermission } from '../../../helper/permissionHelpers';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function UpdateWhyus() {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.about.title'), to: '/why-us/index' },
@@ -29,9 +31,9 @@ export default function UpdateWhyus() {
         isSuccess: showDataSuccess,
         refetch,
     } = useFetch<any>({
-        endpoint: `why-us`,
+        endpoint: `why-us/${id}`,
         // @ts-ignore
-        queryKey: [`why-us`, hasPermission('whyus.index')],
+        queryKey: [`why-us/${id}`, hasPermission('whyus.index')],
         enabled: !!hasPermission('whyus.index'),
     });
 
@@ -40,37 +42,40 @@ export default function UpdateWhyus() {
     }, [showDataSuccess]);
     console.log(showData?.data);
     const initialValues = {
-        ar_title: showData?.data?.ar?.title || '',
-        ar_description: showData?.data?.ar?.desc || '',
-
-        en_title: showData?.data?.en?.title || '',
-        en_description: showData?.data?.en?.desc || '',
+        ar_key: showData?.data?.ar?.key || '',
+        en_key: showData?.data?.en?.key || '',
+        value: showData?.data?.value || '',
+        _image: showData?.data?.icon?.url || 'url not found',
     };
 
-    const aboutSchema = () =>
+    const whyusSchema = () =>
         Yup.object().shape({
-            ar_title: Yup.string()
+            icon: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
+            ar_key: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
                 .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
 
-            en_title: Yup.string()
+            en_key: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
                 .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
 
-            en_description: Yup.string()
+            value: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.description') + t('inEnglish') })),
-            ar_description: Yup.string()
-                .trim()
-                .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+                .required(t('requiredField', { field: t('labels.title') })),
+
         });
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`about`],
-        endpoint: `about`,
+        mutationKey: [`why-us/${id}`],
+        endpoint: `why-us/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({
@@ -100,13 +105,21 @@ export default function UpdateWhyus() {
     const handleSubmit = (values: any) => {
         const finalOut: any = {
             ar: {
-                title: values?.ar_title,
-                desc: values?.ar_description,
+                title: values?.ar_key,
             },
             en: {
-                title: values?.en_title,
-                desc: values?.en_description,
+                title: values?.en_key,
             },
+            value: values?.value,
+            is_active: true,
+            // icon: { url: values?.icon, }
+            icon: values?.icon?.path,
+
+            // icon: {
+            //     "path": "images\\\\User\\\\ePArQddOEFe8VvzdArOKnJFIwcBEbFsr6H090d75.png",
+            //     "url": "https://shebl.backend.aait-d.com/dashboardAssets/images/cover/cover_sm.png"
+            // },
+
         };
 
         // Remove undefined keys
@@ -119,6 +132,7 @@ export default function UpdateWhyus() {
         update({
             ...finalOut,
             // _method: 'put',
+            _method: 'post'
         });
     };
 
@@ -127,7 +141,7 @@ export default function UpdateWhyus() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={aboutSchema()}
+                validationSchema={whyusSchema()}
                 key={formKey}
                 enableReinitialize={true}
                 initialValues={initialValues}
@@ -143,7 +157,8 @@ export default function UpdateWhyus() {
 
                     return (
                         <Form>
-                            <AboutMainData isLoading={showDataLoading} />
+                            <WhyUsMainData isLoading={showDataLoading}
+                                data={showData} />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
                                 {hasPermission('about.updateOrCreate') && (
                                     <Button

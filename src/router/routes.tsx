@@ -43,6 +43,8 @@ import ContactMessagesPage from '../pages/ContactMessages/ContactMessages';
 import SettingsPage from '../pages/Settings/Home';
 
 import { Navigate } from 'react-router-dom';
+import WhyUsEdit from '../components/template/WhyUs/WhyUsEdit';
+import AddWhyus from '../components/template/WhyUs/AddWhyus';
 
 const Index = lazy(() => import('../pages/Index'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
@@ -123,6 +125,10 @@ const routes = [
         ),
     },
     {
+        path: '/why-us/add',
+        element: hasPermission('why-us.store') ? <AddWhyus /> : <Navigate to="/permission-required" />,
+    },
+    {
         path: '/why-us/index',
         element: hasPermission('why-us.index') ? <WhyUsPage /> : <Navigate to="/permission-required" />,
     },
@@ -131,6 +137,7 @@ const routes = [
         path: '/why-us/edit/:id',
         element: hasPermission('whyus.update') ? (
             <UpdateWhyus />
+            // <WhyUsEdit />
         ) : (
             <Navigate to="/permission-required" />
         ),
