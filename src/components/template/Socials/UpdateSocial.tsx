@@ -19,7 +19,7 @@ export default function UpdateSocial() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.socials.title'), to: '/socials/index' },
+        { label: t('breadcrumb.socials.title'), to: 'contact-info/index' },
         { label: t('breadcrumb.socials.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
@@ -31,8 +31,8 @@ export default function UpdateSocial() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `social/${id}`,
-        queryKey: [`social/${id}`],
+        endpoint: `contact-info/${id}`,
+        queryKey: [`contact-info/${id}`],
     });
 
     useEffect(() => {
@@ -69,13 +69,13 @@ export default function UpdateSocial() {
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`social/${id}`],
-        endpoint: `social/${id}`,
+        mutationKey: [`contact-info/${id}`],
+        endpoint: `contact-info/${id}`,
 
         onSuccess: (data: any) => {
             // notify('success');
             refetch();
-            navigate('/socials/index');
+            navigate('/contact-info/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -90,20 +90,11 @@ export default function UpdateSocial() {
 
     const handleSubmit = (values: any) => {
         const finalOut = {
-            ar: {
-                name: values?.ar_name,
-            },
-            en: {
-                name: values?.en_name,
-            },
-            ordering: values?.ordering,
-            link: values?.link,
-            icon: values?.icon,
+            id: values?.id,
+            key: values?.key,
+            value: values?.value,
         };
 
-        if (initialValues?.icon == finalOut.icon) {
-            delete finalOut.icon;
-        }
 
         update({ ...finalOut, _method: 'put' });
     };

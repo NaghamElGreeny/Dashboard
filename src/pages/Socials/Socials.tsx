@@ -17,7 +17,7 @@ import type { Social, FetchSocialsData } from './types';
 
 export default function Socials() {
     const { t, i18n } = useTranslation();
-
+    const locale = localStorage.getItem('i18nextLng');
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.socials.title') },
@@ -33,45 +33,45 @@ export default function Socials() {
             Cell: ({ row }: any) => row.index + 1,
             size: 40,
         },
-        {
-            header: t('labels.icon'),
-            Cell: ({ row }: any) => (
-                <div className="flex gap-5">
-                    <LightBox
-                        getItems={[
-                            {
-                                src: row.original.icon,
-                            },
-                        ]}
-                    />
-                </div>
-            ),
-            accessorKey: 'icon',
-        },
+        // {
+        //     header: t('labels.icon'),
+        //     Cell: ({ row }: any) => (
+        //         <div className="flex gap-5">
+        //             <LightBox
+        //                 getItems={[
+        //                     {
+        //                         src: row.original.icon,
+        //                     },
+        //                 ]}
+        //             />
+        //         </div>
+        //     ),
+        //     accessorKey: 'icon',
+        // },
         {
             header: t('labels.name'),
             Cell: ({ row }: any) => {
                 const locale = i18n.language;
-                const name = row.original?.name || t('not_found');
+                const name = row.original?.key || t('not_found');
                 return <span>{name}</span>;
             },
             accessorKey: 'name',
         },
 
-        {
-            accessorKey: 'ordering',
-            header: t('labels.order'),
-            Cell: ({ row }: any) => {
-                const ordering = row.original.ordering || t('not_found');
-                return <span>{ordering}</span>;
-            },
-        },
+        // {
+        //     accessorKey: 'ordering',
+        //     header: t('labels.order'),
+        //     Cell: ({ row }: any) => {
+        //         const ordering = row.original.ordering || t('not_found');
+        //         return <span>{ordering}</span>;
+        //     },
+        // },
 
         {
             accessorKey: 'link',
             header: t('labels.link'),
             Cell: ({ row }: any) => {
-                const link = row.original.link || t('not_found');
+                const link = row.original.value || t('not_found');
                 return <span>{link}</span>;
             },
         },
@@ -80,7 +80,7 @@ export default function Socials() {
             header: t('labels.actions'),
             Cell: ({ row }: any) => (
                 <div className="flex gap-2 items-center" style={{ marginInlineStart: '1rem' }}>
-                    <Link to={`/socials/edit/${row.original?.id}`} className="flex gap-5">
+                    <Link to={`/contact-info/edit/${row.original?.id}`} className="flex gap-5">
                         <FaRegEdit
                             onClick={() => setOpen(true)}
                             className="text-[19px] text-warning ms-8"
@@ -107,7 +107,7 @@ export default function Socials() {
     };
 
     const searchParams = new URLSearchParams(queryParams as any);
-    const endpoint = `social?${searchParams.toString()}`;
+    const endpoint = `contact-info?${searchParams.toString()}`;
 
     const {
         data: terms,
@@ -119,8 +119,8 @@ export default function Socials() {
     });
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`social/${socialId}`],
-        endpoint: `social/${socialId}`,
+        mutationKey: [`contact-info/${socialId}`],
+        endpoint: `contact-info/${socialId}`,
         onSuccess: async (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -157,7 +157,7 @@ export default function Socials() {
                 downloadAndExport={
                     <>
                         <Link
-                            to="/socials/add"
+                            to="/contact-info/add"
                             className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                         >
                             <div className="flex items-center gap-2">

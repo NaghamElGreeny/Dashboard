@@ -14,41 +14,34 @@ export default function AddSocial() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.socials.title'), to: '/socials/index' },
+        { label: t('breadcrumb.socials.title'), to: '/contact-info/index' },
         { label: t('breadcrumb.socials.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
-        icon: '',
-        ar_name: '',
-        en_name: '',
+        // icon: '',
+        // ar_name: '',
+        // en_name: '',
 
-        ordering: '',
-        link: '',
+        // ordering: '',
+        // link: '',
+        key: '',
+        value: ''
     };
-
     const socialSchema = () =>
         Yup.object().shape({
-            ar_name: Yup.string()
+            key: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.name') + t('inArabic') }))
-                .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
+                .required(t('requiredField', { field: t('labels.social_name') })),
 
-            en_name: Yup.string()
-                .trim()
-                .required(t('requiredField', { field: t('labels.name') + t('inEnglish') }))
-                .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
-
-            ordering: Yup.number().required(t('requiredField', { field: t('labels.order') })),
-
-            link: Yup.string()
-                .url(t('validations.url', { field: t('labels.link') }))
-                .required(t('requiredField', { field: t('labels.link') })),
+            value: Yup.string()
+                .url(t('validations.url', { field: t('labels.social_link') }))
+                .required(t('requiredField', { field: t('labels.social_link') })),
         });
 
     const { mutate, isLoading } = useMutate({
-        mutationKey: ['social'],
-        endpoint: `social`,
+        mutationKey: ['contact-info'],
+        endpoint: `contact-info`,
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -72,15 +65,8 @@ export default function AddSocial() {
 
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
-            ar: {
-                name: values?.ar_name,
-            },
-            en: {
-                name: values?.en_name,
-            },
-            ordering: values?.ordering,
-            link: values?.link,
-            icon: values?.icon,
+            key: values?.key,
+            value: values?.value
         };
 
         mutate(finalOut, {

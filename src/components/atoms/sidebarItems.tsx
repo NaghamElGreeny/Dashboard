@@ -50,6 +50,7 @@ export const SideBarItemsFn = () => {
         // public_pages
         ...(hasPermission('whyus.index') ||
             hasPermission('faq.index') ||
+            hasPermission('contact-info.index') ||
             hasPermission('policy.index') ||
             hasPermission('term.index') ||
             hasPermission('cancellation-policy.index') ||
@@ -89,16 +90,6 @@ export const SideBarItemsFn = () => {
                         },
                     ]
                     : []),
-                ...(hasPermission('social.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.socials'),
-                            link: '/socials',
-                        },
-                    ]
-                    : []),
 
                 ...(hasPermission('faq.index')
                     ? [
@@ -107,6 +98,16 @@ export const SideBarItemsFn = () => {
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.faqs'),
                             link: '/faq/index',
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('socials.index')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('sidebar.socials'),
+                            link: '/contact-info/index',
                         },
                     ]
                     : []),

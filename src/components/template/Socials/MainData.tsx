@@ -12,7 +12,7 @@ export default function MainDataSocials({ isLoading }: { isLoading?: boolean }) 
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
-                <div className="grid grid-cols-1 gap-2 col-span-12 mb-4">
+                {/* <div className="grid grid-cols-1 gap-2 col-span-12 mb-4">
                     <div className="flex flex-col items-center justify-center w-full my-4">
                         {isLoading ? (
                             <Skeleton height={100} circle />
@@ -30,19 +30,19 @@ export default function MainDataSocials({ isLoading }: { isLoading?: boolean }) 
                             </>
                         )}
                     </div>
-                </div>
+                </div> */}
 
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <BaseInputField
-                            label={t('labels.name') + t('inArabic')}
-                            name="ar_name"
-                            id="ar_name"
+                            label={t('labels.social_name')}
+                            name="key"
+                            id="key"
                             type="text"
                             className="border"
-                            placeholder={t('enter') + ' ' + t('labels.name')}
+                            placeholder={t('enter') + ' ' + t('labels.social_name')}
                         />
                     )}
                 </div>
@@ -52,16 +52,16 @@ export default function MainDataSocials({ isLoading }: { isLoading?: boolean }) 
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <BaseInputField
-                            label={t('labels.name') + t('inEnglish')}
-                            name="en_name"
-                            id="en_name"
+                            label={t('labels.social_link')}
+                            name="value"
+                            id="value"
                             type="text"
                             className="border"
-                            placeholder={t('enter') + ' ' + t('labels.name')}
+                            placeholder={t('enter') + ' ' + t('labels.social_link')}
                         />
                     )}
                 </div>
-
+                {/* 
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
@@ -90,7 +90,7 @@ export default function MainDataSocials({ isLoading }: { isLoading?: boolean }) 
                             placeholder={t('enter') + ' ' + t('labels.link')}
                         />
                     )}
-                </div>
+                </div> */}
             </div>
         </>
     );

@@ -99,11 +99,11 @@
             "edit": "Edit Role",
             "show": "Show Role"
         },
-        "cancellation_policy": {
-            "title": "Cancellation Policy",
+        "socials": {
+            "title": "Socials",
             "all": "Show All",
-            "add": "Add",
-            "edit": "Edit",
+            "add": "Add Social",
+            "edit": "Edit Social",
             "show": "Show"
         },
         "course_category": {
@@ -425,6 +425,8 @@
         "license_number": "License number",
         "medical_associations": "Medical associations",
         "scientific_experience": "Scientific experience",
+        "social_name": "Name",
+        "social_link": "Link",
         "x_link": "X link",
         "linkedIn_link": "LinkedIn link",
         "snapchat_link": "Snapchat link",

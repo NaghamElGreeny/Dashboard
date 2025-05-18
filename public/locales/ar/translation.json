@@ -112,8 +112,8 @@
             "edit": "تعديل",
             "show": "عرض"
         },
-        "cancellation_policy": {
-            "title": "سياسة الإلغاء",
+        "socials": {
+            "title": "التواصل",
             "all": "عرض الكل",
             "add": "إضافة",
             "edit": "تعديل",
@@ -749,6 +749,8 @@
         "return_policy_en": "الوصف (EN)",
         "privacy_policy_ar": "الوصف (AR)",
         "privacy_policy_en": "الوصف (EN)",
+        "social_name": "الاسم",
+        "social_link": "الرابط",
         "facebook_link": "رابط الفيسبوك",
         "twitter_link": "رابط تويتر",
         "instagram_link": "رابط الانستجرام",
