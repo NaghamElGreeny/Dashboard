@@ -47,6 +47,7 @@
         "districts": "المناطق",
         "services": "الخدمات",
         "socials": "التواصل",
+        "features": "مميزاتنا",
         "languages": "اللغات",
         "providers": "مزودي الخدمات",
         "provider_requests": "طلبات مزودي الخدمات",
@@ -163,6 +164,13 @@
         },
         "services": {
             "title": "الخدمات",
+            "all": "عرض الكل",
+            "add": "إضافة",
+            "edit": "تعديل",
+            "show": "عرض"
+        },
+        "fearures": {
+            "title": "مميزاتنا",
             "all": "عرض الكل",
             "add": "إضافة",
             "edit": "تعديل",

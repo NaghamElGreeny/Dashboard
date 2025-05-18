@@ -34,6 +34,7 @@
         "districts": "Districts",
         "services": "Services",
         "socials": "Social",
+        "features": "Our Features",
         "languages": "Languages",
         "providers": "Providers",
         "provider_requests": "Provider Requests",
@@ -150,6 +151,13 @@
         },
         "services": {
             "title": "Services",
+            "all": "Show All",
+            "add": "Add ",
+            "edit": "Edit",
+            "show": "Show"
+        },
+        "fearures": {
+            "title": "Features",
             "all": "Show All",
             "add": "Add ",
             "edit": "Edit",

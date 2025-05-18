@@ -111,6 +111,16 @@ export const SideBarItemsFn = () => {
                         },
                     ]
                     : []),
+                ...(hasPermission('features.index')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('sidebar.features'),
+                            link: '/our-features/index',
+                        },
+                    ]
+                    : []),
 
                 ...(hasPermission('policy.index')
                     ? [
@@ -145,16 +155,16 @@ export const SideBarItemsFn = () => {
                     heading: t('sidebar.mainSettings'),
                 },
                 // contact_messages
-                ...(hasPermission('contact-us.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <MdMessage />,
-                            label: t('sidebar.contact_messages'),
-                            link: '/contact-messages',
-                        },
-                    ]
-                    : []),
+                // ...(hasPermission('contact-us.index')
+                //     ? [
+                //         {
+                //             id: crypto.randomUUID(),
+                //             icon: <MdMessage />,
+                //             label: t('sidebar.contact_messages'),
+                //             link: '/contact-messages',
+                //         },
+                //     ]
+                //     : []),
 
                 // Settings
                 ...(hasPermission('setting.index')
