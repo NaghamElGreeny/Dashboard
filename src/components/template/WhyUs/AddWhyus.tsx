@@ -84,8 +84,10 @@ export default function AddWhyus() {
                 key: values?.en_key,
             },
             value: values?.value,
-            icon: { url: values?.url }
-
+            // icon: { url: values?.url }
+            // value: values?.value,
+            is_active: 1,
+            icon: { path: values?.icon?.url, }
         };
 
         mutate(finalOut, {

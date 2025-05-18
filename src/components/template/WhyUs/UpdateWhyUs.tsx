@@ -90,6 +90,7 @@ export default function UpdateWhyus() {
             refetch().then(() => {
                 setFormKey(formKey + 1);
             });
+            navigate('/why-us/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -103,31 +104,27 @@ export default function UpdateWhyus() {
     });
 
     const handleSubmit = (values: any) => {
+        console.log('values final', values);
         const finalOut: any = {
             ar: {
-                title: values?.ar_key,
+                key: values?.ar_key,
             },
             en: {
-                title: values?.en_key,
+                key: values?.en_key,
             },
             value: values?.value,
-            is_active: true,
-            // icon: { url: values?.icon, }
-            icon: values?.icon?.path,
-
-            // icon: {
-            //     "path": "images\\\\User\\\\ePArQddOEFe8VvzdArOKnJFIwcBEbFsr6H090d75.png",
-            //     "url": "https://shebl.backend.aait-d.com/dashboardAssets/images/cover/cover_sm.png"
-            // },
+            is_active: 1,
+            icon: { path: values?.icon?.path, url: values?.icon?.url }
+            // icon: values?.icon?.path,
 
         };
 
         // Remove undefined keys
-        Object.keys(finalOut).forEach((key) => {
-            if (finalOut[key] === undefined) {
-                delete finalOut[key];
-            }
-        });
+        // Object.keys(finalOut).forEach((key) => {
+        //     if (finalOut[key] === undefined) {
+        //         delete finalOut[key];
+        //     }
+        // });
 
         update({
             ...finalOut,
