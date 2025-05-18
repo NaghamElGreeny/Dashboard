@@ -11,7 +11,7 @@ import ModalCustom from '../../components/template/modal/ModalCustom';
 import TableCompCustom from '../../components/template/tantable/TableCutsom';
 import useFetch from '../../hooks/UseFetch';
 import { useMutate } from '../../hooks/UseMutate';
-import type { FetchSectionsData, Sections } from './types';
+import type { FetchSectionsData, Section } from './types';
 import { hasPermission } from '../../helper/permissionHelpers';
 import LightBox from '../../components/molecules/LightBox/LightBox';
 import imageError from '/assets/images/logo.png';
@@ -22,7 +22,7 @@ export default function Sections() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.Sections.title') },
+        { label: t('breadcrumb.sections.title') },
     ];
 
     const [SectionsId, setSectionsId] = useState<Object>('');
@@ -31,8 +31,8 @@ export default function Sections() {
 
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedDescription, setSelectedDescription] = useState<string>('');
-
-    const columns: MRT_ColumnDef<Sections>[] = [
+    const locale = localStorage.getItem('i18nextLng');
+    const columns: MRT_ColumnDef<Section>[] = [
         {
             header: '#',
             Cell: ({ row }: any) => row.index + 1,
@@ -41,34 +41,27 @@ export default function Sections() {
 
         {
             header: t('labels.image'),
-            Cell: ({ row }: { row: { original: Sections } }) => (
-                <div className="flex gap-5">
-                    {row.original?.images && row.original?.images.length > 0 ? (
-                        //@ts-ignore
-                        <LightBox
-                            // isProduct
-                            getItems={row.original?.images?.map((image: any) => ({
-                                src: image.media || imageError,
-                            }))}
-                        >
-                            <img
-                                src={row.original?.images[0].media || imageError}
-                                alt={row.original?.title || 'Image'}
-                                className="rounded-full w-20 h-20 object-cover cursor-pointer"
-                            />
-                        </LightBox>
-                    ) : (
-                        <span>{t('not_found')}</span>
-                    )}
-                </div>
-            ),
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const IconComponent = row.original?.image?.url || null;
+
+                return IconComponent ? <img src={IconComponent} /> : t('not_found');
+            },
             accessorKey: 'images',
+        },
+        {
+            header: t('labels.icon'),
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const IconComponent = row.original?.icon?.url || null;
+
+                return IconComponent ? <img src={IconComponent} /> : t('not_found');
+            },
+            accessorKey: 'icon',
         },
 
         {
             header: t('labels.title'),
-            Cell: ({ row }: { row: { original: Sections } }) => {
-                const title = row.original?.title || t('not_found');
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const title = locale === 'ar' ? row.original?.ar?.title : row.original?.en?.title || t('not_found');
                 return <span>{title}</span>;
             },
             accessorKey: 'title',
@@ -76,8 +69,8 @@ export default function Sections() {
 
         {
             header: t('labels.description'),
-            Cell: ({ row }: { row: { original: Sections } }) => {
-                const description = row.original?.desc || t('not_found');
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const description = locale === 'ar' ? row.original?.ar?.description : row.original?.en?.description || t('not_found');
                 return (
                     <>
                         <FaEye
@@ -98,7 +91,7 @@ export default function Sections() {
         {
             accessorKey: 'status',
             header: t('labels.status'),
-            Cell: ({ row }: { row: { original: Sections } }) => {
+            Cell: ({ row }: { row: { original: Section } }) => {
                 const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
                 return (
                     <>
@@ -148,8 +141,8 @@ export default function Sections() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`Sectionss/${SectionsId}`],
-        endpoint: `Sectionss/${SectionsId}`,
+        mutationKey: [`sections/${SectionsId}`],
+        endpoint: `sections/${SectionsId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({
@@ -184,7 +177,7 @@ export default function Sections() {
     const buildEndpoint = (params: { keyword: string }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `Sectionss?${queryParams.toString()}`;
+        return `sections?${queryParams.toString()}`;
     };
 
     const {

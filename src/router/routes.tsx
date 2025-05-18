@@ -19,7 +19,9 @@ import UpdateWhyus from '../components/template/WhyUs/UpdateWhyUs';
 
 import ServicesPage from '../components/template/Services/UpdateService';
 // import SectionsPage from '../components/template/Sections/UpdateSections';
-import SectionsPage from '../pages//Sections/Sections';
+import SectionsPage from '../pages/Sections/Sections';
+import AddSection from '../components/template/Sections/AddSection'
+import UpdateSection from '../components/template/Sections/UpdateSection'
 
 import PolicyPage from '../components/template/PrivacyPolicy/UpdatePrivacyPolicy';
 import TermsPage from '../components/template/Terms/UpdateTerm';
@@ -35,6 +37,7 @@ import AddWhyus from '../components/template/WhyUs/AddWhyus';
 import FeaturesPage from '../pages/Features/Features'
 import UpdateFeature from '../components/template/Features/UpdateFeature';
 import AddFeature from '../components/template/Features/AddFeature';
+import UpdateSections from '../components/template/Sections/UpdateSection';
 
 const Index = lazy(() => import('../pages/Index'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
@@ -139,12 +142,24 @@ const routes = [
 
 
     {
-        path: '/sections',
-        element: hasPermission('about.index') ? (
+        path: '/sections/index',
+        element: hasPermission('sections.index') ? (
             <SectionsPage />
         ) : (
             <Navigate to="/permission-required" />
         ),
+    },
+    {
+        path: '/sections/edit/:id',
+        element: hasPermission('sections.update') ? (
+            <UpdateSection />
+        ) : (
+            <Navigate to="/permission-required" />
+        ),
+    },
+    {
+        path: '/sections/add',
+        element: hasPermission('sections.store') ? <AddSection /> : <Navigate to="/permission-required" />,
     },
 
     {

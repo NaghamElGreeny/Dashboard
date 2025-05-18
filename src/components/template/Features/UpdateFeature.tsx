@@ -34,8 +34,6 @@ export default function UpdateFeature() {
         endpoint: `our-features/${id}`,
         queryKey: [`our-features/${id}`],
     });
-    console.log(showData)
-    console.log(id)
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);

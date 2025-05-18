@@ -3,7 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
 
-export default function SectionsMainData({ isLoading }: { isLoading?: boolean }) {
+export default function SectionsMainData({
+    isLoading,
+    formik,
+    data,
+}: {
+    isLoading?: boolean;
+    formik?: any;
+    data?: any;
+}) {
     const { t } = useTranslation();
 
     return (
@@ -43,10 +51,13 @@ export default function SectionsMainData({ isLoading }: { isLoading?: boolean })
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
-                            id="4"
+                        <BaseInputField
+                            id="ar_description"
                             name="ar_description"
+                            type="text"
+                            className="border"
                             label={t('labels.description') + t('inArabic')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
                 </div>
@@ -55,13 +66,81 @@ export default function SectionsMainData({ isLoading }: { isLoading?: boolean })
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
-                            id="4"
+                        <BaseInputField
+                            id=" en_description"
                             name="en_description"
+                            type="text"
+                            className="border"
                             label={t('labels.description') + t('inEnglish')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
                 </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    <label className="block mb-1">{t('labels.icon')}</label>
+
+                    <div className="mt-2">
+                        {isLoading ? (
+                            <Skeleton height={96} width={96} className="rounded-full" />
+                        ) : data?.data?.icon?.url ? (
+                            <img
+                                src={data.data.icon.url}
+                                alt="Current icon"
+                                className="w-24 h-24 object-cover rounded-full border"
+                            />
+                        ) : (
+                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
+                        )}
+                    </div>
+
+                    <input
+                        id="icon"
+                        type="file"
+                        name="icon"
+                        accept="image/*"
+                        className="mt-2"
+                    // onChange={(event) => {
+                    //     formik.setFieldValue('icon', event.currentTarget.files?.[0] || null);
+                    // }}
+                    />
+                    {/* {formik.errors.icon && (
+                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
+                    )} */}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    <label className="block mb-1">{t('labels.image')}</label>
+
+                    <div className="mt-2">
+                        {isLoading ? (
+                            <Skeleton height={96} width={96} className="rounded-full" />
+                        ) : data?.data?.image?.url ? (
+                            <img
+                                src={data.data.image?.url}
+                                alt="Current icon"
+                                className="w-24 h-24 object-cover rounded-full border"
+                            />
+                        ) : (
+                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
+                        )}
+                    </div>
+
+                    <input
+                        id="image"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        className="mt-2"
+                    // onChange={(event) => {
+                    //     formik.setFieldValue('background', event.currentTarget.files?.[0] || null);
+                    // }}
+                    />
+                    {/* {formik.errors.icon && (
+                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
+                    )} */}
+                </div>
+
             </div>
         </>
     );

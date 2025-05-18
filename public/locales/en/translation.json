@@ -163,6 +163,13 @@
             "edit": "Edit",
             "show": "Show"
         },
+        "sections": {
+            "title": "Sections",
+            "all": "Show All",
+            "add": "Add ",
+            "edit": "Edit",
+            "show": "Show"
+        },
         "languages": {
             "title": "Languages",
             "all": "Show All",

@@ -76,7 +76,7 @@ export const SideBarItemsFn = () => {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.sections'),
-                            link: '/sections',
+                            link: '/sections/index',
                         },
                     ]
                     : []),
@@ -86,7 +86,7 @@ export const SideBarItemsFn = () => {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.services'),
-                            link: '/services',
+                            link: '/services/index',
                         },
                     ]
                     : []),

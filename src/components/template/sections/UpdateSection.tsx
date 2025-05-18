@@ -1,22 +1,26 @@
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as Yup from 'yup';
-import { isArabic, isEnglish } from '../../../helper/helpers';
+import { useNavigate, useParams } from 'react-router-dom';
 import useFetch from '../../../hooks/UseFetch';
 import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
-import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
 import SectionsMainData from './MainData';
-import { hasPermission } from '../../../helper/permissionHelpers';
+import * as Yup from 'yup';
+import ShowAlertMixin from '../../atoms/ShowAlertMixin';
+import { isArabic, isEnglish } from '../../../helper/helpers';
 
-export default function UpdateSections() {
+export default function UpdateFeature() {
     const { t, i18n } = useTranslation();
+
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.sections.title') },
+        { label: t('breadcrumb.sections.title'), to: '/sections/index' },
+        { label: t('breadcrumb.sections.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -25,28 +29,31 @@ export default function UpdateSections() {
         isError: showDataError,
         isLoading: showDataLoading,
         isSuccess: showDataSuccess,
-        refetch,
+        refetch: refetch,
     } = useFetch<any>({
-        endpoint: `sections`,
-        // @ts-ignore
-        queryKey: [`sections`, hasPermission('sections.index')],
-        enabled: !!hasPermission('sections.index'),
+        endpoint: `sections/${id}`,
+        queryKey: [`sections/${id}`],
     });
-
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
 
     const initialValues = {
         ar_title: showData?.data?.ar?.title || '',
-        ar_description: showData?.data?.ar?.desc || '',
+        ar_description: showData?.data?.ar?.description || '',
 
         en_title: showData?.data?.en?.title || '',
-        en_description: showData?.data?.en?.desc || '',
+        en_description: showData?.data?.en?.description || '',
     };
 
-    const sectionsSchema = () =>
+    const featuresSchema = () =>
         Yup.object().shape({
+            icon: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
             ar_title: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -63,12 +70,18 @@ export default function UpdateSections() {
             ar_description: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            image: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
         });
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`sections`],
-        endpoint: `sections`,
+        mutationKey: [`sections/${id}`],
+        endpoint: `sections/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({
@@ -76,13 +89,12 @@ export default function UpdateSections() {
                 icon: 'success',
                 title:
                     data?.data?.message ||
-                    t('isEditSuccessfully', { name: t('breadcrumb.about.title') }),
+                    t('isEditSuccessfully', { name: t('breadcrumb.features.title') }),
             });
+
             // notify('success');
             refetch();
-            refetch().then(() => {
-                setFormKey(formKey + 1);
-            });
+            navigate('/sections/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -93,30 +105,28 @@ export default function UpdateSections() {
         },
 
         formData: true,
+        // method: 'post',
     });
 
     const handleSubmit = (values: any) => {
-        const finalOut: any = {
+        const finalOut = {
             ar: {
                 title: values?.ar_title,
-                desc: values?.ar_description,
+                description: values?.ar_decription,
             },
             en: {
                 title: values?.en_title,
-                desc: values?.en_description,
+                description: values?.en_description,
             },
-        };
+            icon: { path: values?.icon?.path, url: values?.icon?.url },
+            image: { path: values?.background?.path, url: values?.image?.url }
 
-        // Remove undefined keys
-        Object.keys(finalOut).forEach((key) => {
-            if (finalOut[key] === undefined) {
-                delete finalOut[key];
-            }
-        });
+        };
 
         update({
             ...finalOut,
-            // _method: 'put',
+            // _method: 'put'
+            _method: 'post'
         });
     };
 
@@ -125,9 +135,8 @@ export default function UpdateSections() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={sectionsSchema()}
+                validationSchema={featuresSchema()}
                 key={formKey}
-                enableReinitialize={true}
                 initialValues={initialValues}
                 onSubmit={(values: any) => {
                     handleSubmit(values);
@@ -141,17 +150,15 @@ export default function UpdateSections() {
 
                     return (
                         <Form>
-                            <SectionsMainData isLoading={showDataLoading} />
+                            <SectionsMainData isLoading={showDataLoading} data={showData} />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
-                                {hasPermission('sections.updateOrCreate') && (
-                                    <Button
-                                        type="submit"
-                                        className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
-                                        loading={LoadingUpdate}
-                                    >
-                                        {t('buttons.save')}
-                                    </Button>
-                                )}
+                                <Button
+                                    type="submit"
+                                    className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
+                                    loading={LoadingUpdate}
+                                >
+                                    {t('buttons.save')}
+                                </Button>
                             </div>
                         </Form>
                     );

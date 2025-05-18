@@ -1,18 +1,29 @@
-export interface SectionsImage {
-    id: number;
-    media: string;
-}
+import { Feature } from '../Features/types';
 
-export interface Sections {
+export interface Section {
     id: string;
-    title?: string;
-    desc?: string;
-    is_active?: string;
-
-    images?: SectionsImage[] | any;
+    ar: {
+        title?: string;
+        description?: string;
+    };
+    en: {
+        title?: string;
+        description?: string;
+    };
+    icon: {
+        path: string;
+        url: string;
+    };
+    image: {
+        path: string;
+        url: string;
+    };
+    type: string;
+    is_active: 0;
+    features: Feature[];
 }
 
 export interface FetchSectionsData {
-    data: Sections[];
+    data: Section[];
     meta: any;
 }
