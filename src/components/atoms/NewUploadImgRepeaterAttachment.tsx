@@ -44,10 +44,13 @@ const NewUploadImgRepeaterAttachment = ({
                 title: data?.data?.message,
             });
 
-            setImageFileUpload(data.data?.data);
+
+
+
+            setImageFileUpload(data.data?.path);
 
             setImages([{ name: previewImage }]);
-            setFieldValue(name, data.data?.data);
+            setFieldValue(name, data.data?.path);
             setIsUploadingImage(false);
         },
         onError: (err: any) => {

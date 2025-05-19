@@ -30,12 +30,14 @@ export default function AddSection() {
     };
     const sectionsSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            icon: Yup.mixed().required(t('validation.image_only')),
+            // .nullable()
+            // .test('fileType', t('validation.image_only'), (value) => {
+            //     if (!value) return true;
+            //     return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+            // }),
+
+
             ar_title: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -55,12 +57,12 @@ export default function AddSection() {
             type: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.type') })),
-            image: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            image: Yup.mixed().required(t('validation.image_only')),
+            // .nullable()
+            // .test('fileType', t('validation.image_only'), (value) => {
+            //     if (!value) return true;
+            //     return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+            // }),
             // image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
 
         });
@@ -90,6 +92,9 @@ export default function AddSection() {
     });
 
     const handleSubmit = (values: any, actions: any) => {
+
+        console.log(values);
+
         const finalOut = {
             ar: {
                 title: values?.ar_title,
@@ -107,9 +112,7 @@ export default function AddSection() {
             icon: values.icon,
             image: values.image,
         };
-        console.log("icon value:", values.icon);
-        console.log("image value:", values.image);
-        console.log(finalOut)
+
         mutate(finalOut, {
             onSuccess: () => {
                 // Reset the form to initial values
@@ -130,18 +133,25 @@ export default function AddSection() {
                     handleSubmit(values, actions);
                 }}
             >
-                <Form>
-                    <MainDataSocials />
-                    <div className="mt-10 mb-4 flex gap-2 justify-center">
-                        <Button
-                            type="submit"
-                            className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
-                            loading={isLoading}
-                        >
-                            {t('buttons.save')}
-                        </Button>
-                    </div>
-                </Form>
+                {({ values, errors }) => {
+
+                    console.log(errors);
+
+
+                    return (<Form>
+                        <MainDataSocials />
+                        <div className="mt-10 mb-4 flex gap-2 justify-center">
+                            <Button
+                                type="submit"
+                                className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
+                                loading={isLoading}
+                            >
+                                {t('buttons.save')}
+                            </Button>
+                        </div>
+                    </Form>)
+                }
+                }
             </Formik>
         </div>
     );

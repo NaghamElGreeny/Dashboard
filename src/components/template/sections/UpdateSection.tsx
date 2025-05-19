@@ -71,12 +71,7 @@ export default function UpdateFeature() {
             type: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.type') })),
-            // image: Yup.mixed()
-            //     .nullable()
-            //     .test('fileType', t('validation.image_only'), (value) => {
-            //         if (!value) return true;
-            //         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-            //     }),
+
             image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
 
         });
@@ -123,8 +118,6 @@ export default function UpdateFeature() {
                 description: values?.en_description,
             },
             type: values?.type,
-            // icon: { path: values?.icon?.path, url: values?.icon?.url },
-            // image: { path: values?.image?.path, url: values?.image?.url }
             icon: values.icon,
             image: values.image,
         };
@@ -137,26 +130,7 @@ export default function UpdateFeature() {
             // _method: 'put'
             _method: 'post'
         });
-        // const formData = new FormData();
 
-        // formData.append('ar[title]', values.ar_title);
-        // formData.append('ar[description]', values.ar_description);
-
-        // formData.append('en[title]', values.en_title);
-        // formData.append('en[description]', values.en_description);
-
-        // formData.append('type', values.type);
-
-        // if (values.icon instanceof File) {
-        //     formData.append('icon', values.icon);
-        // }
-
-        // if (values.image instanceof File) {
-        //     formData.append('image', values.image);
-        // }
-        // formData.append('_method', 'post');
-
-        // update(formData);
     };
 
     return (
