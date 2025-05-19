@@ -50,12 +50,8 @@ export default function UpdateWhyus() {
 
     const whyusSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
+
             ar_key: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -114,7 +110,7 @@ export default function UpdateWhyus() {
             },
             value: values?.value,
             is_active: 1,
-            icon: { path: values?.icon?.path, url: values?.icon?.url }
+            icon: values?.icon,
             // icon: values?.icon?.path,
 
         };

@@ -31,12 +31,6 @@ export default function AddSection() {
     const sectionsSchema = () =>
         Yup.object().shape({
             icon: Yup.mixed().required(t('validation.image_only')),
-            // .nullable()
-            // .test('fileType', t('validation.image_only'), (value) => {
-            //     if (!value) return true;
-            //     return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-            // }),
-
 
             ar_title: Yup.string()
                 .trim()
@@ -58,12 +52,7 @@ export default function AddSection() {
                 .trim()
                 .required(t('requiredField', { field: t('labels.type') })),
             image: Yup.mixed().required(t('validation.image_only')),
-            // .nullable()
-            // .test('fileType', t('validation.image_only'), (value) => {
-            //     if (!value) return true;
-            //     return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-            // }),
-            // image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
+
 
         });
 
@@ -106,9 +95,6 @@ export default function AddSection() {
             },
             type: values?.type,
             is_active: 0,
-            // icon: { path: values?.icon?.path, url: values?.icon?.url },
-            // image: { path: values?.image?.path, url: values?.image?.url }
-            // image: values?.image,
             icon: values.icon,
             image: values.image,
         };

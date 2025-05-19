@@ -48,12 +48,7 @@ export default function UpdateFeature() {
 
     const featuresSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            icon: Yup.mixed().required(t('validation.image_only')),
             ar_title: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -70,12 +65,7 @@ export default function UpdateFeature() {
             ar_description: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
-            background: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            background: Yup.mixed().required(t('validation.image_only'))
         });
 
     // update data
@@ -112,14 +102,14 @@ export default function UpdateFeature() {
         const finalOut = {
             ar: {
                 title: values?.ar_title,
-                description: values?.ar_decription,
+                description: values?.ar_description,
             },
             en: {
                 title: values?.en_title,
                 description: values?.en_description,
             },
-            icon: { path: values?.icon?.path, url: values?.icon?.url },
-            background: { path: values?.background?.path, url: values?.background?.url }
+            icon: values?.icon,
+            background: values?.background
 
         };
 

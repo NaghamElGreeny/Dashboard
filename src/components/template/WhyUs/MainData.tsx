@@ -2,6 +2,8 @@ import { Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
+import { Label } from '../../atoms';
+import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAttachment';
 
 export default function WhyUsMainData(
     {
@@ -63,36 +65,23 @@ export default function WhyUsMainData(
                     )}
                 </div>
 
-                <div className="col-span-12 sm:col-span-6">
-                    <label className="block mb-1">{t('labels.image')}</label>
+                <div className="flex flex-col items-center justify-center w-full my-4">
+                    {isLoading ? (
+                        <Skeleton height={100} />
+                    ) : (
+                        <>
+                            <Label htmlFor="icon" className="mb-1">
+                                {t('labels.icon')}
+                            </Label>
 
-                    <div className="mt-2">
-                        {isLoading ? (
-                            <Skeleton height={96} width={96} className="rounded-full" />
-                        ) : data?.data?.icon?.url ? (
-                            <img
-                                src={data.data.icon.url}
-                                alt="Current icon"
-                                className="w-24 h-24 object-cover rounded-full border"
+                            <NewUploadImgRepeaterAttachment
+                                acceptFiles="image/png, image/jpeg, image/gif"
+                                name="icon"
+                                model="User"
+
                             />
-                        ) : (
-                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
-                        )}
-                    </div>
-
-                    <input
-                        id="icon"
-                        type="file"
-                        name="icon"
-                        accept="image/*"
-                        className="mt-2"
-                        onChange={(event) => {
-                            formik.setFieldValue('icon', event.currentTarget.files?.[0] || null);
-                        }}
-                    />
-                    {/* {formik.errors.icon && (
-                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
-                    )} */}
+                        </>
+                    )}
                 </div>
 
 
