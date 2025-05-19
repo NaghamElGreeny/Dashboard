@@ -2,6 +2,7 @@ import { Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
+import { useFormikContext } from 'formik';
 
 export default function SectionsMainData({
     isLoading,
@@ -13,7 +14,7 @@ export default function SectionsMainData({
     data?: any;
 }) {
     const { t } = useTranslation();
-
+    // const { setFieldValue, values } = useFormikContext<any>();
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
@@ -57,7 +58,7 @@ export default function SectionsMainData({
                             type="text"
                             className="border"
                             label={t('labels.description') + t('inArabic')}
-                        // placeholder={t('enter') + ' ' + t('labels.description')}
+                            placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
                 </div>
@@ -72,7 +73,7 @@ export default function SectionsMainData({
                             type="text"
                             className="border"
                             label={t('labels.description') + t('inEnglish')}
-                        // placeholder={t('enter') + ' ' + t('labels.description')}
+                            placeholder={t('enter') + ' ' + t('labels.description')}
                         />
                     )}
                 </div>
@@ -101,6 +102,12 @@ export default function SectionsMainData({
                         accept="image/*"
                         className="mt-2"
                     // onChange={(event) => {
+                    //     const file = event.currentTarget.files?.[0] || null;
+                    //     if (file) {
+                    //         setFieldValue('icon', file);
+                    //     }
+                    // }}
+                    // onChange={(event) => {
                     //     formik.setFieldValue('icon', event.currentTarget.files?.[0] || null);
                     // }}
                     />
@@ -108,7 +115,20 @@ export default function SectionsMainData({
                         <div className="text-red-500 text-sm">{formik.errors.icon}</div>
                     )} */}
                 </div>
-
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={100} className="w-full" />
+                    ) : (
+                        <BaseInputField
+                            id="type"
+                            name="type"
+                            type="text"
+                            className="border"
+                            label={t('labels.type')}
+                            placeholder={t('enter') + ' ' + t('labels.type')}
+                        />
+                    )}
+                </div>
                 <div className="col-span-12 sm:col-span-6">
                     <label className="block mb-1">{t('labels.image')}</label>
 
@@ -118,7 +138,7 @@ export default function SectionsMainData({
                         ) : data?.data?.image?.url ? (
                             <img
                                 src={data.data.image?.url}
-                                alt="Current icon"
+                                alt="Current image"
                                 className="w-24 h-24 object-cover rounded-full border"
                             />
                         ) : (
@@ -133,12 +153,14 @@ export default function SectionsMainData({
                         accept="image/*"
                         className="mt-2"
                     // onChange={(event) => {
-                    //     formik.setFieldValue('background', event.currentTarget.files?.[0] || null);
+                    //     const file = event.currentTarget.files?.[0] || null;
+                    //     setFieldValue('image', file);
                     // }}
                     />
                     {/* {formik.errors.icon && (
                         <div className="text-red-500 text-sm">{formik.errors.icon}</div>
                     )} */}
+
                 </div>
 
             </div>

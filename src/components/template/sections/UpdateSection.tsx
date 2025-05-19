@@ -44,9 +44,10 @@ export default function UpdateFeature() {
 
         en_title: showData?.data?.en?.title || '',
         en_description: showData?.data?.en?.description || '',
+        type: showData?.data?.type || '',
     };
 
-    const featuresSchema = () =>
+    const sectionsSchema = () =>
         Yup.object().shape({
             icon: Yup.mixed()
                 .nullable()
@@ -70,6 +71,9 @@ export default function UpdateFeature() {
             ar_description: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            type: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.type') })),
             image: Yup.mixed()
                 .nullable()
                 .test('fileType', t('validation.image_only'), (value) => {
@@ -112,22 +116,43 @@ export default function UpdateFeature() {
         const finalOut = {
             ar: {
                 title: values?.ar_title,
-                description: values?.ar_decription,
+                description: values?.ar_description,
             },
             en: {
                 title: values?.en_title,
                 description: values?.en_description,
             },
+            type: values?.type,
             icon: { path: values?.icon?.path, url: values?.icon?.url },
             image: { path: values?.background?.path, url: values?.image?.url }
 
         };
-
+        console.log(finalOut);
         update({
             ...finalOut,
             // _method: 'put'
             _method: 'post'
         });
+        // const formData = new FormData();
+
+        // formData.append('ar[title]', values.ar_title);
+        // formData.append('ar[description]', values.ar_description);
+
+        // formData.append('en[title]', values.en_title);
+        // formData.append('en[description]', values.en_description);
+
+        // formData.append('type', values.type);
+
+        // if (values.icon instanceof File) {
+        //     formData.append('icon', values.icon);
+        // }
+
+        // if (values.image instanceof File) {
+        //     formData.append('image', values.image);
+        // }
+        // formData.append('_method', 'post');
+
+        // update(formData);
     };
 
     return (
@@ -135,7 +160,7 @@ export default function UpdateFeature() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={featuresSchema()}
+                validationSchema={sectionsSchema()}
                 key={formKey}
                 initialValues={initialValues}
                 onSubmit={(values: any) => {

@@ -14,34 +14,58 @@ export default function AddSection() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.socials.title'), to: '/contact-info/index' },
-        { label: t('breadcrumb.socials.add') },
+        { label: t('breadcrumb.sections.title'), to: '/sections/index' },
+        { label: t('breadcrumb.sections.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
-        // icon: '',
-        // ar_name: '',
-        // en_name: '',
+        ar_title: '',
+        ar_description: '',
 
-        // ordering: '',
-        // link: '',
-        key: '',
-        value: ''
+        en_title: '',
+        en_description: '',
+        type: '',
+        icon: '',
+        image: '',
     };
-    const socialSchema = () =>
+    const sectionsSchema = () =>
         Yup.object().shape({
-            key: Yup.string()
+            icon: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
+            ar_title: Yup.string()
                 .trim()
-                .required(t('requiredField', { field: t('labels.social_name') })),
+                .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
+                .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
 
-            value: Yup.string()
-                .url(t('validations.url', { field: t('labels.social_link') }))
-                .required(t('requiredField', { field: t('labels.social_link') })),
+            en_title: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
+                .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
+
+            en_description: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.description') + t('inEnglish') })),
+            ar_description: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            type: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.type') })),
+            image: Yup.mixed()
+                .nullable()
+                .test('fileType', t('validation.image_only'), (value) => {
+                    if (!value) return true;
+                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                }),
         });
 
     const { mutate, isLoading } = useMutate({
-        mutationKey: ['contact-info'],
-        endpoint: `contact-info`,
+        mutationKey: ['sections'],
+        endpoint: `sections`,
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -65,8 +89,18 @@ export default function AddSection() {
 
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
-            key: values?.key,
-            value: values?.value
+            ar: {
+                title: values?.ar_title,
+                description: values?.ar_description,
+            },
+            en: {
+                title: values?.en_title,
+                description: values?.en_description,
+            },
+            type: values?.type,
+            is_active: 0,
+            icon: { path: values?.icon?.path, url: values?.icon?.url },
+            image: { path: values?.image?.path, url: values?.image?.url }
         };
 
         mutate(finalOut, {
@@ -82,7 +116,7 @@ export default function AddSection() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={socialSchema()}
+                validationSchema={sectionsSchema()}
                 key={formKey}
                 initialValues={initialValues}
                 onSubmit={(values, actions) => {

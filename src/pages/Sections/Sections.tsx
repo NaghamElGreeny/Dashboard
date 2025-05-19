@@ -59,6 +59,14 @@ export default function Sections() {
         },
 
         {
+            header: t('labels.type'),
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const type = row.original?.type || t('not_found');
+                return <span>{type}</span>;
+            },
+            accessorKey: 'type',
+        },
+        {
             header: t('labels.title'),
             Cell: ({ row }: { row: { original: Section } }) => {
                 const title = locale === 'ar' ? row.original?.ar?.title : row.original?.en?.title || t('not_found');
@@ -74,7 +82,7 @@ export default function Sections() {
                 return (
                     <>
                         <FaEye
-                            className="text-[19px] text-black ms-10 cursor-pointer"
+                            className="text-[19px] text-primary ms-10 cursor-pointer"
                             onClick={() => {
                                 setSelectedDescription(description ?? '');
                                 // setSelectedDescription(description as string);
@@ -93,14 +101,21 @@ export default function Sections() {
             header: t('labels.status'),
             Cell: ({ row }: { row: { original: Section } }) => {
                 const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
+                function handleClick() {
+                    { status === 'active' ? 'inactive' : 'active' }
+                    refetch();
+                }
                 return (
                     <>
-                        <span
-                            className={`${row.original?.is_active ? 'active' : 'inactive'
-                                } statuses `}
-                        >
-                            {status}
-                        </span>
+                        <button onClick={handleClick}>
+
+                            <span
+                                className={`${row.original?.is_active ? 'active' : 'inactive'
+                                    } statuses `}
+                            >
+                                {status}
+                            </span>
+                        </button>
                     </>
                 );
             },
@@ -188,7 +203,7 @@ export default function Sections() {
         endpoint: buildEndpoint(initialValues),
         queryKey: [buildEndpoint(initialValues)],
     });
-
+    console.log(terms?.data)
     const handleReset = (resetForm: () => void) => {
         setSearchParams({});
         resetForm();
