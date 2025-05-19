@@ -35,8 +35,8 @@ const NewUploadImgRepeaterAttachment = ({
 
     const { mutate: uploadFile, isLoading } = useMutate({
         general: true,
-        mutationKey: ['upload-media'],
-        endpoint: 'upload-media',
+        mutationKey: ['attachment'],
+        endpoint: 'attachment',
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,

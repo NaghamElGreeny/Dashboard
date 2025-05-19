@@ -884,7 +884,15 @@
         "bank_name": "اسم البنك",
         "user_type": "نوع المستخدم",
         "user": "مستخدم",
-        "provider": "مزود خدمة"
+        "provider": "مزود خدمة",
+        "about": "من نحن",
+        "goals": "اهدافنا",
+        "core_values": "القيم الأساسية",
+        "our_vision": "رؤيتنا",
+        "terms": "الشروط والأحكام",
+        "privacy_policy": "سياسة الخصوصية",
+        "our_services": "خدماتنا",
+        "why_us": "لماذا نحن"
     },
     "fields": {
         "ar.title": "عنوان بالعربية",

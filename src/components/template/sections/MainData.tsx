@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
 import { useFormikContext } from 'formik';
-
+import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAttachment';
+import { Label } from '../../atoms';
+import GeneralSelect from '../../molecules/selects/GeneralSelect';
+import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
 export default function SectionsMainData({
     isLoading,
     formik,
@@ -14,7 +17,50 @@ export default function SectionsMainData({
     data?: any;
 }) {
     const { t } = useTranslation();
-    // const { setFieldValue, values } = useFormikContext<any>();
+    const { setFieldValue, values } = useFormikContext<any>();
+    const typesList = [
+        {
+            id: 0,
+            value: 'about',
+            label: t('labels.about'),
+        },
+        {
+            id: 1,
+            value: 'goals',
+            label: t('labels.goals'),
+        },
+        {
+            id: 2,
+            value: 'core_values',
+            label: t('labels.core_values'),
+        },
+        {
+            id: 3,
+            value: 'our_vision',
+            label: t('labels.our_vision'),
+        },
+        {
+            id: 4,
+            value: 'terms',
+            label: t('labels.terms'),
+        },
+        {
+            id: 5,
+            value: 'privacy_policy',
+            label: t('labels.privacy_policy'),
+        },
+        {
+            id: 6,
+            value: 'our_services',
+            label: t('labels.our_services'),
+        },
+        {
+            id: 7,
+            value: 'why_us',
+            label: t('labels.why_us'),
+        },
+    ];
+    // about - goals - core_values - our_vision - terms - privacy_policy - our_services - why_us
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
@@ -79,89 +125,59 @@ export default function SectionsMainData({
                 </div>
 
                 <div className="col-span-12 sm:col-span-6">
-                    <label className="block mb-1">{t('labels.icon')}</label>
-
-                    <div className="mt-2">
-                        {isLoading ? (
-                            <Skeleton height={96} width={96} className="rounded-full" />
-                        ) : data?.data?.icon?.url ? (
-                            <img
-                                src={data.data.icon.url}
-                                alt="Current icon"
-                                className="w-24 h-24 object-cover rounded-full border"
-                            />
-                        ) : (
-                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
-                        )}
-                    </div>
-
-                    <input
-                        id="icon"
-                        type="file"
-                        name="icon"
-                        accept="image/*"
-                        className="mt-2"
-                    // onChange={(event) => {
-                    //     const file = event.currentTarget.files?.[0] || null;
-                    //     if (file) {
-                    //         setFieldValue('icon', file);
-                    //     }
-                    // }}
-                    // onChange={(event) => {
-                    //     formik.setFieldValue('icon', event.currentTarget.files?.[0] || null);
-                    // }}
-                    />
-                    {/* {formik.errors.icon && (
-                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
-                    )} */}
-                </div>
-                <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
-                        <Skeleton height={100} className="w-full" />
+                        <Skeleton height={40} className="w-full" />
                     ) : (
-                        <BaseInputField
-                            id="type"
+                        <GeneralStaticSelect
                             name="type"
-                            type="text"
-                            className="border"
+                            dataOptions={typesList}
                             label={t('labels.type')}
-                            placeholder={t('enter') + ' ' + t('labels.type')}
+                            placeholder={t('select') + ' ' + t('labels.type')}
+                            onChange={(option: any) => setFieldValue('type', option?.value)}
                         />
                     )}
                 </div>
-                <div className="col-span-12 sm:col-span-6">
-                    <label className="block mb-1">{t('labels.image')}</label>
 
-                    <div className="mt-2">
+                <div className="grid grid-cols-2 gap-2 col-span-12 mb-4">
+                    <div className="flex flex-col items-center justify-center w-full my-4">
                         {isLoading ? (
-                            <Skeleton height={96} width={96} className="rounded-full" />
-                        ) : data?.data?.image?.url ? (
-                            <img
-                                src={data.data.image?.url}
-                                alt="Current image"
-                                className="w-24 h-24 object-cover rounded-full border"
-                            />
+                            <Skeleton height={100} />
                         ) : (
-                            <span className="text-gray-400 text-sm">{t('not_found')}</span>
+                            <>
+                                <Label htmlFor="icon" className="mb-1">
+                                    {t('labels.icon')}
+                                </Label>
+
+                                <NewUploadImgRepeaterAttachment
+                                    acceptFiles="image/png, image/jpeg, image/gif"
+                                    name="icon"
+                                    model="Section"
+
+                                />
+                            </>
                         )}
                     </div>
+                    <div className="flex flex-col items-center justify-center w-full my-4">
+                        {isLoading ? (
+                            <Skeleton height={100} />
+                        ) : (
+                            <>
+                                <Label htmlFor="image" className="mb-1">
+                                    {t('labels.image')}
+                                </Label>
 
-                    <input
-                        id="image"
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        className="mt-2"
-                    // onChange={(event) => {
-                    //     const file = event.currentTarget.files?.[0] || null;
-                    //     setFieldValue('image', file);
-                    // }}
-                    />
-                    {/* {formik.errors.icon && (
-                        <div className="text-red-500 text-sm">{formik.errors.icon}</div>
-                    )} */}
+                                <NewUploadImgRepeaterAttachment
+                                    acceptFiles="image/png, image/jpeg, image/gif"
+                                    name="image"
+                                    model="Section"
 
+                                />
+                            </>
+                        )}
+                    </div>
                 </div>
+                {/* <div className="grid grid-cols-1 gap-2 col-span-12 mb-4">
+                </div> */}
 
             </div>
         </>

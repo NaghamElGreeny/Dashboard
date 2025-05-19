@@ -36,7 +36,20 @@ function GeneralSelect({
 }: GeneralSelectUserProps) {
     const { values, errors, touched, setFieldTouched } = useFormikContext<any>();
     const { t } = useTranslation();
-
+    // const {sections_types}:{sections_types:string[]}={
+    //     about:'about',
+    //     //  - goals - core_values - our_vision - terms - privacy_policy - our_services - why_us
+    // }
+    const types = {
+        about: 'about',
+        goals: 'goals',
+        core_values: 'core_values',
+        our_vision: 'our_vision',
+        terms: 'terms',
+        privacy_policy: 'privacy_policy',
+        our_services: 'our_services',
+        whyus: 'why_us'
+    }
     const { data: SelectData } = useFetch<any>({
         endpoint: apiName,
         queryKey: [apiName],
@@ -73,8 +86,8 @@ function GeneralSelect({
                             touched[name] && errors[name] && typeof errors[name] === 'string'
                                 ? '#f44336'
                                 : state.isFocused
-                                ? '#3067DE' // Replace with your primary color
-                                : baseStyles.borderColor,
+                                    ? '#3067DE' // Replace with your primary color
+                                    : baseStyles.borderColor,
                         boxShadow: state.isFocused
                             ? '0 0 0 1px #3067DE' // Optional focus shadow
                             : baseStyles.boxShadow,

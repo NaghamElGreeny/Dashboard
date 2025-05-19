@@ -45,16 +45,13 @@ export default function UpdateFeature() {
         en_title: showData?.data?.en?.title || '',
         en_description: showData?.data?.en?.description || '',
         type: showData?.data?.type || '',
+        image: showData?.data?.image?.url || '',
+        icon: showData?.data?.icon?.url || '',
     };
 
     const sectionsSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
             ar_title: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -74,12 +71,14 @@ export default function UpdateFeature() {
             type: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.type') })),
-            image: Yup.mixed()
-                .nullable()
-                .test('fileType', t('validation.image_only'), (value) => {
-                    if (!value) return true;
-                    return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
-                }),
+            // image: Yup.mixed()
+            //     .nullable()
+            //     .test('fileType', t('validation.image_only'), (value) => {
+            //         if (!value) return true;
+            //         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+            //     }),
+            image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
+
         });
 
     // update data
@@ -114,6 +113,7 @@ export default function UpdateFeature() {
 
     const handleSubmit = (values: any) => {
         const finalOut = {
+            // image: values?.image,
             ar: {
                 title: values?.ar_title,
                 description: values?.ar_description,
@@ -123,11 +123,15 @@ export default function UpdateFeature() {
                 description: values?.en_description,
             },
             type: values?.type,
-            icon: { path: values?.icon?.path, url: values?.icon?.url },
-            image: { path: values?.background?.path, url: values?.image?.url }
-
+            // icon: { path: values?.icon?.path, url: values?.icon?.url },
+            // image: { path: values?.image?.path, url: values?.image?.url }
+            icon: values.icon,
+            image: values.image,
         };
         console.log(finalOut);
+        if (initialValues?.image == finalOut.image) {
+            delete finalOut.image;
+        }
         update({
             ...finalOut,
             // _method: 'put'

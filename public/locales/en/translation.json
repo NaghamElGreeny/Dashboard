@@ -798,7 +798,15 @@
         "user_type": "User Type",
         "user": "User",
         "provider": "Provider",
-        "orders": "Orders"
+        "orders": "Orders",
+        "about": " about",
+        "goals": "goals",
+        "core_values": "core values",
+        "our_vision": "our vision",
+        "terms": "terms",
+        "privacy_policy": "Privacy Policy",
+        "our_services": "our services",
+        "why_us": "why us"
     },
     "fields": {
         "ar.title": "Arabic Title",

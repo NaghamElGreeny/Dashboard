@@ -14,7 +14,7 @@ type useMutateProps_TP<response_T> = {
     onError?: (err: unknown) => void;
     formData?: boolean;
     onMutate?: (err?: unknown) => void;
-    method?: 'post' | 'delete'; // Add the method property
+    method?: 'post' | 'delete' | 'put'; // Add the method property
     headers?: Record<string, string>; // Add headers property
     general?: boolean;
 };

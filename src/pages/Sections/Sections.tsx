@@ -41,20 +41,35 @@ export default function Sections() {
 
         {
             header: t('labels.image'),
-            Cell: ({ row }: { row: { original: Section } }) => {
-                const IconComponent = row.original?.image?.url || null;
-
-                return IconComponent ? <img src={IconComponent} /> : t('not_found');
-            },
-            accessorKey: 'images',
+            Cell: ({ row }: { row: { original: Section } }) => (
+                <div className="flex gap-5">
+                    {/* <LightBox
+                        getItems={[
+                            {
+                                src: row.original.image?.url || 'imageError',
+                            },
+                        ]}
+                    /> */}
+                    <img
+                        src={row.original.image?.url || 'imageError'}
+                    />
+                </div>
+            ),
+            accessorKey: 'image',
         },
         {
             header: t('labels.icon'),
-            Cell: ({ row }: { row: { original: Section } }) => {
-                const IconComponent = row.original?.icon?.url || null;
+            Cell: ({ row }: { row: { original: Section } }) => (
+                // const IconComponent = row.original?.icon?.url || row.original.icon?.path || null;
 
-                return IconComponent ? <img src={IconComponent} /> : t('not_found');
-            },
+                // // console.log('icon url :', row.original?.icon?.url, 'icon path :', row.original?.icon?.path);
+                // return IconComponent ? <img src={IconComponent} /> : t('not_found');
+                <div className="flex gap-5">
+                    <img
+                        src={row.original.icon?.url || 'imageError'}
+                    />
+                </div>
+            ),
             accessorKey: 'icon',
         },
 
@@ -102,8 +117,10 @@ export default function Sections() {
             Cell: ({ row }: { row: { original: Section } }) => {
                 const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
                 function handleClick() {
-                    { status === 'active' ? 'inactive' : 'active' }
-                    refetch();
+                    updateStatus({
+                        id: row.original?.id,
+                        is_active: !row.original?.is_active,
+                    });
                 }
                 return (
                     <>
@@ -184,6 +201,29 @@ export default function Sections() {
     const deleteItem = () => {
         showAlert(t('delete_confirmation'), '', false, t('ok'), true, 'warning', () => Delete({}));
     };
+
+    const { mutate: updateStatus } = useMutate({
+        mutationKey: [`sections/${SectionsId}`],
+        endpoint: `sections/${SectionsId}`,
+        onSuccess: async (data: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'success',
+                title: t('isUpdatedSuccessfully', { name: t('labels.status') }),
+            });
+            refetch();
+        },
+        onError: async (err: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'error',
+                title: err?.response?.data?.message,
+            });
+        },
+        formData: true,
+        method: 'put',
+    });
+
 
     const initialValues = {
         keyword: searchParams.get('keyword') || '',

@@ -17,6 +17,7 @@ export const BaseInputField = ({
     labelProps,
     placeholder,
     type = 'text',
+    // formatNumbers = 0,
     formatNumbers = false,
     disabled = false,
     ...props
@@ -135,9 +136,8 @@ export const BaseInputField = ({
                         /> */}
                         {type === 'password' && (
                             <div
-                                className={`absolute inset-y-0 ${
-                                    isRTL ? 'left-3' : 'right-3'
-                                } flex items-center cursor-pointer`}
+                                className={`absolute inset-y-0 ${isRTL ? 'left-3' : 'right-3'
+                                    } flex items-center cursor-pointer`}
                                 onClick={togglePasswordVisibility}
                             >
                                 {showPassword ? <FaEye /> : <FaEyeSlash />}

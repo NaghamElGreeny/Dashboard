@@ -35,8 +35,8 @@ export default function GeneralStaticSelect({
                             touched[name] && errors[name] && typeof errors[name] === 'string'
                                 ? '#f44336' // Tailwind error color
                                 : state.isFocused
-                                ? '#3067DE' // Tailwind "primary" color (blue-500)
-                                : baseStyles.borderColor,
+                                    ? '#3067DE' // Tailwind "primary" color (blue-500)
+                                    : baseStyles.borderColor,
                         boxShadow: state.isFocused
                             ? '0 0 0 1px #3067DE' // Optional focus shadow
                             : baseStyles.boxShadow,
@@ -53,10 +53,9 @@ export default function GeneralStaticSelect({
                 }}
                 classNames={{
                     control: (state) =>
-                        `!border-[#E0E6ED] dark:border-[#17263c] dark:bg-[#121e32] ${
-                            state.isFocused
-                                ? 'focus:border-primary focus:ring focus:ring-primary'
-                                : ''
+                        `!border-[#E0E6ED] dark:border-[#17263c] dark:bg-[#121e32] ${state.isFocused
+                            ? 'focus:border-primary focus:ring focus:ring-primary'
+                            : ''
                         }`,
                     menu: () => 'dark:border-[#17263c] dark:bg-[#121e32] dark:text-white',
                     menuList: () =>
