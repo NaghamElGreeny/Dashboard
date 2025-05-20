@@ -24,7 +24,48 @@ export default function Sections() {
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.sections.title') },
     ];
-
+    const typesList = [
+        {
+            id: 0,
+            value: 'about',
+            label: t('labels.about'),
+        },
+        {
+            id: 1,
+            value: 'goals',
+            label: t('labels.goals'),
+        },
+        {
+            id: 2,
+            value: 'core_values',
+            label: t('labels.core_values'),
+        },
+        {
+            id: 3,
+            value: 'our_vision',
+            label: t('labels.our_vision'),
+        },
+        {
+            id: 4,
+            value: 'terms',
+            label: t('labels.terms'),
+        },
+        {
+            id: 5,
+            value: 'privacy_policy',
+            label: t('labels.privacy_policy'),
+        },
+        {
+            id: 6,
+            value: 'our_services',
+            label: t('labels.our_services'),
+        },
+        {
+            id: 7,
+            value: 'why_us',
+            label: t('labels.why_us'),
+        },
+    ];
     const [SectionsId, setSectionsId] = useState<Object>('');
     const [page, setPage] = useState<number>(1);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -43,16 +84,14 @@ export default function Sections() {
             header: t('labels.image'),
             Cell: ({ row }: { row: { original: Section } }) => (
                 <div className="flex gap-5">
-                    {/* <LightBox
+                    <LightBox
                         getItems={[
                             {
                                 src: row.original.image?.url || 'imageError',
                             },
                         ]}
-                    /> */}
-                    <img
-                        src={row.original.image?.url || 'imageError'}
                     />
+
                 </div>
             ),
             accessorKey: 'image',
@@ -60,14 +99,13 @@ export default function Sections() {
         {
             header: t('labels.icon'),
             Cell: ({ row }: { row: { original: Section } }) => (
-                // const IconComponent = row.original?.icon?.url || row.original.icon?.path || null;
-
-                // // console.log('icon url :', row.original?.icon?.url, 'icon path :', row.original?.icon?.path);
-                // return IconComponent ? <img src={IconComponent} /> : t('not_found');
                 <div className="flex gap-5">
-                    <img
-                        src={row.original.icon?.url || 'imageError'}
-                    />
+                    <LightBox
+                        getItems={[
+                            {
+                                src: row.original.icon?.url || 'imageError',
+                            },
+                        ]} />
                 </div>
             ),
             accessorKey: 'icon',
@@ -226,10 +264,10 @@ export default function Sections() {
 
 
     const initialValues = {
-        keyword: searchParams.get('keyword') || '',
+        type: searchParams.get('type') || '',
     };
 
-    const buildEndpoint = (params: { keyword: string }) => {
+    const buildEndpoint = (params: { type: string }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
         return `sections?${queryParams.toString()}`;
@@ -243,10 +281,17 @@ export default function Sections() {
         endpoint: buildEndpoint(initialValues),
         queryKey: [buildEndpoint(initialValues)],
     });
-    console.log(terms?.data)
-    const handleReset = (resetForm: () => void) => {
+    // console.log(terms?.data)
+    const handleReset = (
+        resetForm: () => void,
+        setFieldValue: (field: string, value: any) => void
+    ) => {
+        // Clear search params
         setSearchParams({});
+        // Reset form values in Formik
         resetForm();
+        // Explicitly reset the status field
+        setFieldValue('type', '');
     };
 
     return (
@@ -256,15 +301,16 @@ export default function Sections() {
             {/* filter section */}
             <FilterSection
                 initialValues={initialValues}
+                optionsList={typesList}
                 onSubmit={(values) => {
                     const params = {
-                        keyword: values.keyword,
+                        type: values.type,
                     };
                     setSearchParams(params);
                 }}
                 onReset={handleReset}
                 isLoading={isLoading}
-                keywords={['keyword']}
+                selectKeys={['type']}
             />
 
             <TableCompCustom

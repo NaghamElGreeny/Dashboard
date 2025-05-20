@@ -56,51 +56,107 @@ export const SideBarItemsFn = () => {
             hasPermission('cancellation-policy.index') ||
             hasPermission('sections.index')
             ? [
-                {
-                    heading: t('sidebar.public_pages'),
-                },
 
-                ...(hasPermission('why-us.index')
+
+
+                ...(hasPermission('sections.index') || hasPermission('sections.store')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <MdOutlineImage />,
+                            label: t('breadcrumb.sections.title'),
+                            link: '/sections',
+                            items: [
+                                ...(hasPermission('sections.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.all'),
+                                            link: '/sections/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('sections.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.add'),
+                                            link: '/sections/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('why-us.index') || hasPermission('why-us.store')
                     ? [
                         {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.about'),
-                            link: '/why-us/index',
+                            link: '/why-us',
+                            items: [
+                                ...(hasPermission('why-us.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.all'),
+                                            link: '/why-us/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('why-us.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.add'),
+                                            link: '/why-us/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
                         },
                     ]
                     : []),
-                ...(hasPermission('sections.index')
+                ...(hasPermission('faq.index') || hasPermission('faq.store')
                     ? [
                         {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
-                            label: t('sidebar.sections'),
-                            link: '/sections/index',
-                        },
-                    ]
-                    : []),
-                ...(hasPermission('service.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.services'),
-                            link: '/services/index',
+                            label: t('sidebar.faq'),
+                            link: '/faq',
+                            items: [
+                                ...(hasPermission('report-reason.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.all'),
+                                            link: '/faq/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('faq.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.sections.add'),
+                                            link: '/faq/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
                         },
                     ]
                     : []),
 
-                ...(hasPermission('faq.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.faqs'),
-                            link: '/faq/index',
-                        },
-                    ]
-                    : []),
+
                 ...(hasPermission('socials.index')
                     ? [
                         {
@@ -149,22 +205,11 @@ export const SideBarItemsFn = () => {
             : []),
 
         // Settings
-        ...(hasPermission('setting.index') || hasPermission('contact-us.index')
+        ...(hasPermission('setting.index')
             ? [
                 {
                     heading: t('sidebar.mainSettings'),
                 },
-                // contact_messages
-                // ...(hasPermission('contact-us.index')
-                //     ? [
-                //         {
-                //             id: crypto.randomUUID(),
-                //             icon: <MdMessage />,
-                //             label: t('sidebar.contact_messages'),
-                //             link: '/contact-messages',
-                //         },
-                //     ]
-                //     : []),
 
                 // Settings
                 ...(hasPermission('setting.index')

@@ -10,7 +10,6 @@ import logo from '/assets/images/logo.png';
 import { Link } from 'react-router-dom';
 import Rating from '../components/molecules/Rating/Rating';
 import defaultAvatar from '/assets/images/avatar.jpg';
-
 interface ChartItem {
     count: number;
     title: string;
@@ -54,13 +53,17 @@ interface ChartsData {
 const Index = () => {
     const { t } = useTranslation();
 
-
     return (
         <>
-            <h2 className='text-center text-3xl'>
+            <div className="flex flex-col items-center dark:bg-transparent p-6 w-full">
 
-                {t('sidebar.dashboard')}
-            </h2>
+                <img src={logo || defaultAvatar} alt="logo" className='w-20' />
+
+
+                {/* <h2 className='text-center text-3xl'>
+                    {t('sidebar.dashboard')}
+                </h2> */}
+            </div>
         </>
     );
 };

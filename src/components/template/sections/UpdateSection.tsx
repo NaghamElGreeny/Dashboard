@@ -47,6 +47,13 @@ export default function UpdateFeature() {
         type: showData?.data?.type || '',
         image: showData?.data?.image?.url || '',
         icon: showData?.data?.icon?.url || '',
+        features: (showData?.data?.features || []).map((f: any) => ({
+            id: f.id || Date.now() + Math.random(),
+            icon: f.icon || null,
+            key: 'key',
+            ar: { value: f?.ar?.value || f?.titleAR || '' },
+            en: { value: f?.en?.value || f?.titleEN || '' }
+        }))
     };
 
     const sectionsSchema = () =>
@@ -73,6 +80,17 @@ export default function UpdateFeature() {
                 .required(t('requiredField', { field: t('labels.type') })),
 
             image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
+            //feature
+            features: Yup.array().of(
+                Yup.object().shape({
+                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
+                    ar: Yup.object().shape({
+                        // value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inArabic') })),
+                    }),
+                    en: Yup.object().shape({
+                        value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inEnglish') })),
+                    }),
+                }))
 
         });
 
@@ -120,6 +138,12 @@ export default function UpdateFeature() {
             type: values?.type,
             icon: values.icon,
             image: values.image,
+            features: values.features?.map((f: any) => ({
+                icon: f.icon,
+                key: 'key',
+                ar: { value: f?.ar?.value || '' },
+                en: { value: f?.en?.value || '' },
+            })),
         };
         console.log(finalOut);
         if (initialValues?.image == finalOut.image) {
@@ -130,7 +154,7 @@ export default function UpdateFeature() {
             // _method: 'put'
             _method: 'post'
         });
-
+        console.log(finalOut)
     };
 
     return (

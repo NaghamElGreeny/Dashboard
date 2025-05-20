@@ -64,14 +64,14 @@ export default function ProfileMainData({ isLoading }: { isLoading?: boolean }) 
                     )}
                 </div>
 
-                {/* Phone Input */}
+                {/* Phone Input
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <CustomInputPhone label={t('labels.phone')} name="phone" />
                     )}
-                </div>
+                </div> */}
             </div>
         </>
     );

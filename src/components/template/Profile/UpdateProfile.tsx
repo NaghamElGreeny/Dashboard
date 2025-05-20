@@ -40,20 +40,21 @@ export default function UpdateProfile() {
     }, [showProfileSuccess]);
 
     const initialValues = {
-        image: showProfile?.data?.image || '',
+        image: showProfile?.data?.image?.url || '',
         full_name: showProfile?.data?.full_name || '',
-        phone: showProfile?.data?.phone || '',
-        phone_code: showProfile?.data?.phone_code || '',
+        // phone: showProfile?.data?.phone || '',
+        // phone_code: showProfile?.data?.phone_code || '',
         email: showProfile?.data?.email || '',
     };
 
     const profileSchema = () =>
         Yup.object().shape({
+            image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
             full_name: Yup.string().required(t('requiredField', { field: t('labels.name') })),
             email: Yup.string()
                 .email(t('validations.email', { field: t('labels.email') }))
                 .required(t('requiredField', { field: t('labels.email') })),
-            phone: Yup.number().required(t('requiredField', { field: t('labels.phone') })),
+            // phone: Yup.number().required(t('requiredField', { field: t('labels.phone') })),
         });
 
     // update data
@@ -72,8 +73,8 @@ export default function UpdateProfile() {
             // notify('success');
             refetch();
             // navigate('/profile');
-            window.location.replace('/profile');
-            user(data?.data?.data);
+            // window.location.replace('/profile');
+            // user(data?.data?.data);
         },
         onError: (err: any) => {
             // notify('error', err);
@@ -88,13 +89,24 @@ export default function UpdateProfile() {
     });
 
     const handleSubmit = (values: any) => {
-        if (initialValues?.image == values.image) {
-            delete values.image;
+        // if (initialValues?.image == values.image) {
+        //     delete values.image;
+        // }
+        const finalOut = {
+            full_name: values.full_name,
+            email: values.email,
+            // phone_code: values.phone_code,
+            // phone: values.phone,
+            image: values.image
         }
-
+        console.log(finalOut);
+        if (initialValues?.image == finalOut.image) {
+            delete finalOut.image;
+        }
         update({
-            ...values,
+            ...finalOut,
             //  _method: 'put'
+            _method: 'post'
         });
     };
 

@@ -14,7 +14,7 @@ import { useMutate } from '../../hooks/UseMutate';
 import Swal from 'sweetalert2';
 import DropDownNotification from '../molecules/Notification';
 import defaultAvatar from '/assets/images/avatar.jpg';
-import logo from '/assets/images/logo.png';
+import logo from '/assets/images/favicon.png';
 import useFetch from '../../hooks/UseFetch';
 import { hasPermission } from '../../helper/permissionHelpers';
 
@@ -80,7 +80,6 @@ const Header = () => {
     //     queryKey: [`notification`, hasPermission('notification.index')],
     //     enabled: !!hasPermission('notification.index'),
     // });
-
     return (
         <header className={themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}>
             <div className="shadow-sm floating-height-c">
@@ -116,7 +115,7 @@ const Header = () => {
                                 <img
                                     onError={(e) => (e.target.src = defaultAvatar)}
                                     className="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100"
-                                    src={userData?.image || defaultAvatar}
+                                    src={userData?.image?.url || defaultAvatar}
                                     alt="userProfile"
                                 />
                             }
@@ -127,14 +126,14 @@ const Header = () => {
                                         <img
                                             onError={(e) => (e.target.src = defaultAvatar)}
                                             className="rounded-md w-10 h-10 object-cover"
-                                            src={userData?.image || defaultAvatar}
+                                            src={userData?.image?.url || defaultAvatar}
                                             alt="userProfile"
                                         />
                                         <div className="ltr:pl-4 rtl:pr-4">
                                             <h4 className="text-base">
-                                                {userData?.name?.length > 5
-                                                    ? `${userData.name.slice(0, 5)}...`
-                                                    : userData?.name}
+                                                {userData?.full_name?.length > 5
+                                                    ? `${userData.full_name.slice(0, 5)}...`
+                                                    : userData?.full_name}
                                                 <span className="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">
                                                     {userData?.user_type}
                                                 </span>

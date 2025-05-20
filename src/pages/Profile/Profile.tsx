@@ -65,7 +65,7 @@ export default function ProfilePage() {
                                     }
                                 />
 
-                                {/* Phone Number */}
+                                {/* Phone Number
                                 <CardItem
                                     icon={<MdPhone className="w-8 h-8" />}
                                     label={t('labels.phone')}
@@ -74,7 +74,7 @@ export default function ProfilePage() {
                                             ? `${showProfile.data.phone_code}${showProfile.data.phone}`
                                             : t('not_found')
                                     }
-                                />
+                                /> */}
 
                                 {/* user_type */}
                                 <CardItem

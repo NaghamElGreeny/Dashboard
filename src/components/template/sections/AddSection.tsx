@@ -97,6 +97,7 @@ export default function AddSection() {
             is_active: 0,
             icon: values.icon,
             image: values.image,
+
         };
 
         mutate(finalOut, {
@@ -106,6 +107,8 @@ export default function AddSection() {
             },
         });
     };
+
+
 
     return (
         <div>

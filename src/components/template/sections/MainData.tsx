@@ -7,6 +7,8 @@ import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAtta
 import { Label } from '../../atoms';
 import GeneralSelect from '../../molecules/selects/GeneralSelect';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
+import { TextAreaField } from '../../molecules';
+import { useState } from 'react';
 export default function SectionsMainData({
     isLoading,
     formik,
@@ -61,9 +63,92 @@ export default function SectionsMainData({
         },
     ];
     // about - goals - core_values - our_vision - terms - privacy_policy - our_services - why_us
+
+    //features 
+    // const [features, setFeatures] = useState([
+    //     { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
+    // ]);
+    // const { setFieldValue, values } = useFormikContext<any>();
+    const features = values.features || [];
+    // const addFeature = () => {
+    //     setFeatures([
+    //         ...features,
+    //         { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
+    //     ]);
+    // };
+    const addFeature = () => {
+        setFieldValue('features', [
+            ...features,
+            { id: Date.now(), icon: null, ar: { value: "" }, en: { value: "" } }
+        ]);
+    };
+
+    // const removeFeature = (id: any) => {
+    //     setFeatures(features.filter((f) => f.id !== id));
+    // };
+    const removeFeature = (id: any) => {
+        setFieldValue('features', features.filter((f: any) => f.id !== id));
+    };
+
+
+    // const updateFeature = (id: any, field: any, value: any) => {
+    //     setFeatures((prev) =>
+    //         prev.map((f) =>
+    //             f.id === id ? { ...f, [field]: value } : f
+    //         )
+    //     );
+    // };
+    const updateFeature = (id: any, lang: 'ar' | 'en', value: string) => {
+        const updated = features.map((f: any) =>
+            f.id === id ? { ...f, [lang]: { value } } : f
+        );
+        setFieldValue('features', updated);
+    };
+
+    // const handleIconChange = (id: any, file: any) => {
+    //     updateFeature(id, "icon", file);
+    // };
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
+
+                <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
+                    {isLoading ? (
+                        <Skeleton height={100} />
+                    ) : (
+                        <>
+                            <Label htmlFor="icon" className="mb-1">
+                                {t('labels.icon')}
+                            </Label>
+
+                            <NewUploadImgRepeaterAttachment
+                                acceptFiles="image/png, image/jpeg, image/gif"
+                                name="icon"
+                                model="Section"
+
+                            />
+                        </>
+                    )}
+                </div>
+                <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
+                    {isLoading ? (
+                        <Skeleton height={100} />
+                    ) : (
+                        <>
+                            <Label htmlFor="image" className="mb-1">
+                                {t('labels.image')}
+                            </Label>
+
+                            <NewUploadImgRepeaterAttachment
+                                acceptFiles="image/png, image/jpeg, image/gif"
+                                name="image"
+                                model="Section"
+
+                            />
+                        </>
+                    )}
+                </div>
+
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
@@ -98,10 +183,11 @@ export default function SectionsMainData({
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <BaseInputField
+                        <TextAreaField
                             id="ar_description"
                             name="ar_description"
-                            type="text"
+                            rows={5}
+                            // type="text"
                             className="border"
                             label={t('labels.description') + t('inArabic')}
                             placeholder={t('enter') + ' ' + t('labels.description')}
@@ -113,10 +199,11 @@ export default function SectionsMainData({
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <BaseInputField
+                        <TextAreaField
                             id=" en_description"
                             name="en_description"
-                            type="text"
+                            rows={5}
+                            // type="text"
                             className="border"
                             label={t('labels.description') + t('inEnglish')}
                             placeholder={t('enter') + ' ' + t('labels.description')}
@@ -124,7 +211,7 @@ export default function SectionsMainData({
                     )}
                 </div>
 
-                <div className="col-span-12 sm:col-span-6">
+                <div className="col-span-12">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
@@ -138,8 +225,20 @@ export default function SectionsMainData({
                     )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 col-span-12 mb-4">
-                    <div className="flex flex-col items-center justify-center w-full my-4">
+
+
+                {/* <div className="grid grid-cols-1 gap-2 col-span-12 mb-4">
+                </div> */}
+
+            </div>
+            <div className="flex items-center xl:gap-8 my-10">
+                <div className="border border-border-primary flex-grow"></div>
+                <p className="text-center text-primary text-xl mx-2">Features</p>
+                <div className="border border-border-primary flex-grow"></div>
+            </div>
+            {features.map((feature: any, index: any) => (
+                <div key={feature.id} className=" relative">
+                    <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
                         {isLoading ? (
                             <Skeleton height={100} />
                         ) : (
@@ -150,36 +249,73 @@ export default function SectionsMainData({
 
                                 <NewUploadImgRepeaterAttachment
                                     acceptFiles="image/png, image/jpeg, image/gif"
-                                    name="icon"
-                                    model="Section"
+                                    name={`features[${index}][icon]`}
+                                    model="Feature"
 
                                 />
                             </>
                         )}
                     </div>
-                    <div className="flex flex-col items-center justify-center w-full my-4">
+
+                    {/* Title AR */}
+                    <div className="col-span-12 sm:col-span-6 mb-2">
                         {isLoading ? (
-                            <Skeleton height={100} />
+                            <Skeleton height={40} className="w-full" />
                         ) : (
-                            <>
-                                <Label htmlFor="image" className="mb-1">
-                                    {t('labels.image')}
-                                </Label>
-
-                                <NewUploadImgRepeaterAttachment
-                                    acceptFiles="image/png, image/jpeg, image/gif"
-                                    name="image"
-                                    model="Section"
-
-                                />
-                            </>
+                            <BaseInputField
+                                label={t('labels.title') + ' ' + (index + 1) + t('inArabic')}
+                                name={`features[${index}].ar.value`}
+                                id={`features[${index}].ar.value`}
+                                type="text"
+                                value={feature?.ar?.value}
+                                className="border"
+                                placeholder={t('enter') + ' ' + t('labels.title')}
+                                onChange={(e) =>
+                                    updateFeature(feature.id, "ar", e.target.value)
+                                }
+                            />
                         )}
                     </div>
-                </div>
-                {/* <div className="grid grid-cols-1 gap-2 col-span-12 mb-4">
-                </div> */}
 
-            </div>
+                    {/* Title EN */}
+                    <div className="col-span-12 sm:col-span-6 mb-2">
+                        {isLoading ? (
+                            <Skeleton height={40} className="w-full" />
+                        ) : (
+                            <BaseInputField
+                                label={t('labels.title') + ' ' + (index + 1) + t('inEnglish')}
+                                name={`features[${index}].en.value`}
+                                id={`features[${index}].en.value`}
+                                type="text"
+                                className="border"
+                                placeholder={t('enter') + ' ' + t('labels.title')}
+                                onChange={(e) =>
+                                    updateFeature(feature.id, "en", e.target.value)
+                                }
+                            />
+                        )}
+                    </div>
+
+                    {/* Remove Button */}
+                    <button
+                        type="button"
+                        onClick={() => removeFeature(feature.id)}
+                        className="text-red-500 absolute top-2 right-2"
+                    >
+                        −
+                    </button>
+                </div>
+            ))}
+
+            {/* Add Button */}
+            <button
+                type="button"
+                onClick={addFeature}
+                className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+                + Add Feature
+            </button>
+
         </>
     );
 }
