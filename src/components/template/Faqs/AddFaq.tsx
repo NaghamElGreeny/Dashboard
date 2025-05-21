@@ -24,6 +24,7 @@ export default function AddFaq() {
 
         en_question: '',
         en_answer: '',
+        is_active: false
 
     };
 
@@ -45,7 +46,10 @@ export default function AddFaq() {
             ar_answer: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.answer') + t('inArabic') })),
+            is_active: Yup.boolean()
+                .required(t('requiredField', { field: t('labels.status') })),
         });
+    console.log(initialValues)
 
     const { mutate, isLoading } = useMutate({
         mutationKey: ['faq'],
@@ -81,11 +85,9 @@ export default function AddFaq() {
                 question: values?.en_question,
                 answer: values?.en_answer,
             },
-
-
-            is_active: 1
+            is_active: values?.is_active ? 1 : 0
         };
-
+        console.log(finalOut)
         mutate(finalOut, {
             onSuccess: () => {
                 // Reset the form to initial values

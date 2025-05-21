@@ -119,7 +119,7 @@ export default function AddBanner() {
                 description: values?.en_description,
             },
             type: values?.type,
-            is_active: 0,
+            is_active: 1,
             image: values.image,
             icon: null,
             features: values.features?.map((f: Feature, index: any) => ({

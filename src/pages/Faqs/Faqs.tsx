@@ -1,5 +1,5 @@
 import { MRT_ColumnDef } from 'mantine-react-table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaEye, FaPlus, FaRegEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -24,6 +24,19 @@ export default function Faqs() {
         { label: t('breadcrumb.home'), to: '/' },
         { label: t('breadcrumb.faqs.title') },
     ];
+
+
+    useEffect(() => {
+        const handleFocus = () => {
+            refetch();
+        };
+
+        window.addEventListener('focus', handleFocus);
+
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+        };
+    }, []);
 
     const [faqId, setFaqId] = useState<Object>('');
     const [page, setPage] = useState(1);
@@ -86,7 +99,7 @@ export default function Faqs() {
         },
 
         {
-            header: t('labels.active'),
+            header: t('labels.status'),
             Cell: ({ row }: { row: { original: Faq } }) => {
                 const [isActive, setIsActive] = useState(row.original?.is_active);
 

@@ -1,11 +1,17 @@
 import { Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
-import TextAreaField from '../../atoms/EditorCustom';
+import { TextAreaField } from '../../molecules';
+import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
+import { useFormikContext } from 'formik';
 
 export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
     const { t } = useTranslation();
-
+    const { setFieldValue, values } = useFormikContext<any>();
+    const activeStatus = [
+        { id: 0, value: 0, label: t('labels.inactive') },
+        { id: 1, value: 1, label: t('labels.active') },
+    ]
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
@@ -43,11 +49,13 @@ export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
+
                         <TextAreaField
                             id="ar_answer"
                             name="ar_answer"
+                            rows={5}
                             label={t('labels.answer') + t('inArabic')}
-                        // placeholder={t('enter') + ' ' + t('labels.answer')}
+                            placeholder={t('enter') + ' ' + t('labels.answer')}
                         />
                     )}
                 </div>
@@ -59,8 +67,23 @@ export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
                         <TextAreaField
                             id="en_answer"
                             name="en_answer"
+                            rows={5}
                             label={t('labels.answer') + t('inEnglish')}
-                        // placeholder={t('enter') + ' ' + t('labels.answer')}
+                            placeholder={t('enter') + ' ' + t('labels.answer')}
+                        />
+                    )}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={40} className="w-full" />
+                    ) : (
+                        <GeneralStaticSelect
+                            name="is_active"
+                            dataOptions={activeStatus}
+                            label={t('labels.status')}
+                            placeholder={t('select') + ' ' + t('labels.type')}
+                            onChange={(option: any) => setFieldValue('is_active', option?.value)}
                         />
                     )}
                 </div>

@@ -46,6 +46,7 @@ export default function UpdateFaq() {
 
         en_question: showData?.data?.en?.question || '',
         en_answer: showData?.data?.en?.answer || '',
+        is_active: Number(showData?.data?.is_active) || 0
     };
 
     const faqSchema = () =>
@@ -66,6 +67,8 @@ export default function UpdateFaq() {
             ar_answer: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.answer') + t('inArabic') })),
+            is_active: Yup.boolean()
+                .required(t('requiredField', { field: t('labels.status') })),
         });
 
     // update data
@@ -108,6 +111,7 @@ export default function UpdateFaq() {
                 question: values?.en_question,
                 answer: values?.en_answer,
             },
+            is_active: values?.is_active ? 1 : 0
         };
 
         update({
