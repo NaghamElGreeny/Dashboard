@@ -11,6 +11,7 @@ import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 import BannersMainData from './MainData';
 import { features } from 'process';
+import { Feature } from '../../../pages/Sections/types';
 
 export default function UpdateBanner() {
     const { t, i18n } = useTranslation();
@@ -49,7 +50,12 @@ export default function UpdateBanner() {
         image: showData?.data?.image?.url || '',
         icon: null,
         is_active: 1,
-        features: []
+        features: (showData?.data?.features || []).map((f: Feature, index: number) => ({
+            icon: f.icon.url,
+            key: `key${index}`,
+            ar: { value: f.ar.value || '' },
+            en: { value: f.en.value || '' },
+        }))
 
     };
     // console.log('initialValues: ', initialValues)
@@ -76,7 +82,16 @@ export default function UpdateBanner() {
                 .required(t('requiredField', { field: t('labels.type') })),
 
             image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
-
+            features: Yup.array().of(
+                Yup.object().shape({
+                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
+                    ar: Yup.object().shape({
+                        // value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inArabic') })),
+                    }),
+                    en: Yup.object().shape({
+                        value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inEnglish') })),
+                    }),
+                }))
         });
 
     // update data
@@ -124,7 +139,17 @@ export default function UpdateBanner() {
             image: values.image,
             icon: null,
             is_active: 1,
-            features: []
+            features: values.features?.map((f: Feature, index: number) => {
+                const initialIcon = initialValues.features?.[index]?.icon;
+                const currentIcon = f.icon?.url || f.icon;
+
+                return {
+                    ...(currentIcon !== initialIcon && { icon: currentIcon }),
+                    key: `key${index}`,
+                    ar: { value: f.ar?.value || '' },
+                    en: { value: f.en?.value || '' },
+                };
+            }),
         };
         console.log(finalOut);
         if (initialValues?.image == finalOut.image) {

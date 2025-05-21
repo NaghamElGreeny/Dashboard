@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 import BannersMainData from './MainData';
 import { features } from 'process';
+import { Feature } from '../../../pages/Banners/types';
 
 export default function AddBanner() {
     const { t } = useTranslation();
@@ -28,7 +29,14 @@ export default function AddBanner() {
         type: '',
         image: '',
         icon: null,
-        features: [],
+        features: [{
+            // id: '',
+            icon: '',
+            ar: { value: '' },
+            en: { value: '' },
+
+            key: '',
+        }]
     };
     const sectionsSchema = () =>
         Yup.object().shape({
@@ -54,7 +62,22 @@ export default function AddBanner() {
                 .required(t('requiredField', { field: t('labels.type') })),
             image: Yup.mixed().required(t('validation.image_only')),
             //feature
-
+            features: Yup.array().of(
+                Yup.object().shape({
+                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
+                    ar: Yup.object().shape({
+                        value: Yup.string()
+                            .trim()
+                            .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
+                            .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
+                    }),
+                    en: Yup.object().shape({
+                        value: Yup.string()
+                            .trim()
+                            .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
+                            .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
+                    }),
+                }))
 
         });
 
@@ -98,7 +121,14 @@ export default function AddBanner() {
             type: values?.type,
             is_active: 0,
             image: values.image,
-            icon: null, features: []
+            icon: null,
+            features: values.features?.map((f: Feature, index: any) => ({
+                icon: f.icon,
+                // id: `id ${index}`,
+                key: `key${index}`,
+                ar: { value: f?.ar?.value || '' },
+                en: { value: f?.en?.value || '' },
+            })),
         };
 
         mutate(finalOut, {

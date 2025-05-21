@@ -82,7 +82,7 @@ export default function UpdateFeature() {
                 .required(t('requiredField', { field: t('labels.type') })),
 
             image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
-            //feature
+            //features
             features: Yup.array().of(
                 Yup.object().shape({
                     icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),

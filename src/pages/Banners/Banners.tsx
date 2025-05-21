@@ -112,7 +112,7 @@ export default function Banners() {
             header: t('labels.banner_type'),
             Cell: ({ row }: { row: { original: Banner } }) => {
                 const type = row.original?.type || t('not_found');
-                return <span>{type}</span>;
+                return <span>{t(`labels.${type}`)}</span>;
             },
             accessorKey: 'type',
         },

@@ -115,7 +115,7 @@ export default function Sections() {
             header: t('labels.type'),
             Cell: ({ row }: { row: { original: Section } }) => {
                 const type = row.original?.type || t('not_found');
-                return <span>{type}</span>;
+                return <span>{t(`labels.${type}`)}</span>;
             },
             accessorKey: 'type',
         },
