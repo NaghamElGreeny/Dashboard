@@ -5,17 +5,18 @@ import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
-import MainDataSocials from './MainData';
 import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
+import BannersMainData from './MainData';
+import { features } from 'process';
 
 export default function AddBanner() {
     const { t } = useTranslation();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.sections.title'), to: '/sections/index' },
-        { label: t('breadcrumb.sections.add') },
+        { label: t('breadcrumb.banners.title'), to: '/banners/index' },
+        { label: t('breadcrumb.banners.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
@@ -25,13 +26,12 @@ export default function AddBanner() {
         en_title: '',
         en_description: '',
         type: '',
-        icon: '',
         image: '',
+        icon: null,
         features: [],
     };
     const sectionsSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed().required(t('validation.image_only')),
 
             ar_title: Yup.string()
                 .trim()
@@ -54,22 +54,7 @@ export default function AddBanner() {
                 .required(t('requiredField', { field: t('labels.type') })),
             image: Yup.mixed().required(t('validation.image_only')),
             //feature
-            features: Yup.array().of(
-                Yup.object().shape({
-                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
-                    ar: Yup.object().shape({
-                        value: Yup.string()
-                            .trim()
-                            .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
-                            .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
-                    }),
-                    en: Yup.object().shape({
-                        value: Yup.string()
-                            .trim()
-                            .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
-                            .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
-                    }),
-                }))
+
 
         });
 
@@ -112,15 +97,8 @@ export default function AddBanner() {
             },
             type: values?.type,
             is_active: 0,
-            icon: values.icon,
             image: values.image,
-            features: values.features?.map((f: any) => ({
-                icon: f.values.icon,
-                id: f.values.id || Date.now() + Math.random(),
-                key: 'key',
-                ar: { value: f?.ar?.value || '???' },
-                en: { value: f?.en?.value || '' },
-            })),
+            icon: null, features: []
         };
 
         mutate(finalOut, {
@@ -151,7 +129,7 @@ export default function AddBanner() {
 
 
                     return (<Form>
-                        <MainDataSocials />
+                        <BannersMainData />
                         <div className="mt-10 mb-4 flex gap-2 justify-center">
                             <Button
                                 type="submit"

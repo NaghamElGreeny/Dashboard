@@ -8,6 +8,8 @@ import { Breadcrumb } from '../../molecules/BreadCrumbs';
 import MainDataSocials from './MainData';
 import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
+import { features } from 'process';
+import { Feature } from '../../../pages/Sections/types';
 
 export default function AddSection() {
     const { t } = useTranslation();
@@ -27,7 +29,15 @@ export default function AddSection() {
         type: '',
         icon: '',
         image: '',
-        features: [],
+
+        features: [{
+            id: '',
+            icon: '',
+            ar: { value: '' },
+            en: { value: '' },
+
+            key: '',
+        }]
     };
     const sectionsSchema = () =>
         Yup.object().shape({
@@ -114,14 +124,15 @@ export default function AddSection() {
             is_active: 0,
             icon: values.icon,
             image: values.image,
-            features: values.features?.map((f: any) => ({
-                icon: f.values.icon,
-                id: f.values.id || Date.now() + Math.random(),
-                key: 'key',
-                ar: { value: f?.ar?.value || '???' },
+            features: values.features?.map((f: Feature, index: any) => ({
+                icon: f.icon?.url,
+                id: `id ${index}`,
+                key: `key ${index}`,
+                ar: { value: f?.ar?.value || '' },
                 en: { value: f?.en?.value || '' },
             })),
         };
+        console.log('finalOut : ', finalOut.features);
 
         mutate(finalOut, {
             onSuccess: () => {
@@ -147,6 +158,7 @@ export default function AddSection() {
             >
                 {({ values, errors }) => {
 
+                    // console.log(values);
                     console.log(errors);
 
 

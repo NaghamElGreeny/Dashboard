@@ -9,6 +9,7 @@ import GeneralSelect from '../../molecules/selects/GeneralSelect';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
 import { TextAreaField } from '../../molecules';
 import { useState } from 'react';
+import { Feature } from '../../../pages/Sections/types';
 export default function SectionsMainData({
     isLoading,
     formik,
@@ -62,20 +63,9 @@ export default function SectionsMainData({
             label: t('labels.why_us'),
         },
     ];
-    // about - goals - core_values - our_vision - terms - privacy_policy - our_services - why_us
 
-    //features 
-    // const [features, setFeatures] = useState([
-    //     { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
-    // ]);
-    // const { setFieldValue, values } = useFormikContext<any>();
-    const features = values.features || [];
-    // const addFeature = () => {
-    //     setFeatures([
-    //         ...features,
-    //         { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
-    //     ]);
-    // };
+    const features = data?.data?.features || [];
+
     const addFeature = () => {
         setFieldValue('features', [
             ...features,
@@ -233,12 +223,13 @@ export default function SectionsMainData({
             </div>
             <div className="flex items-center xl:gap-8 my-10">
                 <div className="border border-border-primary flex-grow"></div>
-                <p className="text-center text-primary text-xl mx-2">Features</p>
+                <p className="text-center text-primary text-xl mx-2">{t('labels.features')}</p>
                 <div className="border border-border-primary flex-grow"></div>
             </div>
-            {features.map((feature: any, index: any) => (
-                <div key={feature.id} className=" relative">
-                    <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
+
+            {features.map((feature: Feature, index: any) => (
+                <div key={feature.id} className=" relative grid grid-cols-12 gap-2">
+                    <div className="flex flex-col col-span-11  items-center justify-center w-full my-4">
                         {isLoading ? (
                             <Skeleton height={100} />
                         ) : (
@@ -249,12 +240,34 @@ export default function SectionsMainData({
 
                                 <NewUploadImgRepeaterAttachment
                                     acceptFiles="image/png, image/jpeg, image/gif"
-                                    name={`feature[${index}][icon]`}
+                                    name={`features[${index}][icon]`}
                                     model="Feature"
 
                                 />
                             </>
                         )}
+                    </div>
+                    {/* add & remove  */}
+                    < div className='col-span-1 flex flex-col items-center justify-center gap-2 ' >
+                        {index === (features.length - 1) &&
+                            <button
+                                type="button"
+                                onClick={addFeature}
+                                className="text-green-500 top-2 right-2"
+                            >
+                                <p className=' text-5xl font-bold'>+</p>
+                            </button>
+                        }
+                        {features.length > 1 &&
+
+                            <button
+                                type="button"
+                                onClick={() => removeFeature(feature.id)}
+                                className="text-red-500  top-2 right-2 "
+                            >
+                                <p className=' text-5xl font-bold'>-</p>
+                            </button>
+                        }
                     </div>
 
                     {/* Title AR */}
@@ -264,15 +277,12 @@ export default function SectionsMainData({
                         ) : (
                             <BaseInputField
                                 label={t('labels.title') + ' ' + (index + 1) + t('inArabic')}
+                                // name={`features[${index}][ar][value]`}
                                 name={`features[${index}][ar][value]`}
                                 id={`features[${index}].ar.value`}
                                 type="text"
-                                // value={feature?.ar?.value}
                                 className="border"
                                 placeholder={t('enter') + ' ' + t('labels.title')}
-                            // onChange={(e) =>
-                            //     updateFeature(feature.id, "ar", e.target.value)
-                            // }
                             />
                         )}
                     </div>
@@ -287,35 +297,22 @@ export default function SectionsMainData({
                                 name={`features[${index}].en.value`}
                                 id={`features[${index}].en.value`}
                                 type="text"
-                                // value={feature?.en?.value || ''}
                                 className="border"
                                 placeholder={t('enter') + ' ' + t('labels.title')}
-                            // onChange={(e) =>
-                            //     updateFeature(feature.id, "en", e.target.value)
-                            // }
+
                             />
                         )}
                     </div>
 
-                    {/* Remove Button */}
-                    <button
-                        type="button"
-                        onClick={() => removeFeature(feature.id)}
-                        className="text-red-500 absolute top-2 right-2"
-                    >
-                        −
-                    </button>
-                </div>
-            ))}
 
-            {/* Add Button */}
-            <button
-                type="button"
-                onClick={addFeature}
-                className="bg-green-500 text-white px-4 py-2 rounded"
-            >
-                + Add Feature
-            </button>
+
+
+
+
+                </div >
+            ))
+            }
+
 
         </>
     );

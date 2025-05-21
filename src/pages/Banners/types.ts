@@ -1,13 +1,13 @@
-// export interface Feature {
-//     id: string;
-//     icon: {
-//         path: any;
-//         url: any;
-//     };
-//     key: string;
-//     ar: { value: string };
-//     en: { value: string };
-// }
+export interface Feature {
+    id: string;
+    icon: {
+        path: any;
+        url: any;
+    };
+    key: string;
+    ar: { value: string };
+    en: { value: string };
+}
 export interface Banner {
     id: string;
     ar: {
@@ -28,7 +28,7 @@ export interface Banner {
     };
     type: string;
     is_active: 0;
-    // features?: Feature[];
+    features?: Feature[];
 }
 
 export interface FetchBannersData {

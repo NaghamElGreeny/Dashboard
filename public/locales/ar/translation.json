@@ -249,6 +249,14 @@
         "noSpacesAllowed": "لا يُسمح بوجود مسافات"
     },
     "labels": {
+        "main_banner": "الرئيسية",
+        "about_banner": "من نحن",
+        "our_services_banner": "خدماتنا",
+        "qa_banner": "الأسئلة الشائعة",
+        "contact_banner": "تواصل معنا",
+        "terms_banner": "الشروط والأحكام",
+        "privacy_banner": "سياسة الخصوصية",
+        "features": "المميزات",
         "client_registered_count": "عدد العملاءالمشتركين",
         "registered_courses": "الدورات المسجلة",
         "watched_videos": "الفيديوهات المُشاهدة",

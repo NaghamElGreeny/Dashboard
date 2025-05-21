@@ -235,6 +235,14 @@
         "noSpacesAllowed": "Spaces are not allowed"
     },
     "labels": {
+        "main_banner": "Home",
+        "about_banner": "About Us",
+        "our_services_banner": "Our Services",
+        "qa_banner": "FAQ",
+        "contact_banner": "Contact Us",
+        "terms_banner": "Terms and Conditions",
+        "privacy_banner": "Privacy Policy",
+        "features": "Features",
         "client_registered_count": "Registered Clients Count",
         "registered_courses": "Registered Courses",
         "watched_videos": "Watched Videos",

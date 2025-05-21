@@ -270,7 +270,7 @@ export default function Sections() {
     const buildEndpoint = (params: { type: string }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `sections?${queryParams.toString()}`;
+        return `listing/sections?${queryParams.toString()}`;
     };
 
     const {

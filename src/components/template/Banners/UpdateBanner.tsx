@@ -6,10 +6,10 @@ import useFetch from '../../../hooks/UseFetch';
 import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
-import SectionsMainData from './MainData';
 import * as Yup from 'yup';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
+import BannersMainData from './MainData';
 import { features } from 'process';
 
 export default function UpdateBanner() {
@@ -20,8 +20,8 @@ export default function UpdateBanner() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.sections.title'), to: '/sections/index' },
-        { label: t('breadcrumb.sections.edit') },
+        { label: t('breadcrumb.banners.title'), to: '/banners/index' },
+        { label: t('breadcrumb.banners.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -32,8 +32,8 @@ export default function UpdateBanner() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `sections/${id}`,
-        queryKey: [`sections/${id}`],
+        endpoint: `banners/${id}`,
+        queryKey: [`banneers/${id}`],
     });
     useEffect(() => {
         setFormKey(formKey + 1);
@@ -47,20 +47,14 @@ export default function UpdateBanner() {
         en_description: showData?.data?.en?.description || '',
         type: showData?.data?.type || '',
         image: showData?.data?.image?.url || '',
-        icon: showData?.data?.icon?.url || '',
-        features: (showData?.data?.features || []).map((f: any, index: number) => ({
-            id: f.id ?? `temp-${index}`,
-            icon: f.icon?.url || null,
-            key: 'key',
-            ar: { value: f?.ar?.value || f?.titleAR || '' },
-            en: { value: f?.en?.value || f?.titleEN || '' }
-        }))
+        icon: null,
+        is_active: 1,
+        features: []
+
     };
-    console.log(initialValues.features[0]);
     // console.log('initialValues: ', initialValues)
-    const sectionsSchema = () =>
+    const bannersSchema = () =>
         Yup.object().shape({
-            icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
             ar_title: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
@@ -82,24 +76,13 @@ export default function UpdateBanner() {
                 .required(t('requiredField', { field: t('labels.type') })),
 
             image: Yup.mixed().required(t('requiredField', { field: t('labels.image') })),
-            //feature
-            features: Yup.array().of(
-                Yup.object().shape({
-                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
-                    ar: Yup.object().shape({
-                        // value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inArabic') })),
-                    }),
-                    en: Yup.object().shape({
-                        value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inEnglish') })),
-                    }),
-                }))
 
         });
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`sections/${id}`],
-        endpoint: `sections/${id}`,
+        mutationKey: [`banners/${id}`],
+        endpoint: `banners/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({
@@ -112,7 +95,7 @@ export default function UpdateBanner() {
 
             // notify('success');
             refetch();
-            navigate('/sections/index');
+            navigate('/banners/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -138,14 +121,10 @@ export default function UpdateBanner() {
                 description: values?.en_description,
             },
             type: values?.type,
-            icon: values.icon,
             image: values.image,
-            features: values.features?.map((f: any) => ({
-                icon: f.icon,
-                key: 'key',
-                ar: { value: f?.ar?.value || '?' },
-                en: { value: f?.en?.value || '' },
-            })),
+            icon: null,
+            is_active: 1,
+            features: []
         };
         console.log(finalOut);
         if (initialValues?.image == finalOut.image) {
@@ -164,7 +143,7 @@ export default function UpdateBanner() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={sectionsSchema()}
+                validationSchema={bannersSchema()}
                 key={formKey}
                 initialValues={initialValues}
                 enableReinitialize
@@ -180,7 +159,7 @@ export default function UpdateBanner() {
 
                     return (
                         <Form>
-                            <SectionsMainData isLoading={showDataLoading} data={showData} />
+                            <BannersMainData isLoading={showDataLoading} data={showData} />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
                                 <Button
                                     type="submit"

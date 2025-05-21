@@ -23,7 +23,7 @@ import SectionsPage from '../pages/Sections/Sections';
 import AddSection from '../components/template/Sections/AddSection'
 import UpdateSection from '../components/template/Sections/UpdateSection'
 
-import BannerssPage from '../pages/Banners/Banners';
+import BannersPage from '../pages/Banners/Banners';
 import AddBanner from '../components/template/Banners/AddBanner'
 import UpdateBanner from '../components/template/Banners/UpdateBanner'
 

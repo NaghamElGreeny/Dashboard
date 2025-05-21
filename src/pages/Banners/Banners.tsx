@@ -22,51 +22,18 @@ export default function Banners() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.banner.title') },
+        { label: t('breadcrumb.banners.title') },
     ];
-    const typesList = [
-        {
-            id: 0,
-            value: 'about',
-            label: t('labels.about'),
-        },
-        {
-            id: 1,
-            value: 'goals',
-            label: t('labels.goals'),
-        },
-        {
-            id: 2,
-            value: 'core_values',
-            label: t('labels.core_values'),
-        },
-        {
-            id: 3,
-            value: 'our_vision',
-            label: t('labels.our_vision'),
-        },
-        {
-            id: 4,
-            value: 'terms',
-            label: t('labels.terms'),
-        },
-        {
-            id: 5,
-            value: 'privacy_policy',
-            label: t('labels.privacy_policy'),
-        },
-        {
-            id: 6,
-            value: 'our_services',
-            label: t('labels.our_services'),
-        },
-        {
-            id: 7,
-            value: 'why_us',
-            label: t('labels.why_us'),
-        },
+    const sectionTypes = [
+        { id: 0, value: 'main_banner', label: t('labels.main_banner') },
+        { id: 1, value: 'about_banner', label: t('labels.about_banner') },
+        { id: 2, value: 'our_services_banner', label: t('labels.our_services_banner') },
+        { id: 3, value: 'qa_banner', label: t('labels.qa_banner') },
+        { id: 4, value: 'contact_banner', label: t('labels.contact_banner') },
+        { id: 5, value: 'terms_banner', label: t('labels.terms_banner') },
+        { id: 6, value: 'privacy_banner', label: t('labels.privacy_banner') },
     ];
-    const [SectionsId, setSectionsId] = useState<Object>('');
+    const [BannersId, setSectionsId] = useState<Object>('');
     const [page, setPage] = useState<number>(1);
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -96,29 +63,22 @@ export default function Banners() {
             ),
             accessorKey: 'image',
         },
-        {
-            header: t('labels.icon'),
-            Cell: ({ row }: { row: { original: Banner } }) => (
-                <div className="flex gap-5">
-                    <LightBox
-                        getItems={[
-                            {
-                                src: row.original.icon?.url || 'imageError',
-                            },
-                        ]} />
-                </div>
-            ),
-            accessorKey: 'icon',
-        },
+        // {
+        //     header: t('labels.icon'),
+        //     Cell: ({ row }: { row: { original: Banner } }) => (
+        //         <div className="flex gap-5">
+        //             <LightBox
+        //                 getItems={[
+        //                     {
+        //                         src: row.original.icon?.url || 'imageError',
+        //                     },
+        //                 ]} />
+        //         </div>
+        //     ),
+        //     accessorKey: 'icon',
+        // },
 
-        {
-            header: t('labels.type'),
-            Cell: ({ row }: { row: { original: Banner } }) => {
-                const type = row.original?.type || t('not_found');
-                return <span>{type}</span>;
-            },
-            accessorKey: 'type',
-        },
+
         {
             header: t('labels.title'),
             Cell: ({ row }: { row: { original: Banner } }) => {
@@ -148,7 +108,14 @@ export default function Banners() {
 
             accessorKey: 'description',
         },
-
+        {
+            header: t('labels.banner_type'),
+            Cell: ({ row }: { row: { original: Banner } }) => {
+                const type = row.original?.type || t('not_found');
+                return <span>{type}</span>;
+            },
+            accessorKey: 'type',
+        },
         {
             accessorKey: 'status',
             header: t('labels.status'),
@@ -176,7 +143,7 @@ export default function Banners() {
             },
         },
 
-        ...(hasPermission('update-Sections') || hasPermission('destroy-Sections')
+        ...(hasPermission('update-Banners') || hasPermission('destroy-Banners')
             ? [
                 {
                     header: t('labels.actions'),
@@ -185,16 +152,16 @@ export default function Banners() {
                             className="flex gap-2 items-center"
                             style={{ marginInlineStart: '1rem' }}
                         >
-                            {hasPermission('update-Sections') && (
+                            {hasPermission('update-Banners') && (
                                 <Link
-                                    to={`/sections/edit/${row.original?.id}`}
+                                    to={`/banners/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
                                 </Link>
                             )}
 
-                            {hasPermission('destroy-Sections') && (
+                            {hasPermission('destroy-Banners') && (
                                 <CrudIconDelete
                                     deleteAction={() => {
                                         setSectionsId(row.original?.id);
@@ -211,8 +178,8 @@ export default function Banners() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`sections/${SectionsId}`],
-        endpoint: `sections/${SectionsId}`,
+        mutationKey: [`banners/${BannersId}`],
+        endpoint: `banners/${BannersId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({
@@ -241,8 +208,8 @@ export default function Banners() {
     };
 
     const { mutate: updateStatus } = useMutate({
-        mutationKey: [`sections/${SectionsId}`],
-        endpoint: `sections/${SectionsId}`,
+        mutationKey: [`banners/${BannersId}`],
+        endpoint: `banners/${BannersId}`,
         onSuccess: async (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -259,7 +226,8 @@ export default function Banners() {
             });
         },
         formData: true,
-        method: 'put',
+        // method: 'put',
+        method: 'post',
     });
 
 
@@ -270,7 +238,7 @@ export default function Banners() {
     const buildEndpoint = (params: { type: string }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `sections?${queryParams.toString()}`;
+        return `listing/banners?${queryParams.toString()}`;
     };
 
     const {
@@ -301,7 +269,7 @@ export default function Banners() {
             {/* filter section */}
             <FilterSection
                 initialValues={initialValues}
-                optionsList={typesList}
+                optionsList={sectionTypes}
                 onSubmit={(values) => {
                     const params = {
                         type: values.type,

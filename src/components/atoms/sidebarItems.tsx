@@ -48,16 +48,14 @@ export const SideBarItemsFn = () => {
         },
 
         // public_pages
-        ...(hasPermission('whyus.index') ||
+        ...(hasPermission('sections.index') ||
+            hasPermission('banners.index') ||
+            hasPermission('static-pages.index') ||
             hasPermission('faq.index') ||
             hasPermission('contact-info.index') ||
-            hasPermission('policy.index') ||
-            hasPermission('term.index') ||
-            hasPermission('cancellation-policy.index') ||
-            hasPermission('sections.index')
+            hasPermission('whyus.index') ||
+            hasPermission('services.index')
             ? [
-
-
 
                 ...(hasPermission('sections.index') || hasPermission('sections.store')
                     ? [
@@ -284,8 +282,6 @@ export const SideBarItemsFn = () => {
                     ]
                     : []),
 
-
-
                 // ...(hasPermission('features.index')
                 //     ? [
                 //         {
@@ -318,8 +314,6 @@ export const SideBarItemsFn = () => {
                 //         },
                 //     ]
                 //     : []),
-
-
             ]
             : []),
 

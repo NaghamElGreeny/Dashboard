@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 import { features } from 'process';
+import { Feature } from '../../../pages/Sections/types';
 
 export default function UpdateFeature() {
     const { t, i18n } = useTranslation();
@@ -48,15 +49,15 @@ export default function UpdateFeature() {
         type: showData?.data?.type || '',
         image: showData?.data?.image?.url || '',
         icon: showData?.data?.icon?.url || '',
-        features: (showData?.data?.features || []).map((f: any, index: number) => ({
-            id: f.id ?? `temp-${index}`,
-            icon: f.icon?.url || null,
-            key: 'key',
-            ar: { value: f?.ar?.value || f?.titleAR || '' },
-            en: { value: f?.en?.value || f?.titleEN || '' }
+        features: (showData?.data?.features || []).map((f: Feature, index: number) => ({
+            id: f.id || '',
+            icon: f.icon?.url || '',
+            key: f.key || '',
+            ar: { value: f?.ar?.value || '' },
+            en: { value: f?.en?.value || '' }
         }))
     };
-    console.log(initialValues.features[0]);
+    console.log(initialValues.features);
     // console.log('initialValues: ', initialValues)
     const sectionsSchema = () =>
         Yup.object().shape({
@@ -140,9 +141,10 @@ export default function UpdateFeature() {
             type: values?.type,
             icon: values.icon,
             image: values.image,
-            features: values.features?.map((f: any) => ({
-                icon: f.icon,
-                key: 'key',
+            features: values.features?.map((f: Feature, index: any) => ({
+                icon: f?.icon?.url,
+                id: `id ${index}`,
+                key: crypto.randomUUID(),
                 ar: { value: f?.ar?.value || '?' },
                 en: { value: f?.en?.value || '' },
             })),
