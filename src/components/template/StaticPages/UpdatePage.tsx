@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 
-export default function UpdatePage() {
+export default function UpdateStaticPage() {
     const { t, i18n } = useTranslation();
 
     const { id } = useParams();
@@ -19,8 +19,8 @@ export default function UpdatePage() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.pages.title'), to: '/pages/index' },
-        { label: t('breadcrumb.pages.edit') },
+        { label: t('breadcrumb.static-pages.title'), to: '/static-pages/index' },
+        { label: t('breadcrumb.static-pages.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -31,8 +31,8 @@ export default function UpdatePage() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `pages/${id}`,
-        queryKey: [`pages/${id}`],
+        endpoint: `sections/${id}`,
+        queryKey: [`sections/${id}`],
     });
 
     useEffect(() => {
@@ -49,7 +49,6 @@ export default function UpdatePage() {
         en_description: showData?.data?.en?.desc || '',
 
         type: showData?.data?.type || '',
-        ordering: showData?.data?.ordering || '',
     };
 
     const pageSchema = () =>
@@ -108,7 +107,6 @@ export default function UpdatePage() {
 
     const handleSubmit = (values: any) => {
         const finalOut = {
-            ordering: values?.ordering,
             type: values?.type,
 
             ar: {
@@ -121,7 +119,11 @@ export default function UpdatePage() {
             },
         };
 
-        update({ ...finalOut, _method: 'put' });
+        update({
+            ...finalOut,
+            _method: 'post'
+            //   _method: 'put'
+        });
     };
 
     return (

@@ -8,7 +8,7 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
     const { t } = useTranslation();
     const { setFieldValue, values } = useFormikContext<{ [key: string]: any }>();
 
-    
+
     const pageTypes = [
         {
             id: 0,
@@ -26,6 +26,22 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
     return (
         <>
             <div className="grid grid-cols-12 gap-2">
+
+
+                <div className="col-span-12">
+                    {isLoading ? (
+                        <Skeleton height={40} className="w-full" />
+                    ) : (
+                        <GeneralStaticSelect
+                            name="type"
+                            dataOptions={pageTypes}
+                            label={t('labels.type')}
+                            placeholder={t('select') + ' ' + t('labels.type')}
+                            onChange={(option: any) => setFieldValue('type', option?.value)}
+                        />
+                    )}
+                </div>
+
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
@@ -80,6 +96,7 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
                             name="en_description"
                             id="en_description"
                             type="textarea"
+                            aria-rowspan={5}
                             className="border"
                             placeholder={t('enter') + ' ' + t('labels.description')}
                         />
@@ -100,20 +117,7 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
                     )}
                 </div>
 
-                <div className="col-span-12 sm:col-span-6">
-                    {isLoading ? (
-                        <Skeleton height={40} className="w-full" />
-                    ) : (
-                        <BaseInputField
-                            label={t('labels.order')}
-                            name="ordering"
-                            id="ordering"
-                            type="number"
-                            className="border"
-                            placeholder={t('enter') + ' ' + t('labels.order')}
-                        />
-                    )}
-                </div>
+
             </div>
         </>
     );

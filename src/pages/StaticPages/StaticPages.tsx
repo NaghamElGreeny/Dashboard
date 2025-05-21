@@ -15,23 +15,23 @@ import { useMutate } from '../../hooks/UseMutate';
 import type { FetchPagesData, Page } from './types';
 import FilterSection from '../../components/atoms/filters/Filters';
 
-export default function Pages() {
+export default function StaticPages() {
     const { t, i18n } = useTranslation();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.pages.title') },
+        { label: t('breadcrumb.static_pages.title') },
     ];
 
     const pageTypes = [
         {
             id: 0,
-            value: 'return-policy',
-            label: t('labels.return-policy'),
+            value: 'privacy_policy',
+            label: t('labels.privacy_policy'),
         },
         {
             id: 1,
-            value: 'terms-conditions',
+            value: 'terms_conditions',
             label: t('labels.terms-conditions'),
         },
     ];
@@ -39,10 +39,32 @@ export default function Pages() {
     const [pageId, setPageId] = useState<string>('');
     const [page, setPage] = useState<number>(1);
     const [searchParams, setSearchParams] = useSearchParams();
+    const locale = localStorage.getItem('i18nextLng');
 
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedDescription, setSelectedDescription] = useState<string>('');
-
+    const { mutate: updateStatus } = useMutate({
+        mutationKey: [`static-pages-${pageId}`],
+        endpoint: `static-pages/${pageId}`,
+        onSuccess: async (data: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'success',
+                title:
+                    data?.data?.message || t('isUpdatedSuccessfully', { name: t('labels.status') }),
+            });
+            refetch();
+        },
+        onError: async (err: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'error',
+                title: err?.response?.data?.message,
+            });
+        },
+        formData: true,
+        method: 'put',
+    });
     const columns: MRT_ColumnDef<Page>[] = [
         {
             header: '#',
@@ -53,7 +75,7 @@ export default function Pages() {
         {
             header: t('labels.title'),
             Cell: ({ row }: { row: { original: Page } }) => {
-                const title = row.original?.title || t('not_found');
+                const title = locale === 'ar' ? row.original?.ar?.title : row.original?.en?.title || t('not_found');
                 return <span>{title}</span>;
             },
             accessorKey: 'title',
@@ -62,7 +84,7 @@ export default function Pages() {
         {
             header: t('labels.description'),
             Cell: ({ row }: { row: { original: Page } }) => {
-                const description = row.original?.desc || t('not_found');
+                const description = locale === 'ar' ? row.original?.ar?.description : row.original?.en?.description || t('not_found');
                 return (
                     <>
                         <FaEye
@@ -90,45 +112,63 @@ export default function Pages() {
         },
 
         {
-            header: t('labels.order'),
-            Cell: ({ row }: { row: { original: Page } }) => {
-                const ordering = row.original?.ordering || '---';
-                return <span>{ordering}</span>;
+            accessorKey: 'status',
+            header: t('labels.status'),
+            Cell: ({ row }: { row: { original: any } }) => {
+                const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
+                function handleClick() {
+                    updateStatus({
+                        id: row.original?.id,
+                        is_active: !row.original?.is_active,
+                    });
+                }
+                return (
+                    <>
+                        <button onClick={handleClick}>
+
+                            <span
+                                className={`${row.original?.is_active ? 'active' : 'inactive'
+                                    } statuses `}
+                            >
+                                {status}
+                            </span>
+                        </button>
+                    </>
+                );
             },
-            accessorKey: 'ordering',
         },
 
         ...(hasPermission('update-Page') || hasPermission('delete-Page')
             ? [
-                  {
-                      header: t('labels.actions'),
-                      Cell: ({ row }: any) => (
-                          <div
-                              className="flex gap-2 items-center"
-                              style={{ marginInlineStart: '1rem' }}
-                          >
-                              {hasPermission('update-Page') && (
-                                  <Link
-                                      to={`/pages/edit/${row.original?.id}`}
-                                      className="flex gap-5"
-                                  >
-                                      <FaRegEdit className="text-[19px] text-warning ms-8" />
-                                  </Link>
-                              )}
+                {
+                    header: t('labels.actions'),
+                    Cell: ({ row }: any) => (
+                        <div
+                            className="flex gap-2 items-center"
+                            style={{ marginInlineStart: '1rem' }}
+                        >
+                            {hasPermission('static-pages.update') && (
+                                <Link
+                                    to={`/static-pages/edit/${row.original?.id}`}
+                                    className="flex gap-5"
+                                >
+                                    <FaRegEdit className="text-[19px] text-warning ms-8" />
+                                </Link>
+                            )}
 
-                              {hasPermission('delete-Page') && (
-                                  <CrudIconDelete
-                                      deleteAction={() => {
-                                          setPageId(row.original?.id);
-                                          deleteItem();
-                                      }}
-                                  />
-                              )}
-                          </div>
-                      ),
-                      accessorKey: 'x',
-                  },
-              ]
+                            {hasPermission('static-pages.destroy') && (
+                                <CrudIconDelete
+                                    deleteAction={() => {
+                                        setPageId(row.original?.id);
+                                        deleteItem();
+                                    }}
+                                />
+                            )}
+                        </div>
+                    ),
+                    accessorKey: 'x',
+                },
+            ]
             : []),
     ];
 
@@ -138,13 +178,13 @@ export default function Pages() {
 
     const initialValues = {
         type: searchParams.get('type') || '',
-        keyword: searchParams.get('keyword') || '',
+        // keyword: searchParams.get('keyword') || '',
     };
 
-    const buildEndpoint = (params: { type: string; keyword: string }) => {
+    const buildEndpoint = (params: { type: string; }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `pages?${queryParams.toString()}`;
+        return `listing/static-pages?${queryParams.toString()}`;
     };
 
     const {
@@ -167,12 +207,12 @@ export default function Pages() {
         // Explicitly reset the type field
         setFieldValue('type', '');
 
-        initialValues.keyword = '';
+        // initialValues.keyword = '';
     };
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`pages/${pageId}`],
-        endpoint: `pages/${pageId}`,
+        mutationKey: [`sections/${pageId}`],
+        endpoint: `sections/${pageId}`,
         onSuccess: async (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -205,13 +245,13 @@ export default function Pages() {
                 onSubmit={(values) => {
                     const params = {
                         type: values.type,
-                        keyword: values.keyword,
+                        // keyword: values.keyword,
                     };
                     setSearchParams(params);
                 }}
                 onReset={handleReset}
                 isLoading={isLoading}
-                keywords={['keyword']}
+                // keywords={['keyword']}
                 selectKeys={['type']}
             />
 
@@ -228,7 +268,7 @@ export default function Pages() {
                     <>
                         {hasPermission('store-Page') && (
                             <Link
-                                to="/pages/add"
+                                to="/static-pages/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">

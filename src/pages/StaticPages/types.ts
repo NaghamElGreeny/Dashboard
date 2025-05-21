@@ -1,10 +1,9 @@
 export interface Page {
     id: string;
 
-    title?: string;
-    desc?: string;
-
-    ordering?: number;
+    ar: { title?: string; description?: string };
+    en: { title?: string; description?: string };
+    is_active?: boolean;
     type?: string;
 }
 

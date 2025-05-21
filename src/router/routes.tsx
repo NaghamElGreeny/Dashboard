@@ -43,6 +43,10 @@ import UpdateFeature from '../components/template/Features/UpdateFeature';
 import AddFeature from '../components/template/Features/AddFeature';
 import UpdateSections from '../components/template/Sections/UpdateSection';
 
+import StaticPages from '../pages/StaticPages/StaticPages'
+import AddStaticPage from '../components/template/StaticPages/AddPage';
+import UpdateStaticPage from '../components/template/StaticPages/UpdatePage';
+
 const Index = lazy(() => import('../pages/Index'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
 const PermissionRequired = lazy(() => import('../pages/PermissionRequired/PermissionRequired'));
@@ -75,6 +79,19 @@ const routes = [
         element: <ChangePassword />,
     },
 
+    {
+        path: 'static-pages/index',
+        element: hasPermission('static-pages.index') ? <StaticPages /> : <Navigate to="/permission-required" />,
+    },
+    {
+        path: '/statict-pages/add',
+        element: hasPermission('static-pages.store') ? <AddStaticPage /> : <Navigate to="/permission-required" />,
+    },
+
+    {
+        path: '/statict-pages/edit/:id',
+        element: hasPermission('static-pages.update') ? (<UpdateStaticPage />) : (<Navigate to="/permission-required" />),
+    },
     {
         path: '/faq/index',
         element: hasPermission('faq.index') ? <FaqsPage /> : <Navigate to="/permission-required" />,

@@ -9,13 +9,13 @@ import MainDataPages from './MainData';
 import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 
-export default function AddPage() {
+export default function AddStaticPage() {
     const { t, i18n } = useTranslation();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.pages.title'), to: '/pages/index' },
-        { label: t('breadcrumb.pages.add') },
+        { label: t('breadcrumb.static-pages.title'), to: '/static-pages/index' },
+        { label: t('breadcrumb.static-pages.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
@@ -25,7 +25,6 @@ export default function AddPage() {
         ar_description: '',
         en_description: '',
 
-        ordering: '',
         type: '',
     };
 
@@ -55,8 +54,8 @@ export default function AddPage() {
         });
 
     const { mutate, isLoading } = useMutate({
-        mutationKey: ['pages'],
-        endpoint: `pages`,
+        mutationKey: ['sections'],
+        endpoint: `sections`,
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,
