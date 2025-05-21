@@ -125,7 +125,7 @@ export default function AddSection() {
             icon: values.icon,
             image: values.image,
             features: values.features?.map((f: Feature, index: any) => ({
-                icon: f.icon?.url,
+                icon: f.icon,
                 // id: `id ${index}`,
                 key: `key${index}`,
                 ar: { value: f?.ar?.value || '' },

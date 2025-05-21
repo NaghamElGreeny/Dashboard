@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFormikContext } from 'formik';
+import { getIn, useFormikContext } from 'formik';
 import { useMutate } from '../../hooks/UseMutate';
 import ModalCustom from '../template/modal/ModalCustom';
 import showAlert from './ShowAlert';
@@ -20,7 +20,9 @@ const NewUploadImgRepeaterAttachment = ({
     // Initialize states based on form values
     const dataUpdate = [{ name: values[name] }];
     const [images, setImages] = useState(values[name] ? dataUpdate : []);
-    const [previewImage, setPreviewImage] = useState(values[name] || '');
+    // عشان تقرا الname
+    const slectedValue = getIn(values, name) || values[name] || ''
+    const [previewImage, setPreviewImage] = useState(slectedValue);
 
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);

@@ -178,8 +178,8 @@ export default function Banners() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`banners/${BannersId}`],
-        endpoint: `banners/${BannersId}`,
+        mutationKey: [`sections/${BannersId}`],
+        endpoint: `sections/${BannersId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({

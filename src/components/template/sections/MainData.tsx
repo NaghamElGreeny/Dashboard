@@ -1,14 +1,15 @@
-import { Skeleton } from '@mantine/core';
+import { Button, Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import CKeditor from '../../atoms/EditorCustom';
-import { useFormikContext } from 'formik';
+import { FieldArray, useFormikContext } from 'formik';
 import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAttachment';
 import { Label } from '../../atoms';
 import GeneralSelect from '../../molecules/selects/GeneralSelect';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
 import { TextAreaField } from '../../molecules';
 import { useState } from 'react';
+import { Feature } from '../../../pages/Sections/types';
 export default function SectionsMainData({
     isLoading,
     formik,
@@ -237,89 +238,205 @@ export default function SectionsMainData({
                 <div className="border border-border-primary flex-grow"></div>
             </div>
 
-            {features.map((feature: any, index: any) => (
-                <div key={feature.id} className=" relative grid grid-cols-12 gap-2">
-                    <div className="flex flex-col col-span-11  items-center justify-center w-full my-4">
-                        {isLoading ? (
-                            <Skeleton height={100} />
-                        ) : (
-                            <>
-                                <Label htmlFor="icon" className="mb-1">
-                                    {t('labels.icon')}
-                                </Label>
 
-                                <NewUploadImgRepeaterAttachment
-                                    acceptFiles="image/png, image/jpeg, image/gif"
-                                    name={`features[${index}].icon`}
-                                    model="Feature"
+
+
+            {/* /////////////////////// */}
+
+
+
+
+
+
+            <FieldArray name={`features`}>
+                {({ remove: removeFeature, push: pushFeature }) => (
+                    <>
+                        {values?.features.map((feature: any, featureIndex: number) => (
+                            <div key={featureIndex} className="col-span-12 grid grid-cols-12 gap-2">
+                                <div className="flex flex-col col-span-11  items-center justify-center w-full my-4">
+                                    {isLoading ? (
+                                        <Skeleton height={100} />
+                                    ) : (
+                                        <>
+                                            <Label htmlFor="icon" className="mb-1">
+                                                {t('labels.icon')}
+                                            </Label>
+
+                                            <NewUploadImgRepeaterAttachment
+                                                acceptFiles="image/png, image/jpeg, image/gif"
+                                                name={`features[${featureIndex}].icon`}
+                                                model="Feature"
+
+                                            />
+                                        </>
+                                    )}
+                                </div>
+                                {/* Title AR */}
+                                <div className="col-span-12 sm:col-span-6 mb-2">
+                                    {isLoading ? (
+                                        <Skeleton height={40} className="w-full" />
+                                    ) : (
+                                        <BaseInputField
+                                            label={t('labels.title') + ' ' + (featureIndex + 1) + t('inArabic')}
+                                            name={`features[${featureIndex}].ar.value`}
+                                            id={`features[${featureIndex}].ar.value`}
+                                            type="text"
+                                            className="border"
+                                            placeholder={t('enter') + ' ' + t('labels.title')}
+                                            defaultValue={feature.ar.value}
+                                        />
+                                    )}
+                                </div>
+
+                                {/* Title EN */}
+                                <div className="col-span-12 sm:col-span-6 mb-2">
+                                    {isLoading ? (
+                                        <Skeleton height={40} className="w-full" />
+                                    ) : (
+                                        <BaseInputField
+                                            label={t('labels.title') + ' ' + (featureIndex + 1) + t('inEnglish')}
+                                            name={`features[${featureIndex}].en.value`}
+                                            id={`features[${featureIndex}].en.value`}
+                                            type="text"
+                                            className="border"
+                                            placeholder={t('enter') + ' ' + t('labels.title')}
+                                            defaultValue={feature.en.value}
+                                        />
+                                    )}
+                                </div>
+
+                                <div className="col-span-12 sm:col-span-4 flex items-center justify-center gap-6">
+                                    <Button
+                                        className="cursor-pointer p-2  w-8 h-8 rounded-full text-[19px] border border-[#50cd89] text-white hover:text-[#50cd89] bg-[#50cd89] hover:bg-white"
+                                        onClick={() =>
+                                            pushFeature({ id: Date.now(), icon: null, ar: { value: "" }, en: { value: "" } })
+                                        }
+                                    >
+                                        +
+                                    </Button>
+                                    {values.features.length > 1 && (
+                                        <Button
+                                            className="cursor-pointer p-2 w-8 h-8 rounded-full  text-[19px] border border-red-500 text-white hover:text-red-500 bg-red-500 hover:bg-white"
+                                            onClick={() => removeFeature(featureIndex)}
+                                        >
+                                            -
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                )}
+            </FieldArray>
+
+
+
+
+            {/* /////////////////////// */}
+            {/* <div className="icon">
+
+                <NewUploadImgRepeaterAttachment
+                    acceptFiles="image/png, image/jpeg, image/gif"
+                    name={`features[0].icon`}
+                    model="Feature"
+
+                />
+                <h2>-----------------------------</h2>
+            </div> */}
+
+            <div className='hidden'>
+                {features.map((feature: Feature, index: number) => (
+                    <div key={feature.id} className=" relative grid grid-cols-12 gap-2">
+                        <div className="flex flex-col col-span-11  items-center justify-center w-full my-4">
+                            {isLoading ? (
+                                <Skeleton height={100} />
+                            ) : (
+                                <>
+                                    <Label htmlFor="icon" className="mb-1">
+                                        {t('labels.icon')}
+                                    </Label>
+                                    {/* 
+     acceptFiles = 'image/*',
+    name = '',
+    model = '',
+    type = 'image',
+    isBinary = false,
+ */}
+                                    <NewUploadImgRepeaterAttachment
+                                        acceptFiles="image/png, image/jpeg, image/gif"
+                                        name={`features[${index}].icon`}
+                                        model="Feature"
+
+                                    />
+                                </>
+                            )}
+                        </div>
+                        {/* add & remove  */}
+                        < div className='col-span-1 flex flex-col items-center justify-center gap-2 ' >
+                            {index === (features.length - 1) &&
+                                <button
+                                    type="button"
+                                    onClick={addFeature}
+                                    className="text-green-500 top-2 right-2"
+                                >
+                                    <p className=' text-5xl font-bold'>+</p>
+                                </button>
+                            }
+                            {features.length > 1 &&
+
+                                <button
+                                    type="button"
+                                    onClick={() => removeFeature(feature.id)}
+                                    className="text-red-500  top-2 right-2 "
+                                >
+                                    <p className=' text-5xl font-bold'>-</p>
+                                </button>
+                            }
+                        </div>
+
+                        {/* Title AR */}
+                        <div className="col-span-12 sm:col-span-6 mb-2">
+                            {isLoading ? (
+                                <Skeleton height={40} className="w-full" />
+                            ) : (
+                                <BaseInputField
+                                    label={t('labels.title') + ' ' + (index + 1) + t('inArabic')}
+                                    name={`features[${index}].ar.value`}
+                                    id={`features[${index}].ar.value`}
+                                    type="text"
+                                    className="border"
+                                    placeholder={t('enter') + ' ' + t('labels.title')}
+                                    defaultValue={feature.ar.value}
                                 />
-                            </>
-                        )}
-                    </div>
-                    {/* add & remove  */}
-                    < div className='col-span-1 flex flex-col items-center justify-center gap-2 ' >
-                        {index === (features.length - 1) &&
-                            <button
-                                type="button"
-                                onClick={addFeature}
-                                className="text-green-500 top-2 right-2"
-                            >
-                                <p className=' text-5xl font-bold'>+</p>
-                            </button>
-                        }
-                        {features.length > 1 &&
+                            )}
+                        </div>
 
-                            <button
-                                type="button"
-                                onClick={() => removeFeature(feature.id)}
-                                className="text-red-500  top-2 right-2 "
-                            >
-                                <p className=' text-5xl font-bold'>-</p>
-                            </button>
-                        }
-                    </div>
-
-                    {/* Title AR */}
-                    <div className="col-span-12 sm:col-span-6 mb-2">
-                        {isLoading ? (
-                            <Skeleton height={40} className="w-full" />
-                        ) : (
-                            <BaseInputField
-                                label={t('labels.title') + ' ' + (index + 1) + t('inArabic')}
-                                name={`features[${index}].ar.value`}
-                                id={`features[${index}].ar.value`}
-                                type="text"
-                                className="border"
-                                placeholder={t('enter') + ' ' + t('labels.title')}
-                            />
-                        )}
-                    </div>
-
-                    {/* Title EN */}
-                    <div className="col-span-12 sm:col-span-6 mb-2">
-                        {isLoading ? (
-                            <Skeleton height={40} className="w-full" />
-                        ) : (
-                            <BaseInputField
-                                label={t('labels.title') + ' ' + (index + 1) + t('inEnglish')}
-                                name={`features[${index}].en.value`}
-                                id={`features[${index}].en.value`}
-                                type="text"
-                                className="border"
-                                placeholder={t('enter') + ' ' + t('labels.title')}
-
-                            />
-                        )}
-                    </div>
+                        {/* Title EN */}
+                        <div className="col-span-12 sm:col-span-6 mb-2">
+                            {isLoading ? (
+                                <Skeleton height={40} className="w-full" />
+                            ) : (
+                                <BaseInputField
+                                    label={t('labels.title') + ' ' + (index + 1) + t('inEnglish')}
+                                    name={`features[${index}].en.value`}
+                                    id={`features[${index}].en.value`}
+                                    type="text"
+                                    className="border"
+                                    placeholder={t('enter') + ' ' + t('labels.title')}
+                                    defaultValue={feature.en.value}
+                                />
+                            )}
+                        </div>
 
 
 
 
 
 
-                </div >
-            ))
-            }
+                    </div >
+                ))
+                }
+            </div>
 
 
         </>

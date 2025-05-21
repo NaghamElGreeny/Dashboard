@@ -32,8 +32,8 @@ export default function UpdateBanner() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `banners/${id}`,
-        queryKey: [`banneers/${id}`],
+        endpoint: `sections/${id}`,
+        queryKey: [`sections/${id}`],
     });
     useEffect(() => {
         setFormKey(formKey + 1);
@@ -81,8 +81,8 @@ export default function UpdateBanner() {
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`banners/${id}`],
-        endpoint: `banners/${id}`,
+        mutationKey: [`sections/${id}`],
+        endpoint: `sections/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({

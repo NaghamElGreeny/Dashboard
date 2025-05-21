@@ -51,20 +51,13 @@ export default function UpdateFeature() {
         icon: showData?.data?.icon?.url || '',
         features: (showData?.data?.features || []).map((f: Feature, index: number) => ({
             icon: f.icon.url,
-            // id: `id ${index}`,
-            // key: crypto.randomUUID(),
             key: `key${index}`,
             ar: { value: f.ar.value || '' },
             en: { value: f.en.value || '' },
-            // id: f?.id || '',
-            // icon: f.icon?.url,
-            // key: f.key || '',
-            // ar: { value: f?.ar?.value || '' },
-            // en: { value: f?.en?.value || '' }
         }))
     };
-    // console.log(initialValues.features);
-    console.log('initialValues of features: ', initialValues.features)
+    console.log(initialValues);
+    // console.log('initialValues of features: ', initialValues.features)
     const sectionsSchema = () =>
         Yup.object().shape({
             icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
@@ -135,7 +128,6 @@ export default function UpdateFeature() {
 
     const handleSubmit = (values: any) => {
         const finalOut = {
-            // image: values?.image,
             ar: {
                 title: values?.ar_title,
                 description: values?.ar_description,
@@ -147,18 +139,26 @@ export default function UpdateFeature() {
             type: values?.type,
             icon: values.icon,
             image: values.image,
-            features: values.features?.map((f: Feature, index: any) => ({
-                icon: f.icon.url,
-                // id: `id ${index}`,
-                // key: crypto.randomUUID(),
-                key: `key${index}`,
-                ar: { value: f.ar.value || '' },
-                en: { value: f.en.value || '' },
-            })),
+            features: values.features?.map((f: Feature, index: number) => {
+                const initialIcon = initialValues.features?.[index]?.icon;
+                const currentIcon = f.icon?.url || f.icon;
+
+                return {
+                    ...(currentIcon !== initialIcon && { icon: currentIcon }),
+                    key: `key${index}`,
+                    ar: { value: f.ar?.value || '' },
+                    en: { value: f.en?.value || '' },
+                };
+            }),
+
         };
-        console.log(finalOut);
+
+
         if (initialValues?.image == finalOut.image) {
             delete finalOut.image;
+        }
+        if (initialValues?.icon == finalOut.icon) {
+            delete finalOut.icon;
         }
         update({
             ...finalOut,
