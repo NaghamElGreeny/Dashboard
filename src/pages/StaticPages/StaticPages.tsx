@@ -31,7 +31,7 @@ export default function StaticPages() {
         },
         {
             id: 1,
-            value: 'terms_conditions',
+            value: 'terms',
             label: t('labels.terms-conditions'),
         },
     ];
@@ -44,8 +44,8 @@ export default function StaticPages() {
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedDescription, setSelectedDescription] = useState<string>('');
     const { mutate: updateStatus } = useMutate({
-        mutationKey: [`static-pages-${pageId}`],
-        endpoint: `static-pages/${pageId}`,
+        mutationKey: [`sections/${pageId}`],
+        endpoint: `sections/${pageId}`,
         onSuccess: async (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -124,7 +124,7 @@ export default function StaticPages() {
                 }
                 return (
                     <>
-                        <button onClick={handleClick}>
+                        <button >
 
                             <span
                                 className={`${row.original?.is_active ? 'active' : 'inactive'

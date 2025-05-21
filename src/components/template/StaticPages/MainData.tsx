@@ -12,12 +12,12 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
     const pageTypes = [
         {
             id: 0,
-            value: 'return-policy',
-            label: t('labels.return-policy'),
+            value: 'privacy_policy',
+            label: t('labels.privacy_policy'),
         },
         {
             id: 1,
-            value: 'terms-conditions',
+            value: 'terms',
             label: t('labels.terms-conditions'),
         },
     ];
@@ -38,7 +38,14 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
                             label={t('labels.type')}
                             placeholder={t('select') + ' ' + t('labels.type')}
                             onChange={(option: any) => setFieldValue('type', option?.value)}
+                            value={pageTypes.find((option) => option.value === values.type) || null}
+                        //     onChange={(option: any) => {
+                        //         setFieldValue('type', option?.value)
+                        //         console.log('Updated type:', option?.value)
+                        //     }}
+                        //   value={values.type}
                         />
+
                     )}
                 </div>
 
@@ -103,7 +110,7 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
                     )}
                 </div>
 
-                <div className="col-span-12 sm:col-span-6">
+                {/* <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
@@ -115,7 +122,7 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
                             onChange={(option: any) => setFieldValue('type', option?.value)}
                         />
                     )}
-                </div>
+                </div> */}
 
 
             </div>

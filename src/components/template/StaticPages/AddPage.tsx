@@ -14,8 +14,8 @@ export default function AddStaticPage() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.static-pages.title'), to: '/static-pages/index' },
-        { label: t('breadcrumb.static-pages.add') },
+        { label: t('breadcrumb.static_pages.title'), to: '/static-pages/index' },
+        { label: t('breadcrumb.static_pages.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {
@@ -79,16 +79,16 @@ export default function AddStaticPage() {
 
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
-            ordering: values?.ordering,
+            is_active: true,
             type: values?.type,
 
             ar: {
                 title: values?.ar_title,
-                desc: values?.ar_description,
+                description: values?.ar_description,
             },
             en: {
                 title: values?.en_title,
-                desc: values?.en_description,
+                description: values?.en_description,
             },
         };
 

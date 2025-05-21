@@ -84,12 +84,12 @@ const routes = [
         element: hasPermission('static-pages.index') ? <StaticPages /> : <Navigate to="/permission-required" />,
     },
     {
-        path: '/statict-pages/add',
+        path: '/static-pages/add',
         element: hasPermission('static-pages.store') ? <AddStaticPage /> : <Navigate to="/permission-required" />,
     },
 
     {
-        path: '/statict-pages/edit/:id',
+        path: '/static-pages/edit/:id',
         element: hasPermission('static-pages.update') ? (<UpdateStaticPage />) : (<Navigate to="/permission-required" />),
     },
     {

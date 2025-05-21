@@ -19,8 +19,8 @@ export default function UpdateStaticPage() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.static-pages.title'), to: '/static-pages/index' },
-        { label: t('breadcrumb.static-pages.edit') },
+        { label: t('breadcrumb.static_pages.title'), to: '/static-pages/index' },
+        { label: t('breadcrumb.static_pages.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -40,17 +40,15 @@ export default function UpdateStaticPage() {
     }, [showDataSuccess]);
 
     const initialValues = {
-        image: showData?.data?.image?.media || '',
-
         ar_title: showData?.data?.ar?.title || '',
         en_title: showData?.data?.en?.title || '',
 
-        ar_description: showData?.data?.ar?.desc || '',
-        en_description: showData?.data?.en?.desc || '',
+        ar_description: showData?.data?.ar?.description || '',
+        en_description: showData?.data?.en?.description || '',
 
         type: showData?.data?.type || '',
     };
-
+    console.log(initialValues)
     const pageSchema = () =>
         Yup.object().shape({
             ar_title: Yup.string()
@@ -78,8 +76,8 @@ export default function UpdateStaticPage() {
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`pages/${id}`],
-        endpoint: `pages/${id}`,
+        mutationKey: [`sections/${id}`],
+        endpoint: `sections/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({
@@ -92,7 +90,7 @@ export default function UpdateStaticPage() {
 
             // notify('success');
             refetch();
-            navigate('/pages/index');
+            navigate('/static-pages/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -111,18 +109,18 @@ export default function UpdateStaticPage() {
 
             ar: {
                 title: values?.ar_title,
-                desc: values?.ar_description,
+                description: values?.ar_description,
             },
             en: {
                 title: values?.en_title,
-                desc: values?.en_description,
+                description: values?.en_description,
             },
         };
-
+        console.log('finaaaaaal', finalOut)
         update({
             ...finalOut,
-            _method: 'post'
-            //   _method: 'put'
+            // _method: 'post'
+            _method: 'put'
         });
     };
 

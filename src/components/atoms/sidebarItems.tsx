@@ -129,7 +129,7 @@ export const SideBarItemsFn = () => {
                             label: t('breadcrumb.static_pages.title'),
                             link: '/static-pages',
                             items: [
-                                ...(hasPermission('report-reason.index')
+                                ...(hasPermission('static-pages.index')
                                     ? [
                                         {
                                             id: crypto.randomUUID(),
