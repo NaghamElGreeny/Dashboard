@@ -50,15 +50,21 @@ export default function UpdateFeature() {
         image: showData?.data?.image?.url || '',
         icon: showData?.data?.icon?.url || '',
         features: (showData?.data?.features || []).map((f: Feature, index: number) => ({
-            id: f.id || '',
-            icon: f.icon?.url || '',
-            key: f.key || '',
-            ar: { value: f?.ar?.value || '' },
-            en: { value: f?.en?.value || '' }
+            icon: f.icon.url,
+            // id: `id ${index}`,
+            // key: crypto.randomUUID(),
+            key: `key${index}`,
+            ar: { value: f.ar.value || '' },
+            en: { value: f.en.value || '' },
+            // id: f?.id || '',
+            // icon: f.icon?.url,
+            // key: f.key || '',
+            // ar: { value: f?.ar?.value || '' },
+            // en: { value: f?.en?.value || '' }
         }))
     };
-    console.log(initialValues.features);
-    // console.log('initialValues: ', initialValues)
+    // console.log(initialValues.features);
+    console.log('initialValues of features: ', initialValues.features)
     const sectionsSchema = () =>
         Yup.object().shape({
             icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
@@ -142,11 +148,12 @@ export default function UpdateFeature() {
             icon: values.icon,
             image: values.image,
             features: values.features?.map((f: Feature, index: any) => ({
-                icon: f?.icon?.url,
-                id: `id ${index}`,
-                key: crypto.randomUUID(),
-                ar: { value: f?.ar?.value || '?' },
-                en: { value: f?.en?.value || '' },
+                icon: f.icon.url,
+                // id: `id ${index}`,
+                // key: crypto.randomUUID(),
+                key: `key${index}`,
+                ar: { value: f.ar.value || '' },
+                en: { value: f.en.value || '' },
             })),
         };
         console.log(finalOut);

@@ -31,7 +31,7 @@ export default function AddSection() {
         image: '',
 
         features: [{
-            id: '',
+            // id: '',
             icon: '',
             ar: { value: '' },
             en: { value: '' },
@@ -126,8 +126,8 @@ export default function AddSection() {
             image: values.image,
             features: values.features?.map((f: Feature, index: any) => ({
                 icon: f.icon?.url,
-                id: `id ${index}`,
-                key: `key ${index}`,
+                // id: `id ${index}`,
+                key: `key${index}`,
                 ar: { value: f?.ar?.value || '' },
                 en: { value: f?.en?.value || '' },
             })),

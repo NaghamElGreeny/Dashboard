@@ -9,7 +9,6 @@ import GeneralSelect from '../../molecules/selects/GeneralSelect';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
 import { TextAreaField } from '../../molecules';
 import { useState } from 'react';
-import { Feature } from '../../../pages/Sections/types';
 export default function SectionsMainData({
     isLoading,
     formik,
@@ -63,9 +62,20 @@ export default function SectionsMainData({
             label: t('labels.why_us'),
         },
     ];
+    // about - goals - core_values - our_vision - terms - privacy_policy - our_services - why_us
 
-    const features = data?.data?.features || [];
-
+    //features 
+    // const [features, setFeatures] = useState([
+    //     { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
+    // ]);
+    // const { setFieldValue, values } = useFormikContext<any>();
+    const features = values.features || [];
+    // const addFeature = () => {
+    //     setFeatures([
+    //         ...features,
+    //         { id: Date.now(), icon: null, titleAR: "", titleEN: "" },
+    //     ]);
+    // };
     const addFeature = () => {
         setFieldValue('features', [
             ...features,
@@ -227,7 +237,7 @@ export default function SectionsMainData({
                 <div className="border border-border-primary flex-grow"></div>
             </div>
 
-            {features.map((feature: Feature, index: any) => (
+            {features.map((feature: any, index: any) => (
                 <div key={feature.id} className=" relative grid grid-cols-12 gap-2">
                     <div className="flex flex-col col-span-11  items-center justify-center w-full my-4">
                         {isLoading ? (
@@ -240,9 +250,8 @@ export default function SectionsMainData({
 
                                 <NewUploadImgRepeaterAttachment
                                     acceptFiles="image/png, image/jpeg, image/gif"
-                                    name={`features[${index}][icon]`}
+                                    name={`features[${index}].icon`}
                                     model="Feature"
-
                                 />
                             </>
                         )}
@@ -277,8 +286,7 @@ export default function SectionsMainData({
                         ) : (
                             <BaseInputField
                                 label={t('labels.title') + ' ' + (index + 1) + t('inArabic')}
-                                // name={`features[${index}][ar][value]`}
-                                name={`features[${index}][ar][value]`}
+                                name={`features[${index}].ar.value`}
                                 id={`features[${index}].ar.value`}
                                 type="text"
                                 className="border"

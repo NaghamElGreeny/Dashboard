@@ -1,5 +1,5 @@
 export interface Feature {
-    id: string;
+    // id: string;
     icon: {
         path: any;
         url: any;
