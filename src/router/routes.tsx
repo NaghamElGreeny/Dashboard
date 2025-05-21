@@ -23,6 +23,10 @@ import SectionsPage from '../pages/Sections/Sections';
 import AddSection from '../components/template/Sections/AddSection'
 import UpdateSection from '../components/template/Sections/UpdateSection'
 
+import BannerssPage from '../pages/Banners/Banners';
+import AddBanner from '../components/template/Banners/AddBanner'
+import UpdateBanner from '../components/template/Banners/UpdateBanner'
+
 import PolicyPage from '../components/template/PrivacyPolicy/UpdatePrivacyPolicy';
 import TermsPage from '../components/template/Terms/UpdateTerm';
 
@@ -160,6 +164,26 @@ const routes = [
     {
         path: '/sections/add',
         element: hasPermission('sections.store') ? <AddSection /> : <Navigate to="/permission-required" />,
+    },
+    {
+        path: '/banners/index',
+        element: hasPermission('banners.index') ? (
+            <BannersPage />
+        ) : (
+            <Navigate to="/permission-required" />
+        ),
+    },
+    {
+        path: '/banners/edit/:id',
+        element: hasPermission('banners.update') ? (
+            <UpdateBanner />
+        ) : (
+            <Navigate to="/permission-required" />
+        ),
+    },
+    {
+        path: '/banners/add',
+        element: hasPermission('banners.store') ? <AddBanner /> : <Navigate to="/permission-required" />,
     },
 
     {

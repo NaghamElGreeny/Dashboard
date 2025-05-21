@@ -12,7 +12,7 @@ import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 import { features } from 'process';
 
-export default function UpdateFeature() {
+export default function UpdateBanner() {
     const { t, i18n } = useTranslation();
 
     const { id } = useParams();

@@ -9,7 +9,7 @@ import MainDataSocials from './MainData';
 import * as Yup from 'yup';
 import { isArabic, isEnglish } from '../../../helper/helpers';
 
-export default function AddSection() {
+export default function AddBanner() {
     const { t } = useTranslation();
 
     const breadcrumbItems = [

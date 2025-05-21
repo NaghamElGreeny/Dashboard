@@ -1,7 +1,7 @@
 import { Skeleton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
-import CKeditor from '../../atoms/EditorCustom';
+import TextAreaField from '../../atoms/EditorCustom';
 
 export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
     const { t } = useTranslation();
@@ -43,7 +43,7 @@ export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
+                        <TextAreaField
                             id="ar_answer"
                             name="ar_answer"
                             label={t('labels.answer') + t('inArabic')}
@@ -56,7 +56,7 @@ export default function FaqMainData({ isLoading }: { isLoading?: boolean }) {
                     {isLoading ? (
                         <Skeleton height={100} className="w-full" />
                     ) : (
-                        <CKeditor
+                        <TextAreaField
                             id="en_answer"
                             name="en_answer"
                             label={t('labels.answer') + t('inEnglish')}

@@ -91,31 +91,63 @@ export const SideBarItemsFn = () => {
                         },
                     ]
                     : []),
-                ...(hasPermission('why-us.index') || hasPermission('why-us.store')
+                ...(hasPermission('banners.index') || hasPermission('banners.store')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <MdOutlineImage />,
+                            label: t('breadcrumb.banners.title'),
+                            link: '/banners',
+                            items: [
+                                ...(hasPermission('banners.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.banners.all'),
+                                            link: '/banners/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('banners.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.banners.add'),
+                                            link: '/banners/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('static-pages.index') || hasPermission('static-pages.store')
                     ? [
                         {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
-                            label: t('sidebar.about'),
-                            link: '/why-us',
+                            label: t('breadcrumb.static_pages.title'),
+                            link: '/static-pages',
                             items: [
-                                ...(hasPermission('why-us.index')
+                                ...(hasPermission('report-reason.index')
                                     ? [
                                         {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
-                                            label: t('breadcrumb.sections.all'),
-                                            link: '/why-us/index',
+                                            label: t('breadcrumb.static_pages.all'),
+                                            link: '/static-pages/index',
                                         },
                                     ]
                                     : []),
-                                ...(hasPermission('why-us.store')
+                                ...(hasPermission('static-pages.store')
                                     ? [
                                         {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
-                                            label: t('breadcrumb.sections.add'),
-                                            link: '/why-us/add',
+                                            label: t('breadcrumb.static_pages.add'),
+                                            link: '/static-pages/add',
                                         },
                                     ]
                                     : []),
@@ -131,12 +163,12 @@ export const SideBarItemsFn = () => {
                             label: t('sidebar.faq'),
                             link: '/faq',
                             items: [
-                                ...(hasPermission('report-reason.index')
+                                ...(hasPermission('faq.index')
                                     ? [
                                         {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
-                                            label: t('breadcrumb.sections.all'),
+                                            label: t('breadcrumb.faqs.all'),
                                             link: '/faq/index',
                                         },
                                     ]
@@ -146,8 +178,104 @@ export const SideBarItemsFn = () => {
                                         {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
-                                            label: t('breadcrumb.sections.add'),
+                                            label: t('breadcrumb.faqs.add'),
                                             link: '/faq/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('contact-info.index') || hasPermission('contact-info.store')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('breadcrumb.contact_us.title'),
+                            link: '/contact-info',
+                            items: [
+                                ...(hasPermission('report-reason.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.contact_us.all'),
+                                            link: '/contact-info/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('contact-info.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.contact_us.add'),
+                                            link: '/contact-info/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('why-us.index') || hasPermission('why-us.store')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('sidebar.about'),
+                            link: '/why-us',
+                            items: [
+                                ...(hasPermission('why-us.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.why_us.all'),
+                                            link: '/why-us/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('why-us.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.why_us.add'),
+                                            link: '/why-us/add',
+                                        },
+                                    ]
+                                    : []),
+                            ],
+                        },
+                    ]
+                    : []),
+                ...(hasPermission('services.index') || hasPermission('services.store')
+                    ? [
+                        {
+                            id: crypto.randomUUID(),
+                            icon: <IoSettingsOutline />,
+                            label: t('sidebar.services'),
+                            link: '/services',
+                            items: [
+                                ...(hasPermission('services.index')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.services.all'),
+                                            link: '/services/index',
+                                        },
+                                    ]
+                                    : []),
+                                ...(hasPermission('services.store')
+                                    ? [
+                                        {
+                                            id: crypto.randomUUID(),
+                                            icon: <PageIcon />,
+                                            label: t('breadcrumb.services.add'),
+                                            link: '/services/add',
                                         },
                                     ]
                                     : []),
@@ -157,48 +285,39 @@ export const SideBarItemsFn = () => {
                     : []),
 
 
-                ...(hasPermission('socials.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.socials'),
-                            link: '/contact-info/index',
-                        },
-                    ]
-                    : []),
-                ...(hasPermission('features.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.features'),
-                            link: '/our-features/index',
-                        },
-                    ]
-                    : []),
 
-                ...(hasPermission('policy.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.privacy_policy'),
-                            link: '/privacy-policy',
-                        },
-                    ]
-                    : []),
+                // ...(hasPermission('features.index')
+                //     ? [
+                //         {
+                //             id: crypto.randomUUID(),
+                //             icon: <IoSettingsOutline />,
+                //             label: t('sidebar.features'),
+                //             link: '/our-features/index',
+                //         },
+                //     ]
+                //     : []),
 
-                ...(hasPermission('term.index')
-                    ? [
-                        {
-                            id: crypto.randomUUID(),
-                            icon: <IoSettingsOutline />,
-                            label: t('sidebar.terms'),
-                            link: '/terms',
-                        },
-                    ]
-                    : []),
+                // ...(hasPermission('policy.index')
+                //     ? [
+                //         {
+                //             id: crypto.randomUUID(),
+                //             icon: <IoSettingsOutline />,
+                //             label: t('sidebar.privacy_policy'),
+                //             link: '/privacy-policy',
+                //         },
+                //     ]
+                //     : []),
+
+                // ...(hasPermission('term.index')
+                //     ? [
+                //         {
+                //             id: crypto.randomUUID(),
+                //             icon: <IoSettingsOutline />,
+                //             label: t('sidebar.terms'),
+                //             link: '/terms',
+                //         },
+                //     ]
+                //     : []),
 
 
             ]

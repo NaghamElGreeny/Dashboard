@@ -8,6 +8,7 @@ export interface Faq {
         question?: string;
         answer?: string;
     };
+    is_active: boolean;
 }
 
 export interface FetchFaqData {

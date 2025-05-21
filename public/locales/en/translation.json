@@ -107,52 +107,10 @@
             "edit": "Edit Social",
             "show": "Show"
         },
-        "course_category": {
-            "title": "Course Category",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "courses": {
-            "title": "Courses",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "articles": {
-            "title": "Articles",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "cancelReasons": {
-            "title": "Cancel Reasons",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "specialtyCases": {
-            "title": "Specialty Cases",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "districts": {
-            "title": "Districts",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
         "services": {
             "title": "Services",
-            "all": "Show All",
-            "add": "Add ",
+            "all": "All Services",
+            "add": "Add Service",
             "edit": "Edit",
             "show": "Show"
         },
@@ -165,136 +123,38 @@
         },
         "sections": {
             "title": "Sections",
-            "all": "Show All",
-            "add": "Add ",
+            "all": "All Sections",
+            "add": "Add Section",
             "edit": "Edit",
             "show": "Show"
         },
-        "languages": {
-            "title": "Languages",
-            "all": "Show All",
-            "add": "Add ",
+        "banners": {
+            "title": "Banners",
+            "all": "All Banners",
+            "add": "Add Banner",
             "edit": "Edit",
             "show": "Show"
         },
-        "providers": {
-            "title": "Providers",
-            "all": "Show All",
-            "add": "Add ",
+        "static_pages": {
+            "title": "Static Pages",
+            "all": "All Static Pages",
+            "add": "Add Static Page",
             "edit": "Edit",
             "show": "Show"
         },
-        "provider_requests": {
-            "title": "Provider Requests",
+        "contact_us": {
+            "title": "Contact Us",
             "all": "Show All",
-            "add": "Add ",
+            "add": "Add",
             "edit": "Edit",
             "show": "Show"
         },
-        "reportReasons": {
-            "title": "Report Reasons",
+        "why_us": {
+            "title": "Why Us",
             "all": "Show All",
-            "add": "Add ",
+            "add": "Add",
             "edit": "Edit",
             "show": "Show"
-        },
-        "reports": {
-            "title": "Reports",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "bookings": {
-            "title": "Bookings",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "financial_reports": {
-            "title": "Financial Reports",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "rescheduled_bookings": {
-            "title": "Rescheduled Bookings Requests",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "accountDeletionReasons": {
-            "title": "Account Deletion Reasons",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "withdrawal_requests": {
-            "title": "Wallet Withdrawal Requests",
-            "all": "All Requests",
-            "add": "Add Request",
-            "edit": "Edit Request",
-            "show": "Show Request"
-        },
-        "clients": {
-            "title": "Clients",
-            "all": "Show All",
-            "add": "Add ",
-            "edit": "Edit",
-            "show": "Show"
-        },
-        "categories": {
-            "title": "Categories",
-            "all": "All Categories",
-            "add": "Add Main Category",
-            "edit": "Edit Main Category",
-            "show": "Show Main Category"
-        },
-        "sub_categories": {
-            "title": "Sub Categories",
-            "all": "All Sub Categories",
-            "add": "Add Sub Category",
-            "edit": "Edit Sub Category",
-            "show": "Show Sub Category"
-        },
-        "countries": {
-            "title": "Countries",
-            "all": "All Countries",
-            "add": "Add Country",
-            "edit": "Edit Country",
-            "show": "Show Country"
-        },
-        "cities": {
-            "title": "Cities",
-            "all": "All Cities",
-            "add": "Add City",
-            "edit": "Edit City",
-            "show": "Show City"
-        },
-        "contact_messages": {
-            "title": "Contact Messages",
-            "all": "All Contact Messages",
-            "add": "Add Contact Message",
-            "edit": "Edit Contact Message",
-            "show": "Show Contact Message"
-        },
-        "coupons": {
-            "title": "Discount Coupons",
-            "all": "All Discount Coupons",
-            "add": "Add Discount Coupon",
-            "edit": "Edit Discount Coupon",
-            "show": "Show Discount Coupon"
-        },
-        "sliders": {
-            "title": "Sliders",
-            "all": "All Sliders",
-            "add": "Add Slider",
-            "edit": "Edit Slider",
-            "show": "Show Slider"
         },
         "profile": {
             "title": "Profile",

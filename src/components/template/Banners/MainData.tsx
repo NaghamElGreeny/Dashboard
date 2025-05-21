@@ -9,7 +9,7 @@ import GeneralSelect from '../../molecules/selects/GeneralSelect';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
 import { TextAreaField } from '../../molecules';
 import { useState } from 'react';
-export default function SectionsMainData({
+export default function BannersMainData({
     isLoading,
     formik,
     data,

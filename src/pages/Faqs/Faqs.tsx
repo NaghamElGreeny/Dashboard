@@ -14,6 +14,9 @@ import { useMutate } from '../../hooks/UseMutate';
 import type { Faq, FetchFaqData } from './types';
 import { hasPermission } from '../../helper/permissionHelpers';
 import themeConfig from '../../theme.config';
+import { BaseInputField } from '../../components/atoms/BaseInputField';
+import { BaseInput } from '../../components/atoms';
+import { Switch } from '@mantine/core';
 
 export default function Faqs() {
     const { t, i18n } = useTranslation();
@@ -80,6 +83,53 @@ export default function Faqs() {
                 );
             },
             accessorKey: 'answer',
+        },
+
+        {
+            header: t('labels.active'),
+            Cell: ({ row }: { row: { original: Faq } }) => {
+                const [isActive, setIsActive] = useState(row.original?.is_active);
+
+                const { mutate: toggleStatus } = useMutate({
+                    mutationKey: [`faq-toggle-${row.original.id}`],
+                    endpoint: `faq/${row.original.id}`,
+                    method: 'put',
+                    formData: true,
+                    onSuccess: () => {
+                        ShowAlertMixin({
+                            type: 15,
+                            icon: 'success',
+                            title: t('status_updated'),
+                        });
+                        refetch(); // علشان نرجع البيانات الجديدة من السيرفر
+                    },
+                    onError: (err: any) => {
+                        ShowAlertMixin({
+                            type: 15,
+                            icon: 'error',
+                            title: err?.response?.data?.message,
+                        });
+                    },
+                });
+
+                const handleToggle = () => {
+                    const newStatus = !isActive;
+                    setIsActive(newStatus);
+
+                    toggleStatus({
+                        active: newStatus ? 1 : 0, // حسب ما السيرفر بيقبل
+                    });
+                };
+
+                return (
+                    <Switch
+                        checked={isActive}
+                        onChange={handleToggle}
+                        color={isActive ? 'green' : 'gray'}
+                    />
+                );
+            },
+            accessorKey: 'active',
         },
 
         ...(hasPermission('faq.update') || hasPermission('faq.destroy')
