@@ -128,17 +128,17 @@ export default function Faqs() {
                 const handleToggle = () => {
                     const newStatus = !isActive;
                     setIsActive(newStatus);
+                    showAlert(t('toggle_status_confirmation'), '', false, t('ok'), true, 'warning', () => toggleStatus({
+                        active: newStatus ? 1 : 0
+                    }));
 
-                    toggleStatus({
-                        active: newStatus ? 1 : 0, // حسب ما السيرفر بيقبل
-                    });
                 };
 
                 return (
                     <Switch
-                        checked={isActive}
+                        checked={row.original?.is_active}
                         onChange={handleToggle}
-                        color={isActive ? 'green' : 'gray'}
+                        color={row.original?.is_active ? 'green' : 'gray'}
                     />
                 );
             },
@@ -207,6 +207,9 @@ export default function Faqs() {
     const deleteItem = () => {
         showAlert(t('delete_confirmation'), '', false, t('ok'), true, 'warning', () => Delete({}));
     };
+    // const updateItem = () => {
+    //     showAlert(t('delete_confirmation'), '', false, t('ok'), true, 'warning', () => toggleStatus({}));
+    // };
 
     const queryParams = {
         page: page,

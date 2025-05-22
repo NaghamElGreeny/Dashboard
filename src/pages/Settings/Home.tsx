@@ -33,28 +33,32 @@ export default function SettingsPage() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Tab.Group selectedIndex={selectedIndex} onChange={handleTabChange}>
-                <Tab.List className="mt-3 flex flex-wrap bg-white dark:bg-black py-3 px-4">
+                {/* <Tab.List className="mt-3 flex flex-wrap bg-white dark:bg-black py-3 px-4">
                     {tabMap.map((tab, index) => (
                         <Tab as={Fragment} key={index}>
                             {({ selected }) => (
                                 <button
-                                    className={`font-bold text-[16px] ${
-                                        selected ? 'text-primary !outline-none before:!w-full' : ''
-                                    } relative -mb-[1px] flex items-center p-5 py-3 before:absolute before:bottom-0 before:left-0 before:right-0 before:m-auto before:inline-block before:h-[1px] before:w-0 before:bg-primary before:transition-all before:duration-700 hover:text-primary hover:before:w-[80%]`}
+                                    className={`font-bold text-[16px] ${selected ? 'text-primary !outline-none before:!w-full' : ''
+                                        } relative -mb-[1px] flex items-center p-5 py-3 before:absolute before:bottom-0 before:left-0 before:right-0 before:m-auto before:inline-block before:h-[1px] before:w-0 before:bg-primary before:transition-all before:duration-700 hover:text-primary hover:before:w-[80%]`}
                                 >
                                     {t(`settings.${tab}`)}
                                 </button>
                             )}
                         </Tab>
                     ))}
-                </Tab.List>
+                </Tab.List> */}
+                <button
+                    className={`font-bold text-[16px]  text-primary dark:text-dark-light relative -mb-[1px] flex items-center p-5 py-3 border-b-2`}
+                >
+                    {t(`settings.general`)}
+                </button>
                 <Tab.Panels>
                     <Tab.Panel>
                         <Social />
                     </Tab.Panel>
-                    <Tab.Panel>
+                    {/* <Tab.Panel>
                         <General />
-                    </Tab.Panel>
+                    </Tab.Panel> */}
                 </Tab.Panels>
             </Tab.Group>
         </>

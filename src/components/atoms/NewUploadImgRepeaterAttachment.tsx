@@ -260,6 +260,7 @@ const NewUploadImgRepeaterAttachment = ({
                             )}
                         </label>
                     </div>
+
                     {touched[name] && errors[name] && typeof errors[name] === 'string' && (
                         <div className="text-red-500 text-center text-sm">
                             {errors[name] as string}

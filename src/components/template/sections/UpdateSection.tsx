@@ -10,7 +10,7 @@ import SectionsMainData from './MainData';
 import * as Yup from 'yup';
 import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { isArabic, isEnglish } from '../../../helper/helpers';
-import { features } from 'process';
+
 import { Feature } from '../../../pages/Sections/types';
 
 export default function UpdateFeature() {
@@ -40,6 +40,15 @@ export default function UpdateFeature() {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
 
+
+    const feature = [{
+        // id: '',
+        icon: '',
+        ar: { value: '' },
+        en: { value: '' },
+
+        key: '',
+    }]
     const initialValues = {
         ar_title: showData?.data?.ar?.title || '',
         ar_description: showData?.data?.ar?.description || '',
@@ -48,15 +57,19 @@ export default function UpdateFeature() {
         en_description: showData?.data?.en?.description || '',
         type: showData?.data?.type || '',
         image: showData?.data?.image?.url || '',
+
         icon: showData?.data?.icon?.url || '',
-        features: (showData?.data?.features || []).map((f: Feature, index: number) => ({
+
+        features: showData?.data?.features?.length ? showData.data.features.map((f: Feature, index: number) => ({
             icon: f.icon.url,
             key: `key${index}`,
             ar: { value: f.ar.value || '' },
             en: { value: f.en.value || '' },
-        }))
+        })) : feature,
+
+
     };
-    console.log(initialValues);
+
     // console.log('initialValues of features: ', initialValues.features)
     const sectionsSchema = () =>
         Yup.object().shape({
@@ -85,9 +98,9 @@ export default function UpdateFeature() {
             //features
             features: Yup.array().of(
                 Yup.object().shape({
-                    icon: Yup.mixed().required(t('requiredField', { field: t('labels.icon') })),
+                    icon: Yup.string().required(t('requiredField', { field: t('labels.icon') })),
                     ar: Yup.object().shape({
-                        // value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inArabic') })),
+                        value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inArabic') })),
                     }),
                     en: Yup.object().shape({
                         value: Yup.string().required(t('requiredField', { field: t('labels.title') + t('inEnglish') })),
@@ -127,6 +140,8 @@ export default function UpdateFeature() {
     });
 
     const handleSubmit = (values: any) => {
+        console.log(values);
+
         const finalOut = {
             ar: {
                 title: values?.ar_title,
@@ -140,11 +155,11 @@ export default function UpdateFeature() {
             icon: values.icon,
             image: values.image,
             features: values.features?.map((f: Feature, index: number) => {
-                const initialIcon = initialValues.features?.[index]?.icon;
-                const currentIcon = f.icon?.url || f.icon;
+                const initialIcon = initialValues.features?.[index]?.icon !== f.icon && f.icon;
+
 
                 return {
-                    ...(currentIcon !== initialIcon && { icon: currentIcon }),
+                    ...(initialIcon && { icon: initialIcon }),
                     key: `key${index}`,
                     ar: { value: f.ar?.value || '' },
                     en: { value: f.en?.value || '' },
@@ -165,7 +180,7 @@ export default function UpdateFeature() {
             // _method: 'put'
             _method: 'post'
         });
-        console.log(finalOut)
+
     };
 
     return (
@@ -186,6 +201,7 @@ export default function UpdateFeature() {
                     useEffect(() => {
                         validateForm();
                     }, [i18n.language]);
+
 
                     return (
                         <Form>

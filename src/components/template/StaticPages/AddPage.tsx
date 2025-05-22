@@ -79,7 +79,7 @@ export default function AddStaticPage() {
 
     const handleSubmit = (values: any, actions: any) => {
         const finalOut = {
-            is_active: true,
+            is_active: 1,
             type: values?.type,
 
             ar: {

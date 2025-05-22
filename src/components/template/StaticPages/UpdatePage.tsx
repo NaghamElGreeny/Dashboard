@@ -105,6 +105,7 @@ export default function UpdateStaticPage() {
 
     const handleSubmit = (values: any) => {
         const finalOut = {
+            is_active: 1,
             type: values?.type,
 
             ar: {

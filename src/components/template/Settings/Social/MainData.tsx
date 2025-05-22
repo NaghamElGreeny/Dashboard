@@ -9,12 +9,35 @@ export default function MainDataGeneral({ isLoading }: { isLoading?: boolean }) 
 
     const fields = [
         {
-            name: 'whatsapp',
-            type: 'url',
-            label: `${t('labels.whatsapp')}`,
-            placeholder: `${t('enter') + ' ' + t('labels.whatsapp')}`,
+            name: 'ar_desc',
+            type: 'text',
+            label: `${t('labels.description') + ' ' + t('inArabic')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.description') + ' ' + t('inArabic')}`,
         },
-
+        {
+            name: 'en_desc',
+            type: 'text',
+            label: `${t('labels.description') + ' ' + t('inEnglish')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.description') + ' ' + t('inEnglish')}`,
+        },
+        {
+            name: 'phone',
+            type: 'phone',
+            label: `${t('labels.phone')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.phone')}`,
+        },
+        {
+            name: 'email',
+            type: 'email',
+            label: `${t('labels.email')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.email')}`,
+        },
+        {
+            name: 'address',
+            type: 'address',
+            label: `${t('labels.address')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.address')}`,
+        },
         {
             name: 'facebook',
             type: 'url',
@@ -30,31 +53,24 @@ export default function MainDataGeneral({ isLoading }: { isLoading?: boolean }) 
         },
 
         {
-            name: 'linkedIn',
+            name: 'instagram',
             type: 'url',
-            label: `${t('labels.linkedIn_link')}`,
-            placeholder: `${t('enter') + ' ' + t('labels.linkedIn_link')}`,
+            label: `${t('labels.instagram_link')}`,
+            placeholder: `${t('enter') + ' ' + t('labels.instagram_link')}`,
         },
 
         {
-            name: 'snapchat',
-            type: 'url',
-            label: `${t('labels.snapchat_link')}`,
-            placeholder: `${t('enter') + ' ' + t('labels.snapchat_link')}`,
-        },
-
-        {
-            name: 'tiktok',
-            type: 'url',
-            label: `${t('labels.tiktok_link')}`,
-            placeholder: `${t('enter') + ' ' + t('labels.tiktok_link')}`,
+            name: 'appoitnments',
+            // type: 'url',
+            label: `${t('appointments')}`,
+            placeholder: `${t('enter') + ' ' + t('appointments')}`,
         },
     ];
 
     return (
         <div className="grid grid-cols-12 gap-2">
             {fields.map(({ name, type, label, placeholder }, index) => (
-                <div key={index} className="col-span-6">
+                <div key={index} className="col-span-12 sm:col-span-6">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (

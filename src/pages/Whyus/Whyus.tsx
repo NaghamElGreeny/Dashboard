@@ -120,10 +120,9 @@ export default function WhyUs() {
                 const handleToggle = () => {
                     const newStatus = !isActive;
                     setIsActive(newStatus);
-
-                    toggleStatus({
-                        active: newStatus ? 1 : 0, // حسب ما السيرفر بيقبل
-                    });
+                    showAlert(t('toggle_status_confirmation'), '', false, t('ok'), true, 'warning', () => toggleStatus({
+                        active: newStatus ? 1 : 0
+                    }));
                 };
 
                 return (

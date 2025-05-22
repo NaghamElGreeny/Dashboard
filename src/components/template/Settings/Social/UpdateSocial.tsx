@@ -12,14 +12,14 @@ export default function UpdateGeneral() {
     const { t, i18n } = useTranslation();
     const [formKey, setFormKey] = useState(0);
     const [initialValues, setInitialValues] = useState({
-        whatsapp: '',
+        phone: '',
+        email: '',
+        address: '',
         facebook: '',
         x: '',
-        linkedIn: '',
-        snapchat: '',
-        tiktok: '',
+        instagram: '',
+        appoitnments: '',
     });
-
     const {
         data: showData,
         isError: showDataError,
@@ -27,8 +27,8 @@ export default function UpdateGeneral() {
         isSuccess: showDataSuccess,
         refetch: refetch,
     } = useFetch<any>({
-        endpoint: `setting`,
-        queryKey: [`setting`],
+        endpoint: `contact-info`,
+        queryKey: [`contact-info`],
     });
 
     useEffect(() => {
@@ -39,15 +39,16 @@ export default function UpdateGeneral() {
                     newValues[item.key] = item.value;
                 }
             });
+            console.log(showData?.data)
             setInitialValues(newValues); // Update initialValues with new data
             setFormKey(formKey + 1); // Increment formKey to force a re-render
         }
     }, [showDataSuccess]);
-
+    console.log(initialValues)
     // Update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`setting`],
-        endpoint: `setting`,
+        mutationKey: [`contact-info`],
+        endpoint: `contact-info`,
         onSuccess: (data: any) => {
             ShowAlertMixin({
                 type: 15,
@@ -79,30 +80,34 @@ export default function UpdateGeneral() {
 
     const generalSettingsSchema = () =>
         Yup.object().shape({
-            whatsapp: Yup.string()
-                .url(t('validations.url', { field: t('labels.whatsapp') }))
-                .required(t('requiredField', { field: t('labels.whatsapp') })),
+            // phone: Yup.string()
+            //     .trim()
+            //     .required(t('requiredField', { field: t('labels.whatsapp') })),
 
-            facebook: Yup.string()
-                .url(t('validations.url', { field: t('labels.facebook_link') }))
-                .required(t('requiredField', { field: t('labels.facebook_link') })),
+            // email: Yup.string()
+            //     .trim()
+            //     // .url(t('validations.', { field: t('labels.email') }))
+            //     .required(t('requiredField', { field: t('labels.linkedIn_link') })),
+            // address: Yup.string()
+            //     .trim()
+            //     .required(t('requiredField', { field: t('labels.address') })),
+            // facebook: Yup.string()
+            //     .url(t('validations.url', { field: t('labels.facebook_link') }))
+            //     .required(t('requiredField', { field: t('labels.facebook_link') })),
 
-            x: Yup.string()
-                .url(t('validations.url', { field: t('labels.x_link') }))
-                .required(t('requiredField', { field: t('labels.x_link') })),
+            // x: Yup.string()
+            //     .url(t('validations.url', { field: t('labels.x_link') }))
+            //     .required(t('requiredField', { field: t('labels.x_link') })),
 
-            linkedIn: Yup.string()
-                .url(t('validations.url', { field: t('labels.linkedIn_link') }))
-                .required(t('requiredField', { field: t('labels.linkedIn_link') })),
+            // instagram: Yup.string()
+            //     .url(t('validations.url', { field: t('labels.snapchat_link') }))
+            //     .required(t('requiredField', { field: t('labels.snapchat_link') })),
 
-            snapchat: Yup.string()
-                .url(t('validations.url', { field: t('labels.snapchat_link') }))
-                .required(t('requiredField', { field: t('labels.snapchat_link') })),
-
-            tiktok: Yup.string()
-                .url(t('validations.url', { field: t('labels.tiktok_link') }))
-                .required(t('requiredField', { field: t('labels.tiktok_link') })),
+            // appointments: Yup.string()
+            //     .trim()
+            //     .required(t('requiredField', { field: t('labels.appointments') })),
         });
+
 
     return (
         <>
