@@ -46,6 +46,9 @@ import UpdateSections from '../components/template/Sections/UpdateSection';
 import StaticPages from '../pages/StaticPages/StaticPages'
 import AddStaticPage from '../components/template/StaticPages/AddPage';
 import UpdateStaticPage from '../components/template/StaticPages/UpdatePage';
+import ContactUs from '../pages/ContactUs/ContactUs';
+import UpdateContactUs from '../components/template/ContactUs/UpdateContactUs';
+import AddContactUs from '../components/template/ContactUs/AddContactUs';
 
 const Index = lazy(() => import('../pages/Index'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
@@ -110,23 +113,19 @@ const routes = [
             <Navigate to="/permission-required" />
         ),
     },
-    // {
-    //     path: '/contact-info/index',
-    //     element: hasPermission('socials.index') ? <ContactUs /> : <Navigate to="/permission-required" />,
-    // },
+    {
+        path: '/contact-info/index',
+        element: hasPermission('socials.index') ? <ContactUs /> : <Navigate to="/permission-required" />,
+    },
 
-    // {
-    //     path: '/contact-info/add',
-    //     element: hasPermission('socials.store') ? <AddSocial /> : <Navigate to="/permission-required" />,
-    // },
+    {
+        path: '/contact-info/add',
+        element: hasPermission('socials.store') ? <AddContactUs /> : <Navigate to="/permission-required" />,
+    },
 
     {
         path: '/contact-info/edit/:id',
-        element: hasPermission('socials.update') ? (
-            <UpdateSocial />
-        ) : (
-            <Navigate to="/permission-required" />
-        ),
+        element: hasPermission('socials.update') ? (<UpdateContactUs />) : <Navigate to="/permission-required" />,
     },
     {
         path: '/our-features/index',

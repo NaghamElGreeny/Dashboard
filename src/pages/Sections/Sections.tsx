@@ -47,8 +47,8 @@ export default function Sections() {
         },
         {
             id: 4,
-            value: 'terms',
-            label: t('labels.terms'),
+            value: 'contact_info',
+            label: t('labels.contact_info'),
         },
         {
             id: 5,

@@ -9,35 +9,69 @@ import { Breadcrumb } from '../../components/molecules/BreadCrumbs';
 import CrudIconDelete from '../../components/molecules/CrudIconDelete';
 import ModalCustom from '../../components/template/modal/ModalCustom';
 import TableCompCustom from '../../components/template/tantable/TableCutsom';
+import { hasPermission } from '../../helper/permissionHelpers';
 import useFetch from '../../hooks/UseFetch';
 import { useMutate } from '../../hooks/UseMutate';
-import type { FetchSectionData, Section } from './types';
-import { hasPermission } from '../../helper/permissionHelpers';
-import LightBox from '../../components/molecules/LightBox/LightBox';
-import imageError from '/assets/images/logo.png';
 import FilterSection from '../../components/atoms/filters/Filters';
+import LightBox from '../../components/molecules/LightBox/LightBox';
+import { FetchSectionsData, Section } from '../Sections/types';
 
-export default function Sections() {
+export default function StaticPages() {
     const { t, i18n } = useTranslation();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.contact-info.title') },
+        { label: t('breadcrumb.contact_us.title') },
     ];
-    const [SectionsId, setSectionsId] = useState<Object>('');
+
+    const pageTypes = [
+        {
+            id: 0,
+            value: 'privacy_policy',
+            label: t('labels.privacy_policy'),
+        },
+        {
+            id: 1,
+            value: 'terms',
+            label: t('labels.terms-conditions'),
+        },
+    ];
+
+    const [contactUsId, setContactUsId] = useState<string>('');
     const [page, setPage] = useState<number>(1);
     const [searchParams, setSearchParams] = useSearchParams();
+    const locale = localStorage.getItem('i18nextLng');
 
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedDescription, setSelectedDescription] = useState<string>('');
-    const locale = localStorage.getItem('i18nextLng');
+    const { mutate: updateStatus } = useMutate({
+        mutationKey: [`sections/${contactUsId}`],
+        endpoint: `sections/${contactUsId}`,
+        onSuccess: async (data: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'success',
+                title:
+                    data?.data?.message || t('isUpdatedSuccessfully', { name: t('labels.status') }),
+            });
+            refetch();
+        },
+        onError: async (err: any) => {
+            ShowAlertMixin({
+                type: 15,
+                icon: 'error',
+                title: err?.response?.data?.message,
+            });
+        },
+        formData: true,
+        method: 'put',
+    });
     const columns: MRT_ColumnDef<Section>[] = [
         {
             header: '#',
             Cell: ({ row }: any) => row.index + 1,
             size: 40,
         },
-
         {
             header: t('labels.image'),
             Cell: ({ row }: { row: { original: Section } }) => (
@@ -68,15 +102,6 @@ export default function Sections() {
             ),
             accessorKey: 'icon',
         },
-
-        {
-            header: t('labels.type'),
-            Cell: ({ row }: { row: { original: Section } }) => {
-                const type = row.original?.type || t('not_found');
-                return <span>{t(`labels.${type}`)}</span>;
-            },
-            accessorKey: 'type',
-        },
         {
             header: t('labels.title'),
             Cell: ({ row }: { row: { original: Section } }) => {
@@ -93,7 +118,7 @@ export default function Sections() {
                 return (
                     <>
                         <FaEye
-                            className="text-[19px] text-primary ms-10 cursor-pointer"
+                            className="text-[19px] text-black ms-10 cursor-pointer"
                             onClick={() => {
                                 setSelectedDescription(description ?? '');
                                 // setSelectedDescription(description as string);
@@ -108,46 +133,63 @@ export default function Sections() {
         },
 
         {
+            header: t('labels.type'),
+            Cell: ({ row }: { row: { original: Section } }) => {
+                const type = row.original?.type || '---';
+                return <span>{t(`labels.${type}`)}</span>;
+            },
+            accessorKey: 'type',
+        },
+
+        {
             accessorKey: 'status',
             header: t('labels.status'),
-            Cell: ({ row }: { row: { original: Section } }) => {
+            Cell: ({ row }: { row: { original: any } }) => {
                 const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
+                // function handleClick() {
+                //     updateStatus({
+                //         id: row.original?.id,
+                //         is_active: !row.original?.is_active,
+                //     });
+                // }
                 return (
                     <>
-                        <span
-                            className={`${row.original?.is_active ? 'active' : 'inactive'
-                                } statuses `}
-                        >
-                            {status}
-                        </span>
+                        <button >
 
+                            <span
+                                className={`${row.original?.is_active ? 'active' : 'inactive'
+                                    } statuses `}
+                            >
+                                {status}
+                            </span>
+                        </button>
                     </>
                 );
             },
         },
 
-        ...(hasPermission('update-contacts') || hasPermission('destroy-contacts')
+        ...(hasPermission('update-contact-info') || hasPermission('delete-contact-info')
             ? [
                 {
                     header: t('labels.actions'),
-                    Cell: ({ renderedCellValue, row }: any) => (
+                    Cell: ({ row }: any) => (
                         <div
                             className="flex gap-2 items-center"
                             style={{ marginInlineStart: '1rem' }}
                         >
-                            {hasPermission('update-Sections') && (
+                            {hasPermission('contact-info.update') && (
                                 <Link
-                                    to={`/sections?type=contact_info/edit/${row.original?.id}`}
+                                    to={`/contact-info/edit/${row.original?.id}`}
                                     className="flex gap-5"
                                 >
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
                                 </Link>
                             )}
 
-                            {hasPermission('destroy-Sections') && (
+                            {hasPermission('contact-info.destroy') && (
                                 <CrudIconDelete
                                     deleteAction={() => {
-                                        setSectionsId(row.original?.id);
+                                        setContactUsId(row.original?.id);
                                         deleteItem();
                                     }}
                                 />
@@ -160,19 +202,55 @@ export default function Sections() {
             : []),
     ];
 
-    const { mutate: Delete } = useMutate({
-        mutationKey: [`sections?type=contact_info/${SectionsId}`],
-        endpoint: `sections?type=contact_info/${SectionsId}`,
+    const deleteItem = () => {
+        showAlert(t('delete_confirmation'), '', false, t('ok'), true, 'warning', () => Delete({}));
+    };
 
+    const initialValues = {
+        type: searchParams.get('type') || '',
+        // keyword: searchParams.get('keyword') || '',
+    };
+
+    const buildEndpoint = (params: { type: string; }) => {
+        const queryParams = new URLSearchParams({ ...params, page: page.toString() });
+
+        return `sections?type=contact_info${queryParams.toString()}`;
+    };
+
+    const {
+        data: terms,
+        refetch,
+        isLoading,
+    } = useFetch<FetchSectionsData>({
+        endpoint: buildEndpoint(initialValues),
+        queryKey: [buildEndpoint(initialValues)],
+    });
+
+    const handleReset = (
+        resetForm: () => void,
+        setFieldValue: (field: string, value: any) => void
+    ) => {
+        // Clear search params
+        setSearchParams({});
+        // Reset form values in Formik
+        resetForm();
+        // Explicitly reset the type field
+        setFieldValue('type', '');
+
+        // initialValues.keyword = '';
+    };
+
+    const { mutate: Delete } = useMutate({
+        mutationKey: [`sections/${contactUsId}`],
+        endpoint: `sections/${contactUsId}`,
         onSuccess: async (data: any) => {
             ShowAlertMixin({
                 type: 15,
                 icon: 'success',
                 title:
                     data?.data?.message ||
-                    t('isDeletedSuccessfully', { name: t('breadcrumb.Sections.title') }),
+                    t('isDeletedSuccessfully', { name: t('breadcrumb.pages.title') }),
             });
-
             refetch();
         },
         onError: async (err: any) => {
@@ -186,60 +264,41 @@ export default function Sections() {
         method: 'delete',
     });
 
-    const deleteItem = () => {
-        showAlert(t('delete_confirmation'), '', false, t('ok'), true, 'warning', () => Delete({}));
-    };
-
-
-    const initialValues = {
-        type: searchParams.get('type') || '',
-    };
-
-    const buildEndpoint = (params: { type: string }) => {
-        const queryParams = new URLSearchParams({ ...params, page: page.toString() });
-
-        return `sections?type=contact_info${queryParams.toString()}`;
-    };
-
-    const {
-        data: terms,
-        refetch,
-        isLoading,
-    } = useFetch<FetchSectionData>({
-        endpoint: buildEndpoint(initialValues),
-        queryKey: [buildEndpoint(initialValues)],
-    });
-    // console.log(terms?.data)
-    const handleReset = (
-        resetForm: () => void,
-        setFieldValue: (field: string, value: any) => void
-    ) => {
-        // Clear search params
-        setSearchParams({});
-        // Reset form values in Formik
-        resetForm();
-        // Explicitly reset the status field
-        setFieldValue('type', '');
-    };
-
     return (
         <>
             <Breadcrumb items={breadcrumbItems} />
+
+            {/* filter section */}
+            {/* <FilterSection
+                initialValues={initialValues}
+                optionsList={pageTypes}
+                onSubmit={(values) => {
+                    const params = {
+                        type: values.type,
+                        // keyword: values.keyword,
+                    };
+                    setSearchParams(params);
+                }}
+                onReset={handleReset}
+                isLoading={isLoading}
+                // keywords={['keyword']}
+                selectKeys={['type']}
+            /> */}
 
             <TableCompCustom
                 showOnly={true}
                 columns={columns}
                 data={terms?.data || []}
                 paginationData={terms?.meta || []}
-                title={t('breadcrumb.Sections.add')}
+                title={t('breadcrumb.pages.add')}
                 page={page}
                 setPage={setPage}
                 isLoading={isLoading}
                 downloadAndExport={
                     <>
-                        {hasPermission('store-Sections') && (
+                        {hasPermission('store-Page') && (
                             <Link
-                                to="/sections/add"
+                                to="/contact-info/add"
                                 className="bg-gradient-to-r from-primary to-secondary p-2 px-5 text-white font-semibold rounded-[0.25rem]"
                             >
                                 <div className="flex items-center gap-2">

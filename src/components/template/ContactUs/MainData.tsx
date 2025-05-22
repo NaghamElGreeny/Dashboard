@@ -3,23 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
 import { useFormikContext } from 'formik';
 import GeneralStaticSelect from '../../molecules/selects/GeneralStaticSelect';
+import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAttachment';
+import { Label } from '../../atoms';
 
-export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
+export default function MainDataContactUs({ isLoading }: { isLoading?: boolean }) {
     const { t } = useTranslation();
     const { setFieldValue, values } = useFormikContext<{ [key: string]: any }>();
 
 
-    const pageTypes = [
+    const type = [
         {
             id: 0,
-            value: 'privacy_policy',
-            label: t('labels.privacy_policy'),
+            value: 'contact_info',
+            label: t('labels.contact_info'),
         },
-        {
-            id: 1,
-            value: 'terms',
-            label: t('labels.terms-conditions'),
-        },
+
     ];
 
 
@@ -27,22 +25,57 @@ export default function MainDataPages({ isLoading }: { isLoading?: boolean }) {
         <>
             <div className="grid grid-cols-12 gap-2">
 
+                <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
+                    {isLoading ? (
+                        <Skeleton height={100} />
+                    ) : (
+                        <>
+                            <Label htmlFor="icon" className="mb-1">
+                                {t('labels.icon')}
+                            </Label>
 
-                <div className="col-span-12">
+                            <NewUploadImgRepeaterAttachment
+                                acceptFiles="image/png, image/jpeg, image/gif"
+                                name="icon"
+                                model="Section"
+
+                            />
+                        </>
+                    )}
+                </div>
+                <div className="flex flex-col col-span-12 sm:col-span-6 items-center justify-center w-full my-4">
+                    {isLoading ? (
+                        <Skeleton height={100} />
+                    ) : (
+                        <>
+                            <Label htmlFor="image" className="mb-1">
+                                {t('labels.image')}
+                            </Label>
+
+                            <NewUploadImgRepeaterAttachment
+                                acceptFiles="image/png, image/jpeg, image/gif"
+                                name="image"
+                                model="Section"
+
+                            />
+                        </>
+                    )}
+                </div>
+                {/* <div className="col-span-12">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
                         <GeneralStaticSelect
                             name="type"
-                            dataOptions={pageTypes}
+                            dataOptions={type}
                             label={t('labels.type')}
                             placeholder={t('select') + ' ' + t('labels.type')}
-                            onChange={(option: any) => setFieldValue('type', option?.value)}
-                            value={pageTypes.find((option) => option.value === values.type) || null}
+                            // onChange={(option: any) => setFieldValue('type', option?.value)}
+                            value={type.find((option) => option.value === values.type) || null}
                         />
 
                     )}
-                </div>
+                </div> */}
 
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (
