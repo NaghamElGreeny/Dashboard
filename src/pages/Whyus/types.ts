@@ -12,7 +12,7 @@ export interface WhyUs {
     };
     icon?: AboutImage[] | any;
     id: number;
-    is_active?: string;
+    is_active?: boolean;
     value: string;
 }
 

@@ -110,15 +110,15 @@ const routes = [
             <Navigate to="/permission-required" />
         ),
     },
-    {
-        path: '/contact-info/index',
-        element: hasPermission('socials.index') ? <SocialsPage /> : <Navigate to="/permission-required" />,
-    },
+    // {
+    //     path: '/contact-info/index',
+    //     element: hasPermission('socials.index') ? <ContactUs /> : <Navigate to="/permission-required" />,
+    // },
 
-    {
-        path: '/contact-info/add',
-        element: hasPermission('socials.store') ? <AddSocial /> : <Navigate to="/permission-required" />,
-    },
+    // {
+    //     path: '/contact-info/add',
+    //     element: hasPermission('socials.store') ? <AddSocial /> : <Navigate to="/permission-required" />,
+    // },
 
     {
         path: '/contact-info/edit/:id',

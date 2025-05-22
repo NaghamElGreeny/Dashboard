@@ -17,6 +17,7 @@ import LightBox from '../../components/molecules/LightBox/LightBox';
 import imageError from '/assets/images/logo.png';
 import FilterSection from '../../components/atoms/filters/Filters';
 import Lightbox from 'react-18-image-lightbox';
+import { Switch } from '@mantine/core';
 
 export default function WhyUs() {
     const { t, i18n } = useTranslation();
@@ -41,9 +42,9 @@ export default function WhyUs() {
         },
 
         {
-            header: t('labels.image'),
+            header: t('labels.icon'),
             Cell: ({ row }: { row: { original: WhyUs } }) => {
-                const icon = row.original.icon; // object فيه { url: string }
+                const icon = row.original.icon;
                 const [isOpen, setIsOpen] = useState(false);
 
                 return (
@@ -53,7 +54,7 @@ export default function WhyUs() {
                                 <img
                                     src={icon.url}
                                     alt="image"
-                                    // onClick={() => setIsOpen(true)}
+
                                     className="rounded-full w-20 h-20 object-cover cursor-pointer"
                                 />
 
@@ -69,91 +70,72 @@ export default function WhyUs() {
                         )}
                     </div>
                 );
-            }
-            // accessorKey: 'images',
+            },
+            accessorKey: 'icon',
         }
 
-        // {
-        //     header: t('labels.image'),
-        //     Cell: ({ row }: { row: { original: WhyUs } }) => (
-        //         <div className="flex gap-5">
-        //             {row.original?.icon && row.original?.icon.length > 0 ? (
-        //                 //@ts-ignore
-        //                 <LightBox
-        //                     // isProduct
-        //                     getItems={row.original?.icon?.map((image: any) => ({
-        //                         src: image.url || imageError,
-        //                     }))}
-        //                 >
-        //                     <img
-        //                         src={row.original?.icon[0].url || imageError}
-        //                         alt={row.original?.icon?.url || 'Image'}
-        //                         className="rounded-full w-20 h-20 object-cover cursor-pointer"
-        //                     />
-        //                 </LightBox>
-        //             ) : (
-        //                 <span>{t('not_found')}</span>
-        //             )}
-        //         </div>
-        //     ),
-        //     accessorKey: 'images',
-        // },
-
         , {
-            header: t('labels.title'),
+            header: t('labels.value'),
             Cell: ({ row }: { row: { original: WhyUs } }) => {
                 const value = row.original?.value || t('not_found');
                 return <span>{value}</span>;
             },
             accessorKey: 'value',
-        }
-        , {
-            header: t('labels.description'),
+        },
+        {
+            header: t('labels.title'),
             Cell: ({ row }: { row: { original: WhyUs } }) => {
                 const description = locale === 'ar' ? row.original?.ar?.key : row.original?.en?.key || t('not_found');
                 return <span>{description}</span>;
             },
-            accessorKey: 'description',
+            accessorKey: 'title',
         },
+        {
+            header: t('labels.status'),
+            Cell: ({ row }: { row: { original: WhyUs } }) => {
+                const [isActive, setIsActive] = useState(row.original?.is_active);
 
-        // {
-        //     header: t('labels.description'),
-        //     Cell: ({ row }: { row: { original: WhyUs } }) => {
-        //         const description = row.original?.desc || t('not_found');
-        //         return (
-        //             <>
-        //                 <FaEye
-        //                     className="text-[19px] text-black ms-10 cursor-pointer"
-        //                     onClick={() => {
-        //                         setSelectedDescription(description ?? '');
-        //                         // setSelectedDescription(description as string);
-        //                         setOpen(true);
-        //                     }}
-        //                 />
-        //             </>
-        //         );
-        //     },
+                const { mutate: toggleStatus } = useMutate({
+                    mutationKey: [`why-us-toggle-${row.original.id}`],
+                    endpoint: `why-us/${row.original.id}`,
+                    method: 'put',
+                    formData: true,
+                    onSuccess: () => {
+                        ShowAlertMixin({
+                            type: 15,
+                            icon: 'success',
+                            title: t('status_updated'),
+                        });
+                        refetch(); // علشان نرجع البيانات الجديدة من السيرفر
+                    },
+                    onError: (err: any) => {
+                        ShowAlertMixin({
+                            type: 15,
+                            icon: 'error',
+                            title: err?.response?.data?.message,
+                        });
+                    },
+                });
 
-        //     accessorKey: 'description',
-        // },
+                const handleToggle = () => {
+                    const newStatus = !isActive;
+                    setIsActive(newStatus);
 
-        // {
-        //     accessorKey: 'status',
-        //     header: t('labels.status'),
-        //     Cell: ({ row }: { row: { original: About } }) => {
-        //         const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
-        //         return (
-        //             <>
-        //                 <span
-        //                     className={`${row.original?.is_active ? 'active' : 'inactive'
-        //                         } statuses `}
-        //                 >
-        //                     {status}
-        //                 </span>
-        //             </>
-        //         );
-        //     },
-        // },
+                    toggleStatus({
+                        active: newStatus ? 1 : 0, // حسب ما السيرفر بيقبل
+                    });
+                };
+
+                return (
+                    <Switch
+                        checked={isActive}
+                        onChange={handleToggle}
+                        color={isActive ? 'green' : 'gray'}
+                    />
+                );
+            },
+            accessorKey: 'active',
+        },
 
         ...(hasPermission('update-About') || hasPermission('destroy-About')
             ? [

@@ -45,7 +45,8 @@ export default function UpdateWhyus() {
         ar_key: showData?.data?.ar?.key || '',
         en_key: showData?.data?.en?.key || '',
         value: showData?.data?.value || '',
-        _image: showData?.data?.icon?.url || 'url not found',
+        icon: showData?.data?.icon?.url || showData?.data?.icon || 'url not found',
+        is_active: showData?.data?.is_active
     };
 
     const whyusSchema = () =>
@@ -65,7 +66,8 @@ export default function UpdateWhyus() {
             value: Yup.string()
                 .trim()
                 .required(t('requiredField', { field: t('labels.title') })),
-
+            is_active: Yup.boolean()
+                .required(t('requiredField', { field: t('labels.status') })),
         });
 
     // update data
@@ -109,7 +111,7 @@ export default function UpdateWhyus() {
                 key: values?.en_key,
             },
             value: values?.value,
-            is_active: 1,
+            is_active: values?.is_active,
             icon: values?.icon,
             // icon: values?.icon?.path,
 
