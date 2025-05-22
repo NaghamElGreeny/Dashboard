@@ -11,23 +11,24 @@ import ModalCustom from '../../components/template/modal/ModalCustom';
 import TableCompCustom from '../../components/template/tantable/TableCutsom';
 import useFetch from '../../hooks/UseFetch';
 import { useMutate } from '../../hooks/UseMutate';
-import type { Feature, FetchFeaturesData } from './types';
+import type { Service, FetchServicesData } from './types';
 import { hasPermission } from '../../helper/permissionHelpers';
 import themeConfig from '../../theme.config';
+import Lightbox from 'react-18-image-lightbox';
 
-export default function Features() {
+export default function Services() {
     const { t, i18n } = useTranslation();
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.features.title') },
+        { label: t('breadcrumb.Services.title') },
     ];
 
-    const [featureId, setFeatureId] = useState<Object>('');
+    const [serviceId, setServiceId] = useState<Object>('');
     const [page, setPage] = useState(1);
     const [opened, setOpen] = useState<boolean>(false);
     const [selectedAnswer, setSelectedAnswer] = useState<string>('');
     const locale = localStorage.getItem('i18nextLng');
-    const columns: MRT_ColumnDef<Feature>[] = [
+    const columns: MRT_ColumnDef<Service>[] = [
         {
             header: '#',
             Cell: ({ row }: any) => row.index + 1,
@@ -35,17 +36,72 @@ export default function Features() {
         },
 
         {
-            header: t('labels.icon'),
-            Cell: ({ row }: { row: { original: Feature } }) => {
-                const IconComponent = row.original?.icon?.url || null;
+            header: t('labels.background'),
+            Cell: ({ row }: { row: { original: Service } }) => {
+                const background = row.original.background;
+                const [isOpen, setIsOpen] = useState(false);
 
-                return IconComponent ? <img src={IconComponent} /> : t('not_found');
+                return (
+                    <div className="flex gap-5">
+                        {background?.url ? (
+                            <>
+                                <img
+                                    src={background.url}
+                                    alt="image"
+
+                                    className="rounded-full w-20 h-20 object-cover cursor-pointer"
+                                />
+
+                                {isOpen && (
+                                    <Lightbox
+                                        mainSrc={background.url}
+                                        onCloseRequest={() => setIsOpen(false)}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <span>{t('not_found')}</span>
+                        )}
+                    </div>
+                );
+            },
+            accessorKey: 'background',
+        },
+        {
+            header: t('labels.icon'),
+            Cell: ({ row }: { row: { original: Service } }) => {
+                const icon = row.original.icon;
+                const [isOpen, setIsOpen] = useState(false);
+
+                return (
+                    <div className="flex gap-5">
+                        {icon?.url ? (
+                            <>
+                                <img
+                                    src={icon.url}
+                                    alt="image"
+
+                                    className="rounded-full w-20 h-20 object-cover cursor-pointer"
+                                />
+
+                                {isOpen && (
+                                    <Lightbox
+                                        mainSrc={icon.url}
+                                        onCloseRequest={() => setIsOpen(false)}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <span>{t('not_found')}</span>
+                        )}
+                    </div>
+                );
             },
             accessorKey: 'icon',
         },
         {
             header: t('labels.title'),
-            Cell: ({ row }: { row: { original: Feature } }) => {
+            Cell: ({ row }: { row: { original: Service } }) => {
                 const question = locale === 'ar' ? row.original?.ar?.title : row.original?.en?.title || 'title not found';
                 const truncatedQuestion =
                     typeof question === 'string' && question.length > 20
@@ -73,7 +129,7 @@ export default function Features() {
         },
         {
             header: t('labels.description'),
-            Cell: ({ row }: { row: { original: Feature } }) => {
+            Cell: ({ row }: { row: { original: Service } }) => {
                 const answer = locale === 'ar' ? row.original?.ar.description : row.original?.en.description || t('not_found');
                 return (
                     <>
@@ -89,17 +145,9 @@ export default function Features() {
             },
             accessorKey: 'description',
         },
-        {
-            header: t('labels.background'),
-            Cell: ({ row }: { row: { original: Feature } }) => {
-                const IconComponent = row.original?.background?.url || null;
 
-                return IconComponent ? <img src={IconComponent} /> : t('not_found');
-            },
-            accessorKey: 'background',
-        },
 
-        ...(hasPermission('feature.update') || hasPermission('feature.destroy')
+        ...(hasPermission('service.update') || hasPermission('service.destroy')
             ? [
                 {
                     header: t('labels.actions'),
@@ -108,7 +156,7 @@ export default function Features() {
                             className="flex gap-2 items-center"
                             style={{ marginInlineStart: '1rem' }}
                         >
-                            {hasPermission('feature.update') && (
+                            {hasPermission('service.update') && (
                                 <Link
                                     to={`/our-features/edit/${row.original?.id}`}
                                     className="flex gap-5"
@@ -116,10 +164,10 @@ export default function Features() {
                                     <FaRegEdit className="text-[19px] text-warning ms-8" />
                                 </Link>
                             )}
-                            {hasPermission('feature.destroy') && (
+                            {hasPermission('service.destroy') && (
                                 <CrudIconDelete
                                     deleteAction={() => {
-                                        setFeatureId(row.original?.id);
+                                        setServiceId(row.original?.id);
                                         deleteItem();
                                     }}
                                 />
@@ -133,8 +181,8 @@ export default function Features() {
     ];
 
     const { mutate: Delete } = useMutate({
-        mutationKey: [`our-features/${featureId}`],
-        endpoint: `our-features/${featureId}`,
+        mutationKey: [`our-features/${serviceId}`],
+        endpoint: `our-features/${serviceId}`,
 
         onSuccess: async (data: any) => {
             ShowAlertMixin({
@@ -173,7 +221,7 @@ export default function Features() {
         data: features,
         refetch,
         isLoading,
-    } = useFetch<FetchFeaturesData>({
+    } = useFetch<FetchServicesData>({
         endpoint: endpoint,
         queryKey: [endpoint],
     });

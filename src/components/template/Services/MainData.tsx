@@ -1,114 +1,123 @@
 import { Skeleton } from '@mantine/core';
-import { FieldArray, useFormikContext } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { BaseInputField } from '../../atoms/BaseInputField';
-import GeneralCustomSelect from '../../molecules/selects/Products/GeneralCustomSelect';
+import CKeditor from '../../atoms/EditorCustom';
+import NewUploadImgRepeaterAttachment from '../../atoms/NewUploadImgRepeaterAttachment';
+import { Label } from '../../atoms';
 
-export default function ServicesMainData({ isLoading }: { isLoading?: boolean }) {
+export default function FeaturesMainData({
+    isLoading,
+    formik,
+    data,
+}: {
+    isLoading?: boolean;
+    formik?: any;
+    data?: any;
+}) {
     const { t } = useTranslation();
-    const { setFieldValue, values } = useFormikContext<{ [key: string]: any }>();
-
-    const typesList = [
-        {
-            id: 0,
-            value: 'online',
-            label: t('labels.online'),
-        },
-        {
-            id: 1,
-            value: 'offline',
-            label: t('labels.offline'),
-        },
-    ];
 
     return (
         <>
-            <FieldArray
-                name="services"
-                render={() => (
-                    <>
-                        {values.services.map((service: any, index: number) => (
-                            <>
-                                <div
-                                    key={index}
-                                    className="grid grid-cols-12 gap-2 items-center mb-4"
-                                >
-                                    <div className="col-span-12 ">
-                                        {isLoading ? (
-                                            <Skeleton height={40} className="w-full" />
-                                        ) : (
-                                            <GeneralCustomSelect
-                                                name={`services[${index}].type`}
-                                                optionsList={typesList}
-                                                label={`${t('labels.type')}  ${index + 1}`}
-                                                placeholder={t('select') + ' ' + t('labels.type')}
-                                                onChange={(option: any) =>
-                                                    setFieldValue(
-                                                        `services[${index}].type`,
-                                                        option?.value
-                                                    )
-                                                }
-                                                // value={values?.services[index]?.type || ''}
-                                                value={service?.type || ''}
-                                            />
-                                        )}
-                                    </div>
+            <div className="grid grid-cols-12 gap-2">
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={40} className="w-full" />
+                    ) : (
+                        <BaseInputField
+                            label={t('labels.title') + t('inArabic')}
+                            name="ar_title"
+                            id="ar_title"
+                            type="text"
+                            className="border"
+                            placeholder={t('enter') + ' ' + t('labels.title')}
+                        />
+                    )}
+                </div>
 
-                                    <div className="col-span-12 sm:col-span-6">
-                                        {isLoading ? (
-                                            <Skeleton height={40} className="w-full" />
-                                        ) : (
-                                            <BaseInputField
-                                                label={
-                                                    `${t('labels.service')} ${index + 1}` +
-                                                    t('inArabic')
-                                                }
-                                                name={`services[${index}].ar_service`}
-                                                id={`services[${index}].ar_service`}
-                                                type="text"
-                                                className="border"
-                                                defaultValue={service.ar_service}
-                                                placeholder={`${t('enter')} ${t('labels.service')}`}
-                                                onChange={(e) =>
-                                                    setFieldValue(
-                                                        `services[${index}].ar_service`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="col-span-12 sm:col-span-6">
-                                        {isLoading ? (
-                                            <Skeleton height={40} className="w-full" />
-                                        ) : (
-                                            <BaseInputField
-                                                label={
-                                                    `${t('labels.service')} ${index + 1}` +
-                                                    t('inEnglish')
-                                                }
-                                                name={`services[${index}].en_service`}
-                                                id={`services[${index}].en_service`}
-                                                type="text"
-                                                className="border"
-                                                defaultValue={service.en_service}
-                                                placeholder={`${t('enter')} ${t('labels.service')}`}
-                                                onChange={(e) =>
-                                                    setFieldValue(
-                                                        `services[${index}].en_service`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                                {index - 1 < 0 && <hr className="my-5" />}
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={40} className="w-full" />
+                    ) : (
+                        <BaseInputField
+                            label={t('labels.title') + t('inEnglish')}
+                            name="en_title"
+                            id="en_title"
+                            type="text"
+                            className="border"
+                            placeholder={t('enter') + ' ' + t('labels.title')}
+                        />
+                    )}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={100} className="w-full" />
+                    ) : (
+                        <BaseInputField
+                            id="ar_description"
+                            name="ar_description"
+                            type="text"
+                            className="border"
+                            label={t('labels.description') + t('inArabic')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
+                        />
+                    )}
+                </div>
+
+                <div className="col-span-12 sm:col-span-6">
+                    {isLoading ? (
+                        <Skeleton height={100} className="w-full" />
+                    ) : (
+                        <BaseInputField
+                            id=" en_description"
+                            name="en_description"
+                            type="text"
+                            className="border"
+                            label={t('labels.description') + t('inEnglish')}
+                        // placeholder={t('enter') + ' ' + t('labels.description')}
+                        />
+                    )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 col-span-12 mb-4">
+                    <div className="flex flex-col items-center justify-center w-full my-4">
+                        {isLoading ? (
+                            <Skeleton height={100} />
+                        ) : (
+                            <>
+                                <Label htmlFor="images" className="mb-1">
+                                    {t('labels.background')}
+                                </Label>
+
+                                <NewUploadImgRepeaterAttachment
+                                    acceptFiles="image/png, image/jpeg, image/gif"
+                                    name="background"
+                                    model="OurFeature"
+
+                                />
                             </>
-                        ))}
-                    </>
-                )}
-            />
+                        )}
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-full my-4">
+                        {isLoading ? (
+                            <Skeleton height={100} />
+                        ) : (
+                            <>
+                                <Label htmlFor="icon" className="mb-1">
+                                    {t('labels.icon')}
+                                </Label>
+
+                                <NewUploadImgRepeaterAttachment
+                                    acceptFiles="image/png, image/jpeg, image/gif"
+                                    name="icon"
+                                    model="OurFeature"
+
+                                />
+                            </>
+                        )}
+                    </div>
+
+                </div>
+            </div>
         </>
     );
 }

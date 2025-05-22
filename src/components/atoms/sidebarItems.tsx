@@ -255,7 +255,7 @@ export const SideBarItemsFn = () => {
                             id: crypto.randomUUID(),
                             icon: <IoSettingsOutline />,
                             label: t('sidebar.services'),
-                            link: '/services',
+                            link: '/our-features',
                             items: [
                                 ...(hasPermission('services.index')
                                     ? [
@@ -263,7 +263,7 @@ export const SideBarItemsFn = () => {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
                                             label: t('breadcrumb.services.all'),
-                                            link: '/services/index',
+                                            link: '/our-features/index',
                                         },
                                     ]
                                     : []),
@@ -273,7 +273,7 @@ export const SideBarItemsFn = () => {
                                             id: crypto.randomUUID(),
                                             icon: <PageIcon />,
                                             label: t('breadcrumb.services.add'),
-                                            link: '/services/add',
+                                            link: '/our-features/add',
                                         },
                                     ]
                                     : []),

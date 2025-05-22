@@ -1,4 +1,4 @@
-export interface Feature {
+export interface Service {
     id: string;
     ar: {
         title?: string;
@@ -18,7 +18,7 @@ export interface Feature {
     };
 }
 
-export interface FetchFeaturesData {
-    data: Feature[];
+export interface FetchServicesData {
+    data: Service[];
     meta: any;
 }

@@ -17,7 +17,7 @@ import FaqsPage from '../pages/Faqs/Faqs';
 import WhyUsPage from '../pages/Whyus/Whyus';
 import UpdateWhyus from '../components/template/WhyUs/UpdateWhyUs';
 
-import ServicesPage from '../components/template/Services/UpdateService';
+// import ServicesPage from '../components/template/Services/UpdateService';
 // import SectionsPage from '../components/template/Sections/UpdateSections';
 import SectionsPage from '../pages/Sections/Sections';
 import AddSection from '../components/template/Sections/AddSection'
@@ -38,9 +38,9 @@ import { Navigate } from 'react-router-dom';
 import WhyUsEdit from '../components/template/WhyUs/WhyUsEdit';
 import AddWhyus from '../components/template/WhyUs/AddWhyus';
 
-import FeaturesPage from '../pages/Features/Features'
-import UpdateFeature from '../components/template/Features/UpdateFeature';
-import AddFeature from '../components/template/Features/AddFeature';
+import ServicesPage from '../pages/Services/Services'
+import UpdateService from '../components/template/Services/UpdateService.tsx';
+import AddService from '../components/template/Services/AddService';
 import UpdateSections from '../components/template/Sections/UpdateSection';
 
 import StaticPages from '../pages/StaticPages/StaticPages'
@@ -130,17 +130,17 @@ const routes = [
     },
     {
         path: '/our-features/index',
-        element: hasPermission('features.index') ? <FeaturesPage /> : <Navigate to="/permission-required" />,
+        element: hasPermission('serivces.index') ? <ServicesPage /> : <Navigate to="/permission-required" />,
     },
 
     {
         path: '/our-features/add',
-        element: hasPermission('features.store') ? <AddFeature /> : <Navigate to="/permission-required" />,
+        element: hasPermission('services.store') ? <AddService /> : <Navigate to="/permission-required" />,
     },
 
     {
         path: '/our-features/edit/:id',
-        element: hasPermission('features.update') ? <UpdateFeature /> : <Navigate to="/permission-required" />,
+        element: hasPermission('services.update') ? <UpdateService /> : <Navigate to="/permission-required" />,
     },
     {
         path: '/why-us/add',

@@ -1,22 +1,26 @@
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as Yup from 'yup';
-import { isArabic, isEnglish } from '../../../helper/helpers';
+import { useNavigate, useParams } from 'react-router-dom';
 import useFetch from '../../../hooks/UseFetch';
 import { useMutate } from '../../../hooks/UseMutate';
 import Button from '../../atoms/Button';
-import ShowAlertMixin from '../../atoms/ShowAlertMixin';
 import { Breadcrumb } from '../../molecules/BreadCrumbs';
-import ServicesMainData from './MainData';
-import { hasPermission } from '../../../helper/permissionHelpers';
+import FeaturesMainData from './MainData';
+import * as Yup from 'yup';
+import ShowAlertMixin from '../../atoms/ShowAlertMixin';
+import { isArabic, isEnglish } from '../../../helper/helpers';
 
-export default function UpdateServices() {
+export default function UpdateFeature() {
     const { t, i18n } = useTranslation();
+
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.services.title') },
+        { label: t('breadcrumb.features.title'), to: '/our-features/index' },
+        { label: t('breadcrumb.features.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 
@@ -25,61 +29,51 @@ export default function UpdateServices() {
         isError: showDataError,
         isLoading: showDataLoading,
         isSuccess: showDataSuccess,
-        refetch,
+        refetch: refetch,
     } = useFetch<any>({
-        endpoint: `service`,
-        // @ts-ignore
-        queryKey: [`service`, hasPermission('service.index')],
-        enabled: !!hasPermission('service.index'),
+        endpoint: `our-features/${id}`,
+        queryKey: [`our-features/${id}`],
     });
-
     useEffect(() => {
         setFormKey(formKey + 1);
     }, [showDataSuccess]);
 
     const initialValues = {
-        services:
-            showData?.data?.length > 0
-                ? showData.data.map((service: any) => ({
-                      id: service?.id || null,
-                      ar_service: service?.ar?.service || '',
-                      en_service: service?.en?.service || '',
-                      type: service?.type || '',
-                  }))
-                : [
-                      { ar_service: '', en_service: '', type: '' },
-                      { ar_service: '', en_service: '', type: '' },
-                  ],
+        ar_title: showData?.data?.ar?.title || '',
+        ar_description: showData?.data?.ar?.description || '',
+
+        en_title: showData?.data?.en?.title || '',
+        en_description: showData?.data?.en?.description || '',
+        background: showData?.data?.background?.url || '',
+        icon: showData?.data?.icon?.url || '',
     };
 
-    const servicesSchema = () =>
+    const featuresSchema = () =>
         Yup.object().shape({
-            services: Yup.array().of(
-                Yup.object().shape({
-                    type: Yup.string().required(t('requiredField', { field: t('labels.type') })),
-                    ar_service: Yup.string()
-                        .trim()
-                        .required(
-                            t('requiredField', { field: t('labels.service') + t('inArabic') })
-                        )
-                        .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
+            icon: Yup.mixed().required(t('validation.image_only')),
+            ar_title: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.title') + t('inArabic') }))
+                .test('is-arabic', t('validations.arabicText'), (value) => isArabic(value)),
 
-                    en_service: Yup.string()
-                        .trim()
-                        .required(
-                            t('requiredField', { field: t('labels.service') + t('inEnglish') })
-                        )
-                        .test('is-english', t('validations.englishText'), (value) =>
-                            isEnglish(value)
-                        ),
-                })
-            ),
+            en_title: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.title') + t('inEnglish') }))
+                .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
+
+            en_description: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.description') + t('inEnglish') })),
+            ar_description: Yup.string()
+                .trim()
+                .required(t('requiredField', { field: t('labels.description') + t('inArabic') })),
+            background: Yup.mixed().required(t('validation.image_only'))
         });
 
     // update data
     const { mutate: update, isLoading: LoadingUpdate } = useMutate({
-        mutationKey: [`service`],
-        endpoint: `service`,
+        mutationKey: [`our-features/${id}`],
+        endpoint: `our-features/${id}`,
 
         onSuccess: (data: any) => {
             ShowAlertMixin({
@@ -87,13 +81,12 @@ export default function UpdateServices() {
                 icon: 'success',
                 title:
                     data?.data?.message ||
-                    t('isEditSuccessfully', { name: t('breadcrumb.services.title') }),
+                    t('isEditSuccessfully', { name: t('breadcrumb.features.title') }),
             });
+
             // notify('success');
             refetch();
-            refetch().then(() => {
-                setFormKey(formKey + 1);
-            });
+            navigate('/our-features/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({
@@ -104,31 +97,33 @@ export default function UpdateServices() {
         },
 
         formData: true,
+        // method: 'post',
     });
 
     const handleSubmit = (values: any) => {
-        const finalOut: any = {
-            services: values?.services?.map((item: any) => ({
-                type: item.type,
-                ar: {
-                    service: item.ar_service,
-                },
-                en: {
-                    service: item.en_service,
-                },
-            })),
+        const finalOut = {
+            ar: {
+                title: values?.ar_title,
+                description: values?.ar_description,
+            },
+            en: {
+                title: values?.en_title,
+                description: values?.en_description,
+            },
+            icon: values?.icon,
+            background: values?.background
+
         };
-
-        // Remove undefined keys
-        Object.keys(finalOut).forEach((key) => {
-            if (finalOut[key] === undefined) {
-                delete finalOut[key];
-            }
-        });
-
+        if (initialValues?.background == finalOut.background) {
+            delete finalOut.background;
+        }
+        if (initialValues?.icon == finalOut.icon) {
+            delete finalOut.icon;
+        }
         update({
             ...finalOut,
-            // _method: 'put',
+            // _method: 'put'
+            _method: 'post'
         });
     };
 
@@ -137,9 +132,8 @@ export default function UpdateServices() {
             <Breadcrumb items={breadcrumbItems} />
 
             <Formik
-                validationSchema={servicesSchema()}
+                validationSchema={featuresSchema()}
                 key={formKey}
-                enableReinitialize={true}
                 initialValues={initialValues}
                 onSubmit={(values: any) => {
                     handleSubmit(values);
@@ -153,17 +147,15 @@ export default function UpdateServices() {
 
                     return (
                         <Form>
-                            <ServicesMainData isLoading={showDataLoading} />
+                            <FeaturesMainData isLoading={showDataLoading} data={showData} />
                             <div className="mt-10 mb-4 flex gap-2 justify-center">
-                                {hasPermission('service.updateOrCreate') && (
-                                    <Button
-                                        type="submit"
-                                        className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
-                                        loading={LoadingUpdate}
-                                    >
-                                        {t('buttons.save')}
-                                    </Button>
-                                )}
+                                <Button
+                                    type="submit"
+                                    className="bg-primary text-white py-3 px-5 rounded-lg hover:bg-white hover:text-primary border hover:border-primary"
+                                    loading={LoadingUpdate}
+                                >
+                                    {t('buttons.save')}
+                                </Button>
                             </div>
                         </Form>
                     );
