@@ -61,7 +61,7 @@ export default function MainDataContactUs({ isLoading }: { isLoading?: boolean }
                         </>
                     )}
                 </div>
-                {/* <div className="col-span-12">
+                <div className="col-span-12 hidden">
                     {isLoading ? (
                         <Skeleton height={40} className="w-full" />
                     ) : (
@@ -75,7 +75,7 @@ export default function MainDataContactUs({ isLoading }: { isLoading?: boolean }
                         />
 
                     )}
-                </div> */}
+                </div>
 
                 <div className="col-span-12 sm:col-span-6">
                     {isLoading ? (

@@ -15,8 +15,8 @@ export default function Addfeature() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.features.title'), to: '/our-features/index' },
-        { label: t('breadcrumb.features.add') },
+        { label: t('breadcrumb.services.title'), to: '/our-features/index' },
+        { label: t('breadcrumb.services.add') },
     ];
     const [formKey, setFormKey] = useState(0);
     const initialValues = {

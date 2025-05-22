@@ -193,7 +193,7 @@ export const SideBarItemsFn = () => {
                             label: t('breadcrumb.contact_us.title'),
                             link: '/contact-info',
                             items: [
-                                ...(hasPermission('report-reason.index')
+                                ...(hasPermission('contact-info.index')
                                     ? [
                                         {
                                             id: crypto.randomUUID(),

@@ -20,7 +20,7 @@ export default function Services() {
     const { t, i18n } = useTranslation();
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.Services.title') },
+        { label: t('breadcrumb.services.title') },
     ];
 
     const [serviceId, setServiceId] = useState<Object>('');

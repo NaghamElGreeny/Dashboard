@@ -16,7 +16,7 @@ import FilterSection from '../../components/atoms/filters/Filters';
 import LightBox from '../../components/molecules/LightBox/LightBox';
 import { FetchSectionsData, Section } from '../Sections/types';
 
-export default function StaticPages() {
+export default function ContactUs() {
     const { t, i18n } = useTranslation();
 
     const breadcrumbItems = [
@@ -24,19 +24,14 @@ export default function StaticPages() {
         { label: t('breadcrumb.contact_us.title') },
     ];
 
-    const pageTypes = [
+    const type = [
         {
             id: 0,
-            value: 'privacy_policy',
-            label: t('labels.privacy_policy'),
+            value: 'contact_info',
+            label: t('labels.contact_info'),
         },
-        {
-            id: 1,
-            value: 'terms',
-            label: t('labels.terms-conditions'),
-        },
-    ];
 
+    ];
     const [contactUsId, setContactUsId] = useState<string>('');
     const [page, setPage] = useState<number>(1);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -146,6 +141,7 @@ export default function StaticPages() {
             header: t('labels.status'),
             Cell: ({ row }: { row: { original: any } }) => {
                 const status = row.original?.is_active ? t('labels.active') : t('labels.inactive');
+
                 // function handleClick() {
                 //     updateStatus({
                 //         id: row.original?.id,
@@ -214,7 +210,7 @@ export default function StaticPages() {
     const buildEndpoint = (params: { type: string; }) => {
         const queryParams = new URLSearchParams({ ...params, page: page.toString() });
 
-        return `sections?type=contact_info${queryParams.toString()}`;
+        return `sections?type=contact_info`;
     };
 
     const {
@@ -271,7 +267,7 @@ export default function StaticPages() {
             {/* filter section */}
             {/* <FilterSection
                 initialValues={initialValues}
-                optionsList={pageTypes}
+                optionsList={type}
                 onSubmit={(values) => {
                     const params = {
                         type: values.type,

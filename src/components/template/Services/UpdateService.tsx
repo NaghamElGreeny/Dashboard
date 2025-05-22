@@ -19,8 +19,8 @@ export default function UpdateFeature() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.features.title'), to: '/our-features/index' },
-        { label: t('breadcrumb.features.edit') },
+        { label: t('breadcrumb.services.title'), to: '/our-features/index' },
+        { label: t('breadcrumb.services.edit') },
     ];
     const [formKey, setFormKey] = useState(0);
 

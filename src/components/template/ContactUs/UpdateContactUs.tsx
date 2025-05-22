@@ -92,7 +92,7 @@ export default function UpdateContactUs() {
 
             // notify('success');
             refetch();
-            navigate('/static-pages/index');
+            navigate('/contact-info/index');
         },
         onError: (err: any) => {
             ShowAlertMixin({

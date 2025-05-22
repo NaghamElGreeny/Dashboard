@@ -14,7 +14,7 @@ export default function AddContactUs() {
 
     const breadcrumbItems = [
         { label: t('breadcrumb.home'), to: '/' },
-        { label: t('breadcrumb.contact_us.title'), to: '/static-pages/index' },
+        { label: t('breadcrumb.contact_us.title'), to: '/contact-info/index' },
         { label: t('breadcrumb.contact_us.add') },
     ];
     const [formKey, setFormKey] = useState(0);
@@ -24,8 +24,8 @@ export default function AddContactUs() {
 
         ar_description: '',
         en_description: '',
-
-
+        is_active: true,
+        type: 'contact_info',
         image: '',
         icon: '',
     };
@@ -55,7 +55,7 @@ export default function AddContactUs() {
                 .required(t('requiredField', { field: t('labels.description') + t('inEnglish') }))
                 .test('is-english', t('validations.englishText'), (value) => isEnglish(value)),
 
-            type: Yup.string().required(t('requiredField', { field: t('labels.type') })),
+            // type: Yup.string().required(t('requiredField', { field: t('labels.type') })),
         });
 
     const { mutate, isLoading } = useMutate({
@@ -92,6 +92,7 @@ export default function AddContactUs() {
                 title: values?.en_title,
                 description: values?.en_description,
             },
+            is_active: true,
             type: 'contact_info',
             icon: values.icon,
             image: values.image,
