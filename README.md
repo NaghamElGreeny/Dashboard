@@ -1,7 +1,8 @@
 ## Shebl (Dashboard)
+```bash
 Base template 
 First, run the development server:
-
+```
 ```bash
 #install package
 yarn
