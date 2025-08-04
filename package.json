@@ -82,7 +82,6 @@
         "swiper": "^11.1.11",
         "tailwind-merge": "^1.14.0",
         "tailwind-variants": "^0.1.13",
-        "typescript": "^4.8.4",
         "web-vitals": "^2.1.4",
         "yup": "^0.32.11"
     },
