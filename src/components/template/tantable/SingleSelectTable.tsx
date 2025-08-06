@@ -8,18 +8,18 @@ import {
 } from 'mantine-react-table';
 import { Box, Button, Pagination } from '@mantine/core';
 import { IconDownload } from '@tabler/icons-react';
-import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
+// import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
 import { AddIcon } from '../../atoms/icons';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 
-const csvConfig = mkConfig({
-    fieldSeparator: ',',
-    decimalSeparator: '.',
-    useKeysAsHeaders: true,
-});
+// const csvConfig = mkConfig({
+//     fieldSeparator: ',',
+//     decimalSeparator: '.',
+//     useKeysAsHeaders: true,
+// });
 
 const SingleSelectTable = ({
     columns,
@@ -71,16 +71,16 @@ const SingleSelectTable = ({
         });
     };
 
-    const handleExportRows = (rows: MRT_Row<any>[]) => {
-        const rowData = rows.map((row) => row.original);
-        const csv = generateCsv(csvConfig)(rowData);
-        download(csvConfig)(csv);
-    };
+    // const handleExportRows = (rows: MRT_Row<any>[]) => {
+    //     const rowData = rows.map((row) => row.original);
+    //     const csv = generateCsv(csvConfig)(rowData);
+    //     download(csvConfig)(csv);
+    // };
 
-    const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
-        download(csvConfig)(csv);
-    };
+    // const handleExportData = () => {
+    //     const csv = generateCsv(csvConfig)(data);
+    //     download(csvConfig)(csv);
+    // };
 
     // Initialize row selection state based on selectedRowIds
     useEffect(() => {

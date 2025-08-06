@@ -1,5 +1,5 @@
 import { Box, Button, Pagination } from '@mantine/core';
-import { download, generateCsv, mkConfig } from 'export-to-csv'; //or use your library of choice here
+// import { download, generateCsv, mkConfig } from 'export-to-csv'; //or use your library of choice here
 import { useFormikContext } from 'formik';
 import {
     MantineReactTable,
@@ -12,11 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { AddIcon } from '../../atoms/icons';
 
-const csvConfig = mkConfig({
-    fieldSeparator: ',',
-    decimalSeparator: '.',
-    useKeysAsHeaders: true,
-});
+// const csvConfig = mkConfig({
+//     fieldSeparator: ',',
+//     decimalSeparator: '.',
+//     useKeysAsHeaders: true,
+// });
 
 const TableCompCustom = ({
     columns,
@@ -69,16 +69,16 @@ const TableCompCustom = ({
         });
     };
 
-    const handleExportRows = (rows: MRT_Row<any>[]) => {
-        const rowData = rows.map((row) => row.original);
-        const csv = generateCsv(csvConfig)(rowData);
-        download(csvConfig)(csv);
-    };
+    // const handleExportRows = (rows: MRT_Row<any>[]) => {
+    //     const rowData = rows.map((row) => row.original);
+    //     const csv = generateCsv(csvConfig)(rowData);
+    //     download(csvConfig)(csv);
+    // };
 
-    const handleExportData = () => {
-        const csv = generateCsv(csvConfig)(data);
-        download(csvConfig)(csv);
-    };
+    // const handleExportData = () => {
+    //     const csv = generateCsv(csvConfig)(data);
+    //     download(csvConfig)(csv);
+    // };
 
     const table = useMantineReactTable({
         columns,

@@ -52,7 +52,7 @@ export const DateInputField = ({
         </Label>
         <DatePicker
           selected={values[name]}
-          onChange={(date: Date) => {
+          onChange={(date: Date | null) => { // <-- Changed this line
             setFieldValue(name, date)
           }}
           onBlur={handleBlur(name)}

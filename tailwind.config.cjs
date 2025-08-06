@@ -129,6 +129,6 @@ module.exports = {
             strategy: 'class',
         }),
         require('@tailwindcss/typography'),
-        require('@tailwindcss/line-clamp'),
+        // require('@tailwindcss/line-clamp'), تيلوند بقا يدمجها بدون مانحتاج نستدعيها
     ],
 };

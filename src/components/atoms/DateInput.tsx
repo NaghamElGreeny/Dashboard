@@ -4,6 +4,9 @@ import moment from 'moment/moment';
 import { useEffect, useState } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { Label } from './Label';
+// const Flatpickr = require('react-flatpickr').default;
+
+// const Flatpickr = require('react-flatpickr').default;
 
 type DateInputCustom_TP = {
     label?: string;

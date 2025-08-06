@@ -20,7 +20,9 @@ function showAlert(
                 confirmButtonText: confirm_btn_txt || `${t('buttons.confirm')}`,
                 cancelButtonText: `${t('buttons.cancel')}`,
                 padding: '2em',
-                customClass: 'sweet-alerts',
+                customClass: {
+                    popup: 'sweet-alerts',
+                },
             }).then((result) => {
                 if (result.isConfirmed) {
                     resolve(result.value);
@@ -28,7 +30,7 @@ function showAlert(
                         action();
                     }
                 } else {
-                    resolve(null); // Resolve with null if cancelled
+                    resolve(null);
                 }
             });
         } else {
@@ -42,7 +44,7 @@ function showAlert(
                 if (result.isConfirmed) {
                     resolve(result.value);
                 } else {
-                    resolve(null); // Resolve with null if cancelled
+                    resolve(null);
                 }
             });
         }
