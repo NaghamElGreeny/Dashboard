@@ -20,8 +20,8 @@ import UpdateWhyus from '../components/template/WhyUs/UpdateWhyUs';
 // import ServicesPage from '../components/template/Services/UpdateService';
 // import SectionsPage from '../components/template/Sections/UpdateSections';
 import SectionsPage from '../pages/Sections/Sections';
-import AddSection from '../components/template/Sections/AddSection'
-import UpdateSection from '../components/template/Sections/UpdateSection'
+import AddSection from '../components/template/sections/AddSection'
+import UpdateSection from '../components/template/sections/UpdateSection'
 
 import BannersPage from '../pages/Banners/Banners';
 import AddBanner from '../components/template/Banners/AddBanner'
